@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbarview"
+        layout="@layout/main_toolbar"/>
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_gravity="center">
+        <androidx.cardview.widget.CardView
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            app:cardCornerRadius="@dimen/size_70dp"
+            android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/imgprofilephoto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardviewCamera"
+            android:layout_width="@dimen/size_40dp"
+            android:layout_height="@dimen/size_40dp"
+            app:cardCornerRadius="@dimen/size_20dp"
+            android:layout_marginTop="@dimen/size_30dp"
+            android:layout_marginRight="@dimen/size_10dp"
+            android:layout_alignParentTop="true"
+            app:cardBackgroundColor="@color/colorPrimary"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:layout_width="@dimen/size_30dp"
+                android:layout_height="@dimen/size_30dp"
+                android:background="@color/colortrasnparent"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_outline_photo_camera_24"/>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txtuser_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_25dp"
+        android:fontFamily="@font/proxima_nova_bold"
+        android:padding="3dp"
+        android:textColor="@color/colortext"
+        android:text="Pinkal Kachhia"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/txtuser_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_20dp"
+        android:fontFamily="@font/proximanovacond_regular"
+        android:padding="3dp"
+        android:textColor="@color/colorbottomtext"
+        android:text="Android Developer"
+        android:gravity="center"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_40dp"
+        android:layout_marginLeft="@dimen/size_10dp"
+        android:layout_marginRight="@dimen/size_10dp"
+        app:hintTextAppearance="@style/MyHintStyle">
+
+        <EditText
+            android:id="@+id/edtmobileno"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/str_Mobilenumber"
+            android:text="+91 8200384886"
+            android:inputType="textCapWords"
+            android:theme="@style/MyEditText"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:layout_marginLeft="@dimen/size_10dp"
+        android:layout_marginRight="@dimen/size_10dp"
+        app:hintTextAppearance="@style/MyHintStyle">
+
+        <EditText
+            android:id="@+id/edtAge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/str_Age"
+            android:text="45"
+            android:inputType="textCapWords"
+            android:theme="@style/MyEditText"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_15dp"
+        android:layout_marginLeft="@dimen/size_10dp"
+        android:layout_marginRight="@dimen/size_10dp"
+        app:hintTextAppearance="@style/MyHintStyle">
+
+        <EditText
+            android:id="@+id/edtAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/str_Address"
+            android:text="25/Tirth-2 Society,B/H Gcet College Anand-388315"
+            android:inputType="textCapWords"
+            android:theme="@style/MyEditText"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txtLogout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_50dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_18sp"
+        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_marginRight="@dimen/size_10dp"
+        android:layout_marginLeft="@dimen/size_10dp"
+        android:paddingLeft="@dimen/size_5dp"
+        android:fontFamily="@font/proxima_nova_bold"
+        android:background="@color/colorWhite"
+        android:text="@string/str_Logout"
+        android:gravity="left|center"/>
+</LinearLayout>

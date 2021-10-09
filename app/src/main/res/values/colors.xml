@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#e60000</color>
+    <color name="colorPrimaryDark">#e60000</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="color_daybg">#ffe6e6</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colortext">#212121</color>
+    <color name="colortexthint">#888888</color>
+    <color name="colorinputtexthint">#bdbdbd</color>
+    <color name="colorbottomtext">#636363</color>
+    <color name="colordescriptiontext">#505e6b</color>
+    <color name="color_green">#109737</color>
+    <color name="color_ratinglight">#999999</color>
+    <color name="color_linecolor">#e4e4e4</color>
+    <color name="colortrasnparent">#00000000</color>
+    <color name="Colorsearchbackground">#f0f0f0</color>
+    <color name="Colorsearchtext">#737373</color>
+    <color name="ColorOffwhite">#f2f2f2</color>
+    <color name="Colorchattime">#666666</color>
+    <color name="colorfilterbackground">#65FFFFFF</color>
+    <color name="color_rating">#ef6428</color>
+</resources>

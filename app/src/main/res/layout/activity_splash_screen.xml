@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context=".Splash_screen">
+<TextView
+    android:id="@+id/txtname"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="@string/app_name"
+    android:fontFamily="@font/audiowide_regular"
+    android:textColor="#ffffff"
+    android:textSize="40sp"
+    android:textStyle="bold">
+</TextView>
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/txtname"
+        android:layout_marginTop="10dp"
+        android:progressTint="#ffffff">
+
+    </ProgressBar>
+
+</RelativeLayout>
