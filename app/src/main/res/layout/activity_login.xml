@@ -47,12 +47,13 @@
             app:hintTextAppearance="@style/MyHintStyle">
 
             <EditText
-                android:id="@+id/edtmobileno"
+                android:id="@+id/edtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/prompt_Mobile"
-                android:inputType="textCapWords"
+                android:hint="@string/prompt_Email"
+                android:maxLength="12"
+                android:inputType="textEmailAddress"
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,6 +74,7 @@
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
+            android:id="@+id/txtforgotpassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/Forgot_password"

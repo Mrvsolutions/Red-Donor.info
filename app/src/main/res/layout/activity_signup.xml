@@ -65,8 +65,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:maxLength="12"
                 android:hint="@string/prompt_Mobile"
-                android:inputType="textCapWords"
+                android:inputType="number"
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
@@ -81,6 +82,21 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/prompt_Email"
+                android:inputType="textEmailAddress"
+                android:theme="@style/MyEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_35dp"
+            app:hintTextAppearance="@style/MyHintStyle">
+
+            <EditText
+                android:id="@+id/edtcity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/prompt_City"
                 android:inputType="textEmailAddress"
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -125,6 +141,7 @@
             android:orientation="horizontal">
 
             <CheckBox
+                android:id="@+id/cb_agree"
                 android:layout_width="@dimen/size_25dp"
                 android:layout_height="@dimen/size_25dp"
                 android:theme="@style/MyCheckBox"
@@ -145,6 +162,7 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/btn_Signup"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_50dp"
             android:text="@string/str_signup"
