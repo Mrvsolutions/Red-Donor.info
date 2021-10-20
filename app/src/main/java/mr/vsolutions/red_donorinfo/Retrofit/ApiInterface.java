@@ -9,7 +9,7 @@ import retrofit2.http.POST;
 public interface ApiInterface {
     @FormUrlEncoded
     @POST("signupDonor.php")
-    Call<DefaultResponse> CreateUser(
+    Call<DefaultResponse> CreateUserCall(
             @Field("donor_name") String Donor_Name,
             @Field("donor_city") String Donor_City,
             @Field("donor_email") String Donor_Email,
@@ -21,9 +21,15 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("signinDonor.php")
-    Call<DefaultResponse> LoginUser(
+    Call<DefaultResponse> LoginUserCall(
             @Field("donor_email") String Donor_email,
             @Field("donor_pswd") String Donor_pswd
+    );
+
+    @FormUrlEncoded
+    @POST("forgotPswd.php")
+    Call<DefaultResponse> ForgotPassWordCall(
+            @Field("donor_email") String Donor_email
     );
 
 //    @GET("AllAudio.php?id=14")

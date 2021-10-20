@@ -15,7 +15,6 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -118,7 +117,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<DefaultResponse> call = apiService.CreateUser(username, UserCity, useremail, UserPass, usermobile, latitude, longitude);
+                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserPass, usermobile, latitude, longitude);
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

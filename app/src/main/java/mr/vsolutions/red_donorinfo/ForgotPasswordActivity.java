@@ -1,21 +1,17 @@
 package mr.vsolutions.red_donorinfo;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
@@ -24,27 +20,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
+public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener{
 
     ImageView imgback;
-    Button btn_login;
-    TextView txtforgotpassword,txtnewuser;
-    EditText edtEmail,edtpassword;
-    String useremail,  UserPass ;
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    Button btn_confirmmail;
+    EditText edtEmail;
+    String useremail ;
+    private static final String TAG = ForgotPasswordActivity.class.getSimpleName();
     ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.forgot_password);
         getSupportActionBar().hide();
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        txtforgotpassword = findViewById(R.id.txtforgotpassword);
-        txtnewuser = findViewById(R.id.txtnewuser);
         edtEmail = findViewById(R.id.edtEmail);
-        edtpassword = findViewById(R.id.edtpassword);
-        btn_login = findViewById(R.id.btn_login);
+        btn_confirmmail = findViewById(R.id.btn_confirmmail);
         imgback = findViewById(R.id.imgback);
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
@@ -52,27 +44,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setProgress(10);
         mProgressDialog.setMax(100);
-        SpannableString str1= new SpannableString("New User?");
-        str1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorbottomtext)), 0, str1.length(), 0);
-        builder.append(str1);
 
-        SpannableString str2= new SpannableString(" Sign Up");
-        str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
-        builder.append(str2);
-
-        txtnewuser.setText( builder, TextView.BufferType.SPANNABLE);
-
-        txtnewuser.setOnClickListener(this);
-        btn_login.setOnClickListener(this);
+        btn_confirmmail.setOnClickListener(this);
         imgback.setOnClickListener(this);
-        txtforgotpassword.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_login:
-                LoginUserCall();
+            case R.id.btn_confirmmail:
+                ForgotMailCall();
                 break;
             case  R.id.txtnewuser:
                 Intent i = new Intent(getApplicationContext(),SignupActivity.class);
@@ -81,38 +62,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.imgback:
                 finish();
                 break;
-            case R.id.txtforgotpassword:
-                Intent intent = new Intent(getApplicationContext(),ForgotPasswordActivity.class);
-                startActivity(intent);
-                finish();
-                break;
         }
     }
 
-    private void LoginUserCall() {
+    private void ForgotMailCall() {
         try {
-            UserPass = edtpassword.getText().toString().trim();
             useremail = edtEmail.getText().toString().trim();
-            if (Validatelogin()) {
+            if (ValidateEmail()) {
                 try {
                     if (!mProgressDialog.isShowing()) {
                         mProgressDialog.show();
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                    Call<DefaultResponse> call = apiService.LoginUserCall(useremail,UserPass);
+                    Call<DefaultResponse> call = apiService.ForgotPassWordCall(useremail);
                     call.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                             DefaultResponse defaultResponse = response.body();
                             if (defaultResponse.getSuccess() == 1) {
-                                Toast.makeText(LoginActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
@@ -122,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onFailure(Call<DefaultResponse> call, Throwable t) {
                             // Log error here since request failed
-                            Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ForgotPasswordActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, t.toString());
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
@@ -142,7 +117,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Log.e(TAG,"LoginUserCall - "+ ex.toString());
         }
     }
-    private boolean Validatelogin() {
+    private boolean ValidateEmail() {
         try {
             if (useremail.isEmpty()) {
                 edtEmail.setError(getString(R.string.str_enterEmail));
@@ -154,12 +129,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 edtEmail.requestFocus();
                 return false;
             }
-            if (UserPass.isEmpty()) {
-                edtpassword.setError(getString(R.string.str_enterPass));
-                edtpassword.requestFocus();
-                return false;
-            }
-
         } catch (Exception ex) {
             Log.e(TAG, "Validatelogin :- "+ex.toString());
         }
