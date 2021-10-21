@@ -124,6 +124,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         DefaultResponse defaultResponse = response.body();
                         if (defaultResponse.getSuccess() == 1) {
                             Toast.makeText(SignupActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getApplicationContext(),VerifyEmailCodeActivity.class);
+                            intent.putExtra("useremail", useremail);
+                            startActivity(intent);
                             finish();
                         } else {
                             Toast.makeText(SignupActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();

@@ -32,6 +32,13 @@ public interface ApiInterface {
             @Field("donor_email") String Donor_email
     );
 
+    @FormUrlEncoded
+    @POST("signupVerifyCode.php")
+    Call<DefaultResponse> VerifyCodeCall(
+            @Field("donor_email") String Donor_email,
+            @Field("signup_verificationcode") String Signup_verificationcode
+    );
+
 //    @GET("AllAudio.php?id=14")
 //    Call<AudioItems> getTopAllAudioGuruRandhawa();
 }

@@ -20,24 +20,25 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener{
+public class VerifyEmailCodeActivity extends AppCompatActivity implements View.OnClickListener{
 
     ImageView imgback;
-    Button btn_confirmmail;
-    EditText edtEmail;
-    String useremail ;
-    private static final String TAG = ForgotPasswordActivity.class.getSimpleName();
+    Button btn_verify;
+    EditText edtotp;
+    String useremail,userOtp;
+    private static final String TAG = VerifyEmailCodeActivity.class.getSimpleName();
     ProgressDialog mProgressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.forgot_password);
+        setContentView(R.layout.verifyemail_screen);
         getSupportActionBar().hide();
 
         SpannableStringBuilder builder = new SpannableStringBuilder();
-        edtEmail = findViewById(R.id.edtEmail);
-        btn_confirmmail = findViewById(R.id.btn_confirmmail);
+        edtotp = findViewById(R.id.edtotp);
+        btn_verify = findViewById(R.id.btn_verify);
         imgback = findViewById(R.id.imgback);
+        useremail = getIntent().getStringExtra("useremail");
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
@@ -45,19 +46,15 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         mProgressDialog.setProgress(10);
         mProgressDialog.setMax(100);
 
-        btn_confirmmail.setOnClickListener(this);
+        btn_verify.setOnClickListener(this);
         imgback.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_confirmmail:
-                ForgotMailCall();
-                break;
-            case  R.id.txtnewuser:
-                Intent i = new Intent(getApplicationContext(),SignupActivity.class);
-                startActivity(i);
+            case R.id.btn_verify:
+                VerifyOTPCall();
                 break;
             case R.id.imgback:
                 finish();
@@ -65,29 +62,28 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void ForgotMailCall() {
+    private void VerifyOTPCall() {
         try {
-            useremail = edtEmail.getText().toString().trim();
-            if (ValidateEmail()) {
+            userOtp = edtotp.getText().toString().trim();
+            if (ValidateOTP()) {
                 try {
                     if (!mProgressDialog.isShowing()) {
                         mProgressDialog.show();
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                    Call<DefaultResponse> call = apiService.ForgotPassWordCall(useremail);
+                    Call<DefaultResponse> call = apiService.VerifyCodeCall(useremail,userOtp);
                     call.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                             DefaultResponse defaultResponse = response.body();
                             if (defaultResponse.getSuccess() == 1) {
-                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                                Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
@@ -97,7 +93,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         @Override
                         public void onFailure(Call<DefaultResponse> call, Throwable t) {
                             // Log error here since request failed
-                            Toast.makeText(ForgotPasswordActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(VerifyEmailCodeActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, t.toString());
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
@@ -114,23 +110,18 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         }
         catch (Exception ex)
         {
-            Log.e(TAG,"ForgotMailCall - "+ ex.toString());
+            Log.e(TAG,"VerifyOTPCall - "+ ex.toString());
         }
     }
-    private boolean ValidateEmail() {
+    private boolean ValidateOTP() {
         try {
-            if (useremail.isEmpty()) {
-                edtEmail.setError(getString(R.string.str_enterEmail));
-                edtEmail.requestFocus();
-                return false;
-            }
-            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(useremail).matches()) {
-                edtEmail.setError(getString(R.string.str_validemail));
-                edtEmail.requestFocus();
+            if (userOtp.isEmpty()) {
+                edtotp.setError(getString(R.string.str_enterotp));
+                edtotp.requestFocus();
                 return false;
             }
         } catch (Exception ex) {
-            Log.e(TAG, "ValidateEmail :- "+ex.toString());
+            Log.e(TAG, "ValidateOTP :- "+ex.toString());
         }
         return true;
     }
