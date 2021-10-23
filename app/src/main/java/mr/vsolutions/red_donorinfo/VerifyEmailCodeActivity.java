@@ -1,7 +1,9 @@
 package mr.vsolutions.red_donorinfo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.util.Log;
@@ -16,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,6 +82,10 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
                             DefaultResponse defaultResponse = response.body();
                             if (defaultResponse.getSuccess() == 1) {
                                 Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                SharedPreferences sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString(Comman.VerificationOtpComplete,getString(R.string.str_OtpValidated));
+                                editor.apply();
                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                                 finish();

@@ -2,6 +2,7 @@ package mr.vsolutions.red_donorinfo.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +21,20 @@ import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.WriteYourReview_Activity;
 import mr.vsolutions.red_donorinfo.model.PlacesItem;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import mr.vsolutions.red_donorinfo.util.MarkerViewHolder;
 
 public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHolder> {
 
     ArrayList<PlacesItem> pictureList;
     Context pictureContx;
-
+    SharedPreferences sharedpreferences;
+    String LoginCompleted;
     public RecyclerViewMarkerAdapter(ArrayList<PlacesItem> pictureList, Context pictureContx) {
         this.pictureList = pictureList;
         this.pictureContx = pictureContx;
+        sharedpreferences = pictureContx.getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+        LoginCompleted = sharedpreferences.getString(Comman.LoginCompleted, null);
     }
 
 
@@ -65,8 +70,10 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         holder.btnchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
-                pictureContx.startActivity(i);
+                if(LoginCompleted == null || LoginCompleted.isEmpty()) {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                    pictureContx.startActivity(i);
+                }
             }
         });
         holder.btnRate.setOnClickListener(new View.OnClickListener() {
@@ -79,8 +86,10 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         holder.btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
-                pictureContx.startActivity(i);
+                if(LoginCompleted == null || LoginCompleted.isEmpty()) {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                    pictureContx.startActivity(i);
+                }
             }
         });
 

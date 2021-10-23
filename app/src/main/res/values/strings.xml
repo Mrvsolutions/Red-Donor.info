@@ -69,4 +69,7 @@
     <string name="str_changeithere">Change it here</string>
     <string name="str_verify">Verify</string>
     <string name="str_enterotp">Please enter OTP</string>
+    <string name="str_signupComplete">signupComplete</string>
+    <string name="str_OtpValidated">OTPValidated</string>
+    <string name="str_LoginCompleted">LoginCompleted</string>
 </resources>

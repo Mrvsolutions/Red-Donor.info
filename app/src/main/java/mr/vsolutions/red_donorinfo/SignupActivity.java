@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -30,6 +31,7 @@ import androidx.core.app.ActivityCompat;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -124,6 +126,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         DefaultResponse defaultResponse = response.body();
                         if (defaultResponse.getSuccess() == 1) {
                             Toast.makeText(SignupActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(Comman.signupComplete,getString(R.string.str_signupComplete));
+                            editor.apply();
                             Intent intent = new Intent(getApplicationContext(),VerifyEmailCodeActivity.class);
                             intent.putExtra("useremail", useremail);
                             startActivity(intent);

@@ -3,7 +3,9 @@ package mr.vsolutions.red_donorinfo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -17,9 +19,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.model.LoginUser;
+import mr.vsolutions.red_donorinfo.model.UserDetail;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -100,19 +107,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                    Call<DefaultResponse> call = apiService.LoginUserCall(useremail,UserPass);
-                    call.enqueue(new Callback<DefaultResponse>() {
+                    Call<LoginUser> call = apiService.LoginUserCall(useremail,UserPass);
+                    call.enqueue(new Callback<LoginUser>() {
                         @Override
-                        public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
-                            DefaultResponse defaultResponse = response.body();
-                            if (defaultResponse.getSuccess() == 1) {
-                                Toast.makeText(LoginActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
+                        public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
+                            LoginUser LoginResponse = response.body();
+                            if (LoginResponse.getSuccess() == 1) {
+                                Toast.makeText(LoginActivity.this, LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                List<UserDetail> lstuserdetail = LoginResponse.getUserdata();
+                                Comman.CommanUserDetail = lstuserdetail.get(0);
+                                SharedPreferences sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedpreferences.edit();
+                                editor.putString(Comman.LoginCompleted,getString(R.string.str_LoginCompleted));
+                                editor.apply();
                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                Toast.makeText(LoginActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
@@ -120,7 +132,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
 
                         @Override
-                        public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                        public void onFailure(Call<LoginUser> call, Throwable t) {
                             // Log error here since request failed
                             Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, t.toString());

@@ -1,6 +1,7 @@
 package mr.vsolutions.red_donorinfo.Retrofit;
 
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.model.LoginUser;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -21,7 +22,7 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("signinDonor.php")
-    Call<DefaultResponse> LoginUserCall(
+    Call<LoginUser> LoginUserCall(
             @Field("donor_email") String Donor_email,
             @Field("donor_pswd") String Donor_pswd
     );
