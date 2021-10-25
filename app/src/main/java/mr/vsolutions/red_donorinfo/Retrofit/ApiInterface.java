@@ -1,6 +1,7 @@
 package mr.vsolutions.red_donorinfo.Retrofit;
 
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -40,6 +41,12 @@ public interface ApiInterface {
             @Field("signup_verificationcode") String Signup_verificationcode
     );
 
+    @FormUrlEncoded
+    @POST("donorList.php")
+    Call<DonorDataMain> GetDonorList(
+            @Field("user_clat") String User_clat,
+            @Field("user_clong") String User_clong
+    );
 //    @GET("AllAudio.php?id=14")
 //    Call<AudioItems> getTopAllAudioGuruRandhawa();
 }

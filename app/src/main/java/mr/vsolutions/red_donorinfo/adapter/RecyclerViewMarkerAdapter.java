@@ -12,25 +12,28 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import mr.vsolutions.red_donorinfo.LoginActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.WriteYourReview_Activity;
+import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.PlacesItem;
 import mr.vsolutions.red_donorinfo.util.Comman;
 import mr.vsolutions.red_donorinfo.util.MarkerViewHolder;
 
 public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHolder> {
 
-    ArrayList<PlacesItem> pictureList;
+    List<DonorDataMain.Donordata> pictureList;
     Context pictureContx;
     SharedPreferences sharedpreferences;
     String LoginCompleted;
-    public RecyclerViewMarkerAdapter(ArrayList<PlacesItem> pictureList, Context pictureContx) {
+    public RecyclerViewMarkerAdapter(List<DonorDataMain.Donordata> pictureList, Context pictureContx) {
         this.pictureList = pictureList;
         this.pictureContx = pictureContx;
         sharedpreferences = pictureContx.getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
@@ -49,12 +52,17 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
     @Override
     public void onBindViewHolder(@NonNull MarkerViewHolder holder, final int position) {
 
-//        final pictureFacer pic = pictureList.get(position);
+        final DonorDataMain.Donordata donordata = pictureList.get(position);
 //
 //        holder.positionController.setBackgroundColor(pic.getSelected() ? Color.parseColor("#00000000") : Color.parseColor("#8c000000"));
-
+        holder.txtname.setText(donordata.getDonorName());
+        holder.txtage.setText(donordata.getDonorAge());
+        holder.txtaddress.setText(donordata.getDonorAddress());
         Glide.with(pictureContx)
                 .load("http://www.freeinfo.in/admin/photos/Kinjal_Dave_503%20(Mr.%20V%20Solutions).jpg")
+//              .placeholder(R.drawable.ic_profile).dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
                 .into(holder.imgprofilephoto);
 
@@ -97,6 +105,6 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
 
     @Override
     public int getItemCount() {
-        return 3;
+        return pictureList.size();
     }
 }
