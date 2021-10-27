@@ -18,6 +18,7 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 import java.util.List;
 
+import mr.vsolutions.red_donorinfo.Chat_Screen_Activity;
 import mr.vsolutions.red_donorinfo.LoginActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
@@ -80,6 +81,11 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
             public void onClick(View view) {
                 if(LoginCompleted == null || LoginCompleted.isEmpty()) {
                     Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                    pictureContx.startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), Chat_Screen_Activity.class);
                     pictureContx.startActivity(i);
                 }
             }

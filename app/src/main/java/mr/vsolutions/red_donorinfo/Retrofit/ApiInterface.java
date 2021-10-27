@@ -47,6 +47,20 @@ public interface ApiInterface {
             @Field("user_clat") String User_clat,
             @Field("user_clong") String User_clong
     );
+
+    @FormUrlEncoded
+    @POST("editDonorProfile.php")
+    Call<LoginUser> EditUserDataCall(
+            @Field("donor_id") String Donor_id,
+            @Field("donor_name") String Donor_Name,
+            @Field("donor_city") String Donor_City,
+            @Field("donor_email") String Donor_Email,
+            @Field("donor_mobileno") String Donor_Mobile,
+            @Field("donor_age") String Donor_age,
+            @Field("donor_blood_group") String Donor_blood_group,
+            @Field("donor_address") String Donor_address
+    );
+
 //    @GET("AllAudio.php?id=14")
 //    Call<AudioItems> getTopAllAudioGuruRandhawa();
 }

@@ -44,6 +44,7 @@
     <string name="str_DistancefromCurrentlocation">Distance(From current location)</string>
     <string name="str_filter">Filter</string>
     <string name="str_Age">Age</string>
+    <string name="str_bloodgroup">Blood Group</string>
     <string name="str_Address">Address</string>
     <string name="str_Profile">Profile</string>
     <string name="str_writeyourreview">Write your review:</string>
@@ -60,7 +61,7 @@
     <string name="str_validemail">please Enter a valid email</string>
     <string name="str_enterEmail">Please enter email address</string>
     <string name="str_enterMobile">Please enter mobile number</string>
-    <string name="str_enterValidMobile">Please enter valid mobile number</string>
+    <string name="str_enterValidMobile">Please enter valid 10 digit phone number</string>
     <string name="str_entername">Please Enter user name</string>
     <string name="str_confirmEmail">Confirm Mail</string>
     <string name="str_verifyEmail">Verify your email</string>
@@ -72,4 +73,6 @@
     <string name="str_signupComplete">signupComplete</string>
     <string name="str_OtpValidated">OTPValidated</string>
     <string name="str_LoginCompleted">LoginCompleted</string>
+    <string name="str_Edit">Edit</string>
+    <string name="str_Save">Save</string>
 </resources>

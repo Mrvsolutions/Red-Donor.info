@@ -41,6 +41,9 @@
             android:name=".ForgotPasswordActivity"
             android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".VerifyEmailCodeActivity"
+            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".Splash_screen"
             android:screenOrientation="portrait">
             <intent-filter>

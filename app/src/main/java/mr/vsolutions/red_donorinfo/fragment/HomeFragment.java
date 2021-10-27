@@ -167,6 +167,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         if (clickCount != null) {
 
             marker.setTag(clickCount);
+            DonorDataMain.Donordata donordata = placesItemArrayList.get(clickCount);
 //            Toast.makeText(getContext(),
 //                    marker.getTitle() +
 //                            " has been clicked " + clickCount + " times.",

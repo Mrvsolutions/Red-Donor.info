@@ -52,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/prompt_Email"
-                android:maxLength="12"
                 android:inputType="textEmailAddress"
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>

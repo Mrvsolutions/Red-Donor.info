@@ -163,6 +163,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
     private boolean ValidateUser() {
+        String MobilePattern = "[0-9]{10}";
         try {
             if (username.isEmpty()) {
                 edtName.setError(getString(R.string.str_entername));
@@ -174,7 +175,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 edtmobileno.requestFocus();
                 return false;
             }
-            if (!usermobile.isEmpty() && usermobile.length() <= 10) {
+            if (!usermobile.isEmpty() && !usermobile.matches(MobilePattern)) {
                 edtmobileno.setError(getString(R.string.str_enterValidMobile));
                 edtmobileno.requestFocus();
                 return false;
