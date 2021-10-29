@@ -75,4 +75,6 @@
     <string name="str_LoginCompleted">LoginCompleted</string>
     <string name="str_Edit">Edit</string>
     <string name="str_Save">Save</string>
+    <string name="str_shareyourExperiance">Please share your experiance</string>
+    <string name="str_shareheadline">Please add your headline</string>
 </resources>

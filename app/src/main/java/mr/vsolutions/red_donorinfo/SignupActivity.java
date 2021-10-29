@@ -32,6 +32,7 @@ import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.util.Comman;
+import mr.vsolutions.red_donorinfo.util.GPSTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,13 +65,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtpassword =  findViewById(R.id.edtpassword);
         edtconfpassword = findViewById(R.id.edtconfpassword);
         edtcity=  findViewById(R.id.edtcity);
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//            OnGPS();
-//        } else {
-//            getLocation();
+//        GPSTracker gpsTracker = new GPSTracker(this);
+//        if (gpsTracker.getIsGPSTrackingEnabled())
+//        {
+//            latitude = String.valueOf(gpsTracker.getLatitude());
+//            longitude = String.valueOf(gpsTracker.getLongitude());
+//            Toast.makeText(this,"Lat:- "+latitude+" \nLong:- "+longitude,Toast.LENGTH_LONG).show();
 //        }
+//        else
+//        {
+//            gpsTracker.showSettingsAlert();
+//        }
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            OnGPS();
+        } else {
+            getLocation();
+        }
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
@@ -256,7 +267,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     double longi = locationGPS.getLongitude();
                     latitude = String.valueOf(lat);
                     longitude = String.valueOf(longi);
-                    //  showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+                  //    showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+                    Toast.makeText(this, "Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
                 }

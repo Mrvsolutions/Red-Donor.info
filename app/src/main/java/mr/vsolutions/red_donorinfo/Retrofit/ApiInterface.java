@@ -61,6 +61,16 @@ public interface ApiInterface {
             @Field("donor_address") String Donor_address
     );
 
+    @FormUrlEncoded
+    @POST("donorReviewAdd.php")
+    Call<DefaultResponse> SendDonorReviewCall(
+            @Field("donor_id") String Donor_id,
+            @Field("r_name") String R_name,
+            @Field("r_rating") String R_rating,
+            @Field("review_title ") String Review_title ,
+            @Field("review_content") String Review_content
+    );
+
 //    @GET("AllAudio.php?id=14")
 //    Call<AudioItems> getTopAllAudioGuruRandhawa();
 }
