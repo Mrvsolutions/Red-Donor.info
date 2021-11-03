@@ -22,6 +22,7 @@ import mr.vsolutions.red_donorinfo.Chat_Screen_Activity;
 import mr.vsolutions.red_donorinfo.LoginActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
+import mr.vsolutions.red_donorinfo.ReportActivity;
 import mr.vsolutions.red_donorinfo.WriteYourReview_Activity;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.PlacesItem;
@@ -102,6 +103,11 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
             public void onClick(View view) {
                 if(LoginCompleted == null || LoginCompleted.isEmpty()) {
                     Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                    pictureContx.startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
                     pictureContx.startActivity(i);
                 }
             }

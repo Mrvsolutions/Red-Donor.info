@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mr.vsolutions.red_donorinfo">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="mr.vsolutions.red_donorinfo.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.
-   READ_GSERVICES" />
+    <uses-permission android:name="mr.vsolutions.red_donorinfo.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.    READ_GSERVICES" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,35 +15,51 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-        <activity android:name=".SignupActivity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".SignupActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"  android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Chat_Screen_Activity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Fillter_Activity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Profile_Activity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".WriteYourReview_Activity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ForgotPasswordActivity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".VerifyEmailCodeActivity"
-            android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ReportActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Splash_screen"
             android:screenOrientation="portrait">
