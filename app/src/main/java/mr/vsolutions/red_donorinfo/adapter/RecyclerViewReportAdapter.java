@@ -1,6 +1,7 @@
 package mr.vsolutions.red_donorinfo.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,39 +11,84 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.taufiqrahman.reviewratings.BarLabels;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.model.PlacesItem;
+import mr.vsolutions.red_donorinfo.util.ReportHeaderViewHolder;
 import mr.vsolutions.red_donorinfo.util.ReportViewHolder;
 
-public class RecyclerViewReportAdapter extends RecyclerView.Adapter<ReportViewHolder> {
+public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     ArrayList<PlacesItem> pictureList;
     Context pictureContx;
+    private static final int TYPE_HEADER = 0;
+    private static final int TYPE_ITEM = 1;
 
     public RecyclerViewReportAdapter(ArrayList<PlacesItem> pictureList, Context pictureContx) {
         this.pictureList = pictureList;
         this.pictureContx = pictureContx;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TYPE_HEADER;
+        }
+        return TYPE_ITEM;
+    }
 
     @NonNull
     @Override
-    public ReportViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View cell = inflater.inflate(R.layout.report_row_layout, parent, false);
-        return new ReportViewHolder(cell);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == TYPE_ITEM) {
+            // Here Inflating your recyclerview item layout
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View cell = inflater.inflate(R.layout.report_row_layout, parent, false);
+            return new ReportViewHolder(cell);
+
+        } else if (viewType == TYPE_HEADER) {
+            // Here Inflating your header view
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View cell = inflater.inflate(R.layout.horizontal_chartbar, parent, false);
+            return new ReportHeaderViewHolder(cell);
+        }
+        return null;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReportViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ReportViewHolder)
+        {
+            ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
+            Glide.with(pictureContx)
+                    .load("https://i.picsum.photos/id/870/200/300.jpg?blur=2&grayscale&hmac=ujRymp644uYVjdKJM7kyLDSsrqNSMVRPnGU99cKl6Vs")
+                    .apply(new RequestOptions().centerCrop())
+                    .into(reportViewHolder.imgprofilephoto);
+        }
+        else if (holder instanceof ReportHeaderViewHolder)
+        {
+            ReportHeaderViewHolder headerViewHolder = (ReportHeaderViewHolder) holder;
 
-        Glide.with(pictureContx)
-                .load("https://i.picsum.photos/id/870/200/300.jpg?blur=2&grayscale&hmac=ujRymp644uYVjdKJM7kyLDSsrqNSMVRPnGU99cKl6Vs")
-                .apply(new RequestOptions().centerCrop())
-                .into(holder.imgprofilephoto);
+            int colors[] = new int[]{
+                    Color.parseColor("#0e9d58"),
+                    Color.parseColor("#bfd047"),
+                    Color.parseColor("#ffc105"),
+                    Color.parseColor("#ef7e14"),
+                    Color.parseColor("#d36259")};
+
+            int raters[] = new int[]{
+                    80,
+                    70,
+                    10,
+                    50,
+                    20
+            };
+            headerViewHolder.rating_reviews.createRatingBars(100, BarLabels.STYPE1, colors, raters);
+        }
     }
 
     @Override
