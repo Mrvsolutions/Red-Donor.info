@@ -61,7 +61,7 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         holder.txtage.setText(donordata.getDonorAge());
         holder.txtaddress.setText(donordata.getDonorAddress());
         Glide.with(pictureContx)
-                .load("http://www.freeinfo.in/admin/photos/Kinjal_Dave_503%20(Mr.%20V%20Solutions).jpg")
+                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
 //              .placeholder(R.drawable.ic_profile).dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
@@ -108,6 +108,7 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
                 else
                 {
                     Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
+                    i.putExtra("Donor_Id",donordata.getDonorId());
                     pictureContx.startActivity(i);
                 }
             }

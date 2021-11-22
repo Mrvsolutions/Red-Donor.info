@@ -14,7 +14,7 @@ import mr.vsolutions.red_donorinfo.R;
 public class ReportHeaderViewHolder extends RecyclerView.ViewHolder{
 
     public RatingReviews rating_reviews;
-    TextView txttotalrating,txtratingdetail;
+    public TextView txttotalrating,txtratingdetail;
 
     public ReportHeaderViewHolder(@NonNull View itemView) {
         super(itemView);

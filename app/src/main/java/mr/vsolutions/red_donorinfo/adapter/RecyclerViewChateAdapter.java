@@ -41,7 +41,7 @@ public class RecyclerViewChateAdapter extends RecyclerView.Adapter<ChateViewHold
     public void onBindViewHolder(@NonNull ChateViewHolder holder, final int position) {
 
         Glide.with(pictureContx)
-                .load("http://www.freeinfo.in/admin/photos/Kinjal_Dave_503%20(Mr.%20V%20Solutions).jpg")
+                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
                 .apply(new RequestOptions().centerCrop())
                 .into(holder.imgprofilephoto);
 

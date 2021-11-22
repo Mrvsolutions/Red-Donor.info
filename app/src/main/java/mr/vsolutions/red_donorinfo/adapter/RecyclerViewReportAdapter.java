@@ -13,24 +13,25 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.taufiqrahman.reviewratings.BarLabels;
 
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.List;
 
 import mr.vsolutions.red_donorinfo.R;
-import mr.vsolutions.red_donorinfo.model.PlacesItem;
+import mr.vsolutions.red_donorinfo.model.Donordatum;
+import mr.vsolutions.red_donorinfo.model.Donorsummary;
 import mr.vsolutions.red_donorinfo.util.ReportHeaderViewHolder;
 import mr.vsolutions.red_donorinfo.util.ReportViewHolder;
 
 public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    ArrayList<PlacesItem> pictureList;
+    List<Donordatum> _donorreviewdata;
+    Donorsummary _donorsummary;
     Context pictureContx;
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
 
-    public RecyclerViewReportAdapter(ArrayList<PlacesItem> pictureList, Context pictureContx) {
-        this.pictureList = pictureList;
+    public RecyclerViewReportAdapter(List<Donordatum> donordataList, Donorsummary _donorsummary, Context pictureContx) {
+        this._donorreviewdata = donordataList;
         this.pictureContx = pictureContx;
+        this._donorsummary = _donorsummary;
     }
 
     @Override
@@ -63,7 +64,13 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ReportViewHolder)
         {
+            Donordatum item =  _donorreviewdata.get(position-1);
             ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
+            reportViewHolder.txtname.setText(item.getrName());
+//            reportViewHolder.txtage.setText("Age: "+item.getDonorAge());
+//            reportViewHolder.txtaddress.setText(item.getDonorAddress());
+            reportViewHolder.txtratecount.setText(item.getrRating());
+            reportViewHolder.txtdetail.setText(item.getReviewContent());
             Glide.with(pictureContx)
                     .load("https://i.picsum.photos/id/870/200/300.jpg?blur=2&grayscale&hmac=ujRymp644uYVjdKJM7kyLDSsrqNSMVRPnGU99cKl6Vs")
                     .apply(new RequestOptions().centerCrop())
@@ -71,8 +78,10 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
         }
         else if (holder instanceof ReportHeaderViewHolder)
         {
-            ReportHeaderViewHolder headerViewHolder = (ReportHeaderViewHolder) holder;
 
+            ReportHeaderViewHolder headerViewHolder = (ReportHeaderViewHolder) holder;
+            headerViewHolder.txttotalrating.setText(_donorsummary.getAvgRating());
+            headerViewHolder.txtratingdetail.setText((_donorsummary.getTotRating() + " rating and "+_donorsummary.getTotReview() +" reviews"));
             int colors[] = new int[]{
                     Color.parseColor("#0e9d58"),
                     Color.parseColor("#bfd047"),
@@ -81,11 +90,11 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
                     Color.parseColor("#d36259")};
 
             int raters[] = new int[]{
-                    80,
-                    70,
-                    10,
-                    50,
-                    20
+                    Integer.parseInt(_donorsummary.getTotRating1()),
+                    Integer.parseInt(_donorsummary.getTotRating2()),
+                    Integer.parseInt(_donorsummary.getTotRating3()),
+                    Integer.parseInt(_donorsummary.getTotRating4()),
+                    Integer.parseInt(_donorsummary.getTotRating5()),
             };
             headerViewHolder.rating_reviews.createRatingBars(100, BarLabels.STYPE1, colors, raters);
         }
@@ -93,6 +102,6 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public int getItemCount() {
-        return 10;
+        return _donorreviewdata.size()+1;
     }
 }

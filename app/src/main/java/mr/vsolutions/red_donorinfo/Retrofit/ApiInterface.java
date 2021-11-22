@@ -1,7 +1,9 @@
 package mr.vsolutions.red_donorinfo.Retrofit;
 
+import mr.vsolutions.red_donorinfo.model.AllMessage;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
+import mr.vsolutions.red_donorinfo.model.DonorReviewSummary;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -67,15 +69,19 @@ public interface ApiInterface {
             @Field("donor_id") String Donor_id,
             @Field("r_name") String R_name,
             @Field("r_rating") String R_rating,
-            @Field("review_title ") String Review_title ,
+            @Field("review_title ") String Review_title,
             @Field("review_content") String Review_content
     );
 
     @FormUrlEncoded
     @POST("donorReviewList.php")
-    Call<DonorDataMain> GetDonorReportList(
+    Call<DonorReviewSummary> GetDonorReViewSummaryList(
             @Field("donor_id") String Donor_id
     );
-//    @GET("AllAudio.php?id=14")
-//    Call<AudioItems> getTopAllAudioGuruRandhawa();
+
+    @FormUrlEncoded
+    @POST("chatListAll.php")
+    Call<AllMessage> GetChatConversationList(
+            @Field("donor_id") String Donor_id
+    );
 }

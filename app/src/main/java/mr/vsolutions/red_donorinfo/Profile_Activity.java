@@ -70,12 +70,13 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         edtAddress = findViewById(R.id.edtAddress);
         txtuser_name = findViewById(R.id.txtuser_name);
         txtEdit = findViewById(R.id.txtEdit);
+        txtEdit.setVisibility(View.VISIBLE);
         title.setText(getString(R.string.str_Profile));
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
         Glide.with(this)
-                .load("http://www.freeinfo.in/admin/photos/Kinjal_Dave_503%20(Mr.%20V%20Solutions).jpg")
+                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
                 .apply(new RequestOptions().centerCrop())
                 .into(imgprofilephoto);
         imgback.setOnClickListener(new OnClickListener() {
