@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, final int position) {
-        Msgdonor msgdonor = _msgDonorList.get(position);
+        final Msgdonor msgdonor = _msgDonorList.get(position);
 
         String donorphoto = "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI";
         if (!msgdonor.getDonorProfilePic().isEmpty())
@@ -57,6 +58,8 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(activity.getApplicationContext(), Chat_Screen_Activity.class);
+                i.putExtra("RecieverId",msgdonor.getDonorId());
+                i.putExtra("RecieverName",msgdonor.getDonorName());
                 activity.startActivity(i);
             }
         });

@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.Serializable;
 import java.util.List;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
@@ -119,6 +122,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 SharedPreferences sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString(Comman.LoginCompleted,getString(R.string.str_LoginCompleted));
+                                Gson gson = new Gson();
+                                String json = gson.toJson(lstuserdetail.get(0));
+                                editor.putString(Comman.strCommanuserdetai,json);
+                                editor.commit();
                                 editor.apply();
                                 Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                 startActivity(intent);

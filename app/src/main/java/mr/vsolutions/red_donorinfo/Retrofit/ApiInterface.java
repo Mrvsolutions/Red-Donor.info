@@ -5,6 +5,7 @@ import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.DonorReviewSummary;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
+import mr.vsolutions.red_donorinfo.model.MsgdataMain;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -83,5 +84,12 @@ public interface ApiInterface {
     @POST("chatListAll.php")
     Call<AllMessage> GetChatConversationList(
             @Field("donor_id") String Donor_id
+    );
+
+    @FormUrlEncoded
+    @POST("messagesGet.php")
+    Call<MsgdataMain> GetmsgdataList(
+            @Field("donor_id") String Donor_id,
+            @Field("receiver_id") String Receiver_id
     );
 }

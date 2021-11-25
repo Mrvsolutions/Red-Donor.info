@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -15,11 +17,14 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import mr.vsolutions.red_donorinfo.fragment.MessageFragment;
 import mr.vsolutions.red_donorinfo.fragment.HomeFragment;
 import mr.vsolutions.red_donorinfo.fragment.NotificationFragment;
 import mr.vsolutions.red_donorinfo.fragment.SettingsFragment;
+import mr.vsolutions.red_donorinfo.model.UserDetail;
+import mr.vsolutions.red_donorinfo.util.Comman;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +45,15 @@ public class MainActivity extends AppCompatActivity {
                 .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
                 .apply(new RequestOptions().centerCrop())
                 .into(imgtoolprofilephoto);
+        SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+        String usrdata  = sharedpreferences.getString(Comman.strCommanuserdetai, "");
+        if (!usrdata.isEmpty())
+        {
+            Gson gson = new Gson();
+            UserDetail obj = gson.fromJson(usrdata, UserDetail.class);
+            Comman.CommanUserDetail = obj;
+        }
+
         imgfilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

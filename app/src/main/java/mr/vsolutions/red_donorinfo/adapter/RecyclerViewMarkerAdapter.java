@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +88,8 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
                 else
                 {
                     Intent i = new Intent(pictureContx.getApplicationContext(), Chat_Screen_Activity.class);
+                    i.putExtra("RecieverId",donordata.getDonorId());
+                    i.putExtra("RecieverName",donordata.getDonorName());
                     pictureContx.startActivity(i);
                 }
             }

@@ -7,5 +7,6 @@ public class Comman {
     public static String signupComplete = "signupComplete";
     public static String VerificationOtpComplete = "VerificationOtpComplete";
     public static String LoginCompleted = "LoginCompleted";
+    public static String strCommanuserdetai = "LoginCompleted";
     public static UserDetail CommanUserDetail = null;
 }
