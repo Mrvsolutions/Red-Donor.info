@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/Colorsearchbackground">
     <include
@@ -32,16 +33,15 @@
                     android:layout_marginLeft="@dimen/size_20dp"
                     android:layout_marginRight="@dimen/size_20dp"
                     android:background="@drawable/round_corner_grey_border">
-                    <TextView
+                    <Spinner
+                        android:id="@+id/spinnerbloodGroup"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colortext"
-                        android:textSize="@dimen/text_size_14sp"
-                        android:fontFamily="@font/proximanovacond_regular"
-                        android:text="AB+"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="@dimen/size_20dp"
-                        android:layout_alignParentLeft="true"/>
+                        android:layout_height="@dimen/size_50dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp" />
                     <ImageView
                         android:layout_width="@dimen/size_30dp"
                         android:layout_height="@dimen/size_30dp"
@@ -67,16 +67,15 @@
                     android:layout_marginLeft="@dimen/size_20dp"
                     android:layout_marginRight="@dimen/size_20dp"
                     android:background="@drawable/round_corner_grey_border">
-                    <TextView
+                    <Spinner
+                        android:id="@+id/spinnerminage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colortext"
-                        android:textSize="@dimen/text_size_14sp"
-                        android:fontFamily="@font/proximanovacond_regular"
-                        android:text="20 - 22"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="@dimen/size_20dp"
-                        android:layout_alignParentLeft="true"/>
+                        android:layout_height="@dimen/size_50dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"/>
                     <ImageView
                         android:layout_width="@dimen/size_30dp"
                         android:layout_height="@dimen/size_30dp"
@@ -102,16 +101,15 @@
                     android:layout_marginLeft="@dimen/size_20dp"
                     android:layout_marginRight="@dimen/size_20dp"
                     android:background="@drawable/round_corner_grey_border">
-                    <TextView
+                    <Spinner
+                        android:id="@+id/spinnermaxage"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/colortext"
-                        android:textSize="@dimen/text_size_14sp"
-                        android:fontFamily="@font/proximanovacond_regular"
-                        android:text="22 - 50"
-                        android:layout_centerVertical="true"
-                        android:paddingLeft="@dimen/size_20dp"
-                        android:layout_alignParentLeft="true"/>
+                        android:layout_height="@dimen/size_50dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp" />
                     <ImageView
                         android:layout_width="@dimen/size_30dp"
                         android:layout_height="@dimen/size_30dp"
@@ -137,16 +135,15 @@
                 android:layout_marginLeft="@dimen/size_20dp"
                 android:layout_marginRight="@dimen/size_20dp"
                 android:background="@drawable/round_corner_grey_border">
-                <TextView
+                <Spinner
+                    android:id="@+id/spinnerdistance"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colortext"
-                    android:textSize="@dimen/text_size_14sp"
-                    android:fontFamily="@font/proximanovacond_regular"
-                    android:text="100 - 500m"
-                    android:layout_centerVertical="true"
-                    android:paddingLeft="@dimen/size_20dp"
-                    android:layout_alignParentLeft="true"/>
+                    android:layout_height="@dimen/size_50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp" />
                 <ImageView
                     android:layout_width="@dimen/size_30dp"
                     android:layout_height="@dimen/size_30dp"
