@@ -152,6 +152,19 @@
                     android:src="@drawable/ic_outline_keyboard_arrow_down_24"
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
+            <Button
+                android:id="@+id/btn_Apply"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_50dp"
+                android:text="@string/str_ApplyFilter"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_20sp"
+                android:layout_marginTop="@dimen/size_100dp"
+                android:layout_marginLeft="@dimen/size_20dp"
+                android:layout_marginRight="@dimen/size_20dp"
+                android:textColor="@color/colorWhite"
+                android:fontFamily="@font/proxima_nova_bold"
+                android:background="@drawable/round_corner_button"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

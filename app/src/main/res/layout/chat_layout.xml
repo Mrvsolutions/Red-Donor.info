@@ -55,6 +55,7 @@
             android:layout_margin="@dimen/size_5dp"
             android:background="@drawable/round_corner_grey_border_button">
         <EditText
+            android:id="@+id/edtmsgtext"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@+id/imgsend"

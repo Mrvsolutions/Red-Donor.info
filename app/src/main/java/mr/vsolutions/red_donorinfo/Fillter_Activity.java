@@ -1,40 +1,45 @@
 package mr.vsolutions.red_donorinfo;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import java.util.List;
 
-import java.util.ArrayList;
+import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
+import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
+import mr.vsolutions.red_donorinfo.model.DonorDataMain;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import mr.vsolutions.red_donorinfo.adapter.RecyclerViewChateAdapter;
-import mr.vsolutions.red_donorinfo.model.PlacesItem;
+public class Fillter_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-public class Fillter_Activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-
+    private static final String TAG = Fillter_Activity.class.toString();
     public ImageView imgtoolprofilephoto, imgback;
     public LinearLayout llcustomesearchview;
     RelativeLayout rltoolbarhome, rltoolbar;
     TextView title;
+    String strLat = "22.564518", strLong = "72.928871";
     Spinner spinnerbloodGroup, spinnerminage, spinnermaxage, spinnerdistance;
     String[] bloodgroup = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String[] MinAge = new String[33];
     String[] MaxAge = new String[33];
     String[] distance = {"1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"};
-    String strbloodgroup,strminage,strmaxage,strdistance;
+    String strbloodgroup, strminage, strmaxage, strdistance;
+    Button btn_Apply;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,9 +55,9 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         spinnerminage = findViewById(R.id.spinnerminage);
         spinnermaxage = findViewById(R.id.spinnermaxage);
         spinnerdistance = findViewById(R.id.spinnerdistance);
+        btn_Apply = findViewById(R.id.btn_Apply);
         title.setText(getString(R.string.str_filter));
-        for (int i = 0 ; i < 33; i++ )
-        {
+        for (int i = 0; i < 33; i++) {
             int val = 18 + i;
             MinAge[i] = String.valueOf(val);
             MaxAge[i] = String.valueOf(val);
@@ -60,33 +65,29 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
-        imgback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        imgback.setOnClickListener(this);
+        btn_Apply.setOnClickListener(this);
         ArrayAdapter adapterbldg = new ArrayAdapter(
                 this,
-                R.layout.spinner_row_layout,R.id.txtvalue,
+                R.layout.spinner_row_layout, R.id.txtvalue,
                 bloodgroup);
         spinnerbloodGroup.setAdapter(adapterbldg);
         spinnerbloodGroup.setOnItemSelectedListener(this);
         ArrayAdapter adapterminage = new ArrayAdapter(
                 this,
-                R.layout.spinner_row_layout,R.id.txtvalue,
+                R.layout.spinner_row_layout, R.id.txtvalue,
                 MinAge);
         spinnerminage.setAdapter(adapterminage);
         spinnerminage.setOnItemSelectedListener(this);
         ArrayAdapter adaptermaxage = new ArrayAdapter(
                 this,
-                R.layout.spinner_row_layout,R.id.txtvalue,
+                R.layout.spinner_row_layout, R.id.txtvalue,
                 MaxAge);
         spinnermaxage.setAdapter(adaptermaxage);
         spinnermaxage.setOnItemSelectedListener(this);
         ArrayAdapter adapterdistance = new ArrayAdapter(
                 this,
-                R.layout.spinner_row_layout,R.id.txtvalue,
+                R.layout.spinner_row_layout, R.id.txtvalue,
                 distance);
         spinnerdistance.setAdapter(adapterdistance);
         spinnerdistance.setOnItemSelectedListener(this);
@@ -101,22 +102,25 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        strbloodgroup = "";
+        strminage = "";
+        strmaxage = "";
+        strdistance = "";
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         try {
-            Spinner spinblg = (Spinner)parent;
+            Spinner spinblg = (Spinner) parent;
             if (spinblg.getId() == R.id.spinnerbloodGroup) {
                 strbloodgroup = bloodgroup[position];
-            }
-            else if (spinblg.getId() == R.id.spinnerminage)
-            {
+            } else if (spinblg.getId() == R.id.spinnerminage) {
                 strminage = MinAge[position];
-            }
-            else if (spinblg.getId() == R.id.spinnermaxage)
-            {
+            } else if (spinblg.getId() == R.id.spinnermaxage) {
                 strmaxage = MinAge[position];
-            }
-            else if (spinblg.getId() == R.id.spinnerdistance)
-            {
+            } else if (spinblg.getId() == R.id.spinnerdistance) {
                 strdistance = distance[position];
             }
         } catch (Exception ex) {
@@ -128,5 +132,66 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    private void GetFilterData() {
+        try {
+            try {
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                Call<DonorDataMain> call = apiService.GetFilterDataAsync(strbloodgroup, strminage, strmaxage, strdistance, strLat, strLong);
+                call.enqueue(new Callback<DonorDataMain>() {
+                    @Override
+                    public void onResponse(Call<DonorDataMain> call, Response<DonorDataMain> response) {
+                        DonorDataMain LoginResponse = response.body();
+                        if (LoginResponse.getSuccess() == 1) {
+                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
+                        } else {
+                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DonorDataMain> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, t.toString());
+                    }
+                });
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "GetMsgDataList - " + ex.toString());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgback:
+                finish();
+                break;
+            case R.id.btn_Apply:
+                if (ValidateFilter())
+                {
+                    GetFilterData();
+                }
+                break;
+        }
+    }
+
+    private boolean ValidateFilter() {
+
+        try {
+            if (strbloodgroup.isEmpty() && strminage.isEmpty() && strmaxage.isEmpty() && strdistance.isEmpty()) {
+                Toast.makeText(this, getString(R.string.str_FilterValidation), Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        } catch (Exception ex) {
+            Log.e(TAG, "ValidateFilter - "+ ex.toString());
+        }
+        return true;
     }
 }

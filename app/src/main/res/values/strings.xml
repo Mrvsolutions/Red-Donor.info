@@ -78,4 +78,7 @@
     <string name="str_shareyourExperiance">Please share your experiance</string>
     <string name="str_shareheadline">Please add your headline</string>
     <string name="str_reporttitle">Rating &amp; Reviews</string>
+    <string name="str_msgSendSuccess">Please Enter message</string>
+    <string name="str_ApplyFilter">Apply Filter</string>
+    <string name="str_FilterValidation">Please select filter like : BloodGroup, Minimum Age, Maximum Age, Distance.</string>
 </resources>

@@ -3,6 +3,7 @@ package mr.vsolutions.red_donorinfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,6 +19,7 @@ import java.util.List;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.adapter.RecyclerViewChateAdapter;
+import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.Msgdata;
 import mr.vsolutions.red_donorinfo.model.MsgdataMain;
@@ -26,12 +28,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Chat_Screen_Activity extends AppCompatActivity {
+public class Chat_Screen_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    public ImageView imgtoolprofilephoto,imgback;
+    public ImageView imgtoolprofilephoto,imgback,imgsend;
     public LinearLayout llcustomesearchview;
+    EditText edtmsgtext;
     RelativeLayout rltoolbarhome,rltoolbar;
     TextView title;
+
     private RecyclerView ChatelistRecycler;
     String donor_id,Recieved_ID;
     DonorDataMain.Donordata RecieverData;
@@ -47,6 +51,8 @@ public class Chat_Screen_Activity extends AppCompatActivity {
         rltoolbar = findViewById(R.id.rltoolbar);
         title = findViewById(R.id.title);
         imgback = findViewById(R.id.imgback);
+        imgsend = findViewById(R.id.imgsend);
+        edtmsgtext = findViewById(R.id.edtmsgtext);
         ChatelistRecycler = findViewById(R.id.ChatelistRecycler);
         title.setText(getIntent().getStringExtra("RecieverName"));
         llcustomesearchview.setVisibility(View.GONE);
@@ -55,12 +61,8 @@ public class Chat_Screen_Activity extends AppCompatActivity {
         donor_id = Comman.CommanUserDetail.getDonorId();
         Recieved_ID = getIntent().getStringExtra("RecieverId");
 
-        imgback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        imgback.setOnClickListener(this);
+        imgsend.setOnClickListener(this);
         GetMsgDataList();
     }
 
@@ -80,13 +82,13 @@ public class Chat_Screen_Activity extends AppCompatActivity {
                 call.enqueue(new Callback<MsgdataMain>() {
                     @Override
                     public void onResponse(Call<MsgdataMain> call, Response<MsgdataMain> response) {
-                        MsgdataMain LoginResponse = response.body();
-                        if (LoginResponse.getSuccess() == 1) {
-                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            List<Msgdata> lstchat = LoginResponse.getMsgdata();
+                        MsgdataMain MsglistResponse = response.body();
+                        if (MsglistResponse.getSuccess() == 1) {
+                            Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            List<Msgdata> lstchat = MsglistResponse.getMsgdata();
                             SetAdapterData(lstchat);
                         } else {
-                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -107,6 +109,39 @@ public class Chat_Screen_Activity extends AppCompatActivity {
         }
     }
 
+    private void SendMessage() {
+        try {
+            try {
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                Call<DefaultResponse> call = apiService.SendmsgAsync(donor_id,Recieved_ID,edtmsgtext.getText().toString().trim());
+                call.enqueue(new Callback<DefaultResponse>() {
+                    @Override
+                    public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                        DefaultResponse msgResponse = response.body();
+                        if (msgResponse.getSuccess() == 1) {
+                            Toast.makeText(getApplicationContext(), msgResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            GetMsgDataList();
+                        } else {
+                            Toast.makeText(getApplicationContext(), msgResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, t.toString());
+                    }
+                });
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG,"GetMsgDataList - "+ ex.toString());
+        }
+    }
     private void SetAdapterData(List<Msgdata> lstchat) {
         try {
             RecyclerView.Adapter indicatorAdapter = new RecyclerViewChateAdapter(lstchat, Recieved_ID,this);
@@ -120,4 +155,22 @@ public class Chat_Screen_Activity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgback:
+                finish();
+                break;
+            case R.id.imgsend:
+                if (!edtmsgtext.getText().toString().trim().isEmpty())
+                {
+                    SendMessage();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),getString(R.string.str_msgSendSuccess),Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
+    }
 }

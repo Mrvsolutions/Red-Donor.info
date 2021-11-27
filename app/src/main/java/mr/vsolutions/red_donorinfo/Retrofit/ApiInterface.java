@@ -92,4 +92,23 @@ public interface ApiInterface {
             @Field("donor_id") String Donor_id,
             @Field("receiver_id") String Receiver_id
     );
+
+    @FormUrlEncoded
+    @POST("messagesSend.php")
+    Call<DefaultResponse> SendmsgAsync(
+            @Field("sender_id") String Sender_id,
+            @Field("receiver_id") String Receiver_id,
+            @Field("msg_text") String Msg_text
+    );
+
+    @FormUrlEncoded
+    @POST("donorListFilter.php")
+    Call<DonorDataMain> GetFilterDataAsync(
+            @Field("donor_blood_group") String Donor_blood_group,
+            @Field("donor_min_age") String Donor_min_age,
+            @Field("donor_max_age") String Donor_max_age,
+            @Field("donor_distance") String Donor_distance,
+            @Field("user_clat") String User_clat,
+            @Field("user_clong") String User_clong
+    );
 }
