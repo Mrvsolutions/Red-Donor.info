@@ -13,10 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import mr.vsolutions.red_donorinfo.fragment.MessageFragment;
@@ -28,6 +32,7 @@ import mr.vsolutions.red_donorinfo.util.Comman;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = MainActivity.class.toString();
     public ImageView imgtoolprofilephoto,imgfilter;
     public LinearLayout llcustomesearchview;
     @Override
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        GetToken();
         imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
         llcustomesearchview = findViewById(R.id.llcustomesearchview);
         imgfilter = findViewById(R.id.imgfilter);
@@ -100,6 +107,24 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    void GetToken() {
+        FirebaseMessaging.getInstance().getToken()
+            .addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                // Get new FCM registration token
+                String token = task.getResult();
+                // Log and toast
+                // String msg = token);
+                Log.d(TAG, token);
+                Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
       //  super.onBackPressed();
