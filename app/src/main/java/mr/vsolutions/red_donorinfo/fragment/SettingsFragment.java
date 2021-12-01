@@ -1,10 +1,14 @@
 package mr.vsolutions.red_donorinfo.fragment;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +23,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import mr.vsolutions.red_donorinfo.ForgotPasswordActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.Profile_Activity;
 import mr.vsolutions.red_donorinfo.R;
+import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
+import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
+import mr.vsolutions.red_donorinfo.SignupActivity;
+import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.util.Comman;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements View.OnClickListener {
     RelativeLayout rlInviteFriend,rlMoreapp,rlEditProfile,rlRateApp;
+    TextView txtLogout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,42 +48,12 @@ public class SettingsFragment extends Fragment {
         rlMoreapp = root.findViewById(R.id.rlMoreapp);
         rlEditProfile = root.findViewById(R.id.rlEditProfile);
         rlRateApp = root.findViewById(R.id.rlRateApp);
-        rlRateApp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                intent.setData(Uri.parse("market://details?id=pinkal.nehakakkarcollection"));
-//                startActivity(intent);
-                Ratting_Dialog(getActivity());
-            }
-        });
-        rlEditProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getActivity(), Profile_Activity.class);
-                startActivity(i);
-            }
-        });
-        rlInviteFriend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                    shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
-                    String shareMessage = getString(R.string.app_name) + ": " + "\nFree Download:\n";
-                    shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=mr.vsolutions.red_donorinfo\n";
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
-                    startActivity(Intent.createChooser(shareIntent, "Share via"));
-                }
-            });
-        rlMoreapp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("market://search?q=pub:Mr. V Solutions"));
-                    getActivity().startActivity(intent);
-                }
-            });
+        txtLogout = root.findViewById(R.id.txtLogout);
+        rlRateApp.setOnClickListener(this);
+        rlEditProfile.setOnClickListener(this);
+        rlInviteFriend.setOnClickListener(this);
+        rlMoreapp.setOnClickListener(this);
+        txtLogout.setOnClickListener(this);
         return  root;
     }
     @Override
@@ -114,6 +98,78 @@ public class SettingsFragment extends Fragment {
         catch (Exception ex)
         {
             ex.printStackTrace();
+        }
+    }
+
+    private void UserSignoutCall(String DonorID) {
+        try {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<DefaultResponse> call = apiService.SignoutAsync(DonorID);
+            call.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                    DefaultResponse defaultResponse = response.body();
+                    if (defaultResponse.getSuccess() == 1) {
+                        Toast.makeText(getActivity().getApplicationContext(), defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        Comman.CommanUserDetail = null;
+                        Comman.CommanToken = null;
+                        SharedPreferences preferences = getActivity().getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.clear();
+                        editor.apply();
+                        Intent intent = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        getActivity().finishAffinity();
+                    } else {
+                        Toast.makeText(getActivity().getApplicationContext(), defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    Toast.makeText(getActivity().getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e("SettingFragment", t.toString());
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.e("SettingFragment","UserDeviceRegisterCall - "+ ex.toString());
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rlRateApp:
+                Ratting_Dialog(getActivity());
+                break;
+            case  R.id.rlEditProfile:
+                Intent i = new Intent(getActivity(), Profile_Activity.class);
+                startActivity(i);
+                break;
+            case R.id.rlInviteFriend:
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
+                String shareMessage = getString(R.string.app_name) + ": " + "\nFree Download:\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=mr.vsolutions.red_donorinfo\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+                break;
+            case R.id.rlMoreapp:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://search?q=pub:Mr. V Solutions"));
+                getActivity().startActivity(intent);
+                break;
+            case R.id.txtLogout:
+                if (Comman.CommanUserDetail != null)
+                {
+                    UserSignoutCall(Comman.CommanUserDetail.getDonorId());
+                }
+                break;
         }
     }
 }

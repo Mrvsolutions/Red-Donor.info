@@ -111,4 +111,17 @@ public interface ApiInterface {
             @Field("user_clat") String User_clat,
             @Field("user_clong") String User_clong
     );
+
+    @FormUrlEncoded
+    @POST("tokenStore.php")
+    Call<DefaultResponse> DeviceRegisterAsync(
+            @Field("token") String Token,
+            @Field("donor_id") String Donor_id
+    );
+
+    @FormUrlEncoded
+    @POST("signoutDonor.php")
+    Call<DefaultResponse> SignoutAsync(
+            @Field("donor_id") String Donor_id
+    );
 }

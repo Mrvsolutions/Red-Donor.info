@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -42,6 +43,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
     String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress;
     ProgressDialog mProgressDialog;
     private static final String TAG = Profile_Activity.class.getSimpleName();
+    CardView cardviewCamera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         edtBloodGroup = findViewById(R.id.edtBloodGroup);
         edtAddress = findViewById(R.id.edtAddress);
         txtuser_name = findViewById(R.id.txtuser_name);
+        cardviewCamera = findViewById(R.id.cardviewCamera);
         txtEdit = findViewById(R.id.txtEdit);
         txtEdit.setVisibility(View.VISIBLE);
         title.setText(getString(R.string.str_Profile));
@@ -79,12 +82,6 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                 .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
                 .apply(new RequestOptions().centerCrop())
                 .into(imgprofilephoto);
-        imgback.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         if (Comman.CommanUserDetail != null)
         {
             txtEdit.setVisibility(View.VISIBLE);
@@ -97,6 +94,8 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtEmail.setText(Comman.CommanUserDetail.getDonorEmail());
         }
         txtEdit.setOnClickListener(this);
+        imgback.setOnClickListener(this);
+        cardviewCamera.setOnClickListener(this);
         SetEnableDisable();
     }
 
@@ -145,6 +144,12 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                     txtEdit.setText(getString(R.string.str_Edit));
                 }
                 SetEnableDisable();
+                break;
+            case R.id.imgback:
+                finish();
+                break;
+            case R.id.cardviewCamera:
+                finish();
                 break;
         }
     }

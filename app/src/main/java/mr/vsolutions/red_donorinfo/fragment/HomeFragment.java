@@ -84,7 +84,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        GetNearestDonorList();
+        if(getActivity() instanceof MainActivity && ((MainActivity) getActivity()).IsFromFilter){
+            placesItemArrayList = ((MainActivity) getActivity()).FilterItemArrayList;
+            SetMarkerLocations();
+            SetAdapterData(placesItemArrayList);
+        }
+        else {
+            GetNearestDonorList();
+        }
         markerRecycler.hasFixedSize();
         markerRecycler.setLayoutManager(new GridLayoutManager(getContext(),1, RecyclerView.HORIZONTAL,false));
         view.setOnClickListener(new View.OnClickListener() {

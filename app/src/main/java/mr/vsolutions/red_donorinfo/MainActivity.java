@@ -23,18 +23,30 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
+import java.util.List;
+
+import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
+import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.fragment.MessageFragment;
 import mr.vsolutions.red_donorinfo.fragment.HomeFragment;
 import mr.vsolutions.red_donorinfo.fragment.NotificationFragment;
 import mr.vsolutions.red_donorinfo.fragment.SettingsFragment;
+import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.model.DonorDataMain;
+import mr.vsolutions.red_donorinfo.model.LoginUser;
 import mr.vsolutions.red_donorinfo.model.UserDetail;
 import mr.vsolutions.red_donorinfo.util.Comman;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.toString();
     public ImageView imgtoolprofilephoto,imgfilter;
     public LinearLayout llcustomesearchview;
+    public  boolean IsFromFilter;
+    public List<DonorDataMain.Donordata> FilterItemArrayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         GetToken();
+        IsFromFilter = getIntent().getBooleanExtra("IsFromFilter",false);
+        if (IsFromFilter)
+        {
+            FilterItemArrayList = (List<DonorDataMain.Donordata>) getIntent().getExtras().getSerializable("filterlist");
+        }
         imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
         llcustomesearchview = findViewById(R.id.llcustomesearchview);
         imgfilter = findViewById(R.id.imgfilter);
@@ -59,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             Gson gson = new Gson();
             UserDetail obj = gson.fromJson(usrdata, UserDetail.class);
             Comman.CommanUserDetail = obj;
+            UserDeviceRegisterCall(Comman.CommanToken,Comman.CommanUserDetail.getDonorId());
         }
 
         imgfilter.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 // Get new FCM registration token
                 String token = task.getResult();
+                Comman.CommanToken = token;
+
                 // Log and toast
                 // String msg = token);
                 Log.d(TAG, token);
@@ -145,6 +165,34 @@ public class MainActivity extends AppCompatActivity {
         else
         {
             super.onBackPressed();
+        }
+    }
+    private void UserDeviceRegisterCall(String Token,String DonorID) {
+        try {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+            Call<DefaultResponse> call = apiService.DeviceRegisterAsync(Token, DonorID);
+            call.enqueue(new Callback<DefaultResponse>() {
+                @Override
+                public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                    DefaultResponse defaultResponse = response.body();
+                    if (defaultResponse.getSuccess() == 1) {
+                        Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                    // Log error here since request failed
+                    Toast.makeText(MainActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, t.toString());
+                }
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG,"UserDeviceRegisterCall - "+ ex.toString());
         }
     }
 }

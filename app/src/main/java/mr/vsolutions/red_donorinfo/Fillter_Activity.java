@@ -1,5 +1,6 @@
 package mr.vsolutions.red_donorinfo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
@@ -146,6 +148,13 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
                         if (LoginResponse.getSuccess() == 1) {
                             Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
+                            if (lstuserdetail.size() > 0) {
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                i.putExtra("IsFromFilter", true);
+                                i.putExtra("filterlist", (Serializable) lstuserdetail);
+                                startActivity(i);
+                                finishAffinity();
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }

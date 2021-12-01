@@ -9,4 +9,5 @@ public class Comman {
     public static String LoginCompleted = "LoginCompleted";
     public static String strCommanuserdetai = "LoginCompleted";
     public static UserDetail CommanUserDetail = null;
+    public static String CommanToken = "";
 }
