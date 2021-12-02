@@ -179,6 +179,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 //                    marker.getTitle() +
 //                            " has been clicked " + clickCount + " times.",
 //                    Toast.LENGTH_SHORT).show();
+            markerRecycler.scrollToPosition(clickCount);
             markerRecycler.setVisibility(View.VISIBLE);
             imgremove.setVisibility(View.VISIBLE);
             viewborder.setVisibility(View.VISIBLE);

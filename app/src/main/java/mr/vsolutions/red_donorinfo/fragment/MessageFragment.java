@@ -28,6 +28,7 @@ import mr.vsolutions.red_donorinfo.model.AllMessage;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.Msgdonor;
 import mr.vsolutions.red_donorinfo.model.PlacesItem;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,8 +41,9 @@ public class MessageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chate, container, false);
         listMessageRecycler = view.findViewById(R.id.listMessageRecycler);
-        GetAllConversationList();
-
+        if (Comman.CommanUserDetail != null) {
+            GetAllConversationList();
+        }
         return  view;
     }
 
@@ -57,7 +59,7 @@ public class MessageFragment extends Fragment {
             try {
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<AllMessage> call = apiService.GetChatConversationList("2");
+                Call<AllMessage> call = apiService.GetChatConversationList(Comman.CommanUserDetail.getDonorId());
                 call.enqueue(new Callback<AllMessage>() {
                     @Override
                     public void onResponse(Call<AllMessage> call, Response<AllMessage> response) {

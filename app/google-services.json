@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "388583188456",
+    "project_id": "reddonorinfo",
+    "storage_bucket": "reddonorinfo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388583188456:android:03ff4fff266f414e18265d",
+        "android_client_info": {
+          "package_name": "mr.vsolutions.red_donorinfo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388583188456-0nirs6cp6thqt4ko82e38nvb68ajupsr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwNl3NwOM87RUvlRQpLnEe25MyMldSQQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388583188456-0nirs6cp6thqt4ko82e38nvb68ajupsr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
