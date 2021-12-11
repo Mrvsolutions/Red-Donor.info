@@ -22,6 +22,7 @@ import java.util.List;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
+import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +34,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     public LinearLayout llcustomesearchview;
     RelativeLayout rltoolbarhome, rltoolbar;
     TextView title;
-    String strLat = "22.564518", strLong = "72.928871";
+    String strLat =  String.valueOf(Comman.Lantitude), strLong = String.valueOf(Comman.Longitude);
     Spinner spinnerbloodGroup, spinnerminage, spinnermaxage, spinnerdistance;
     String[] bloodgroup = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String[] MinAge = new String[33];

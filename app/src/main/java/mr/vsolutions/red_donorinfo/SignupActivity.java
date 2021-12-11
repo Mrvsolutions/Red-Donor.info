@@ -44,7 +44,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     EditText edtName, edtmobileno, edtEmail, edtpassword, edtconfpassword,edtcity;
     CheckBox cb_agree;
     LocationManager locationManager;
-    String latitude = "22.564518", longitude = "72.928871";
+    double latitude = Comman.Lantitude, longitude = Comman.Longitude;
     String username, usermobile, useremail, UserPass, UserConfpass, UserCity ;
     ProgressDialog mProgressDialog;
     private static final String TAG = SignupActivity.class.getSimpleName();
@@ -76,12 +76,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 //        {
 //            gpsTracker.showSettingsAlert();
 //        }
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            OnGPS();
-        } else {
-            getLocation();
-        }
+//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//            OnGPS();
+//        } else {
+//            getLocation();
+//        }
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
@@ -130,7 +130,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserPass, usermobile, latitude, longitude);
+                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude));
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -254,27 +254,27 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    private void getLocation() {
-        try {
-            if (ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-            } else {
-                Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (locationGPS != null) {
-                    double lat = locationGPS.getLatitude();
-                    double longi = locationGPS.getLongitude();
-                    latitude = String.valueOf(lat);
-                    longitude = String.valueOf(longi);
-                  //    showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
-                    Toast.makeText(this, "Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        } catch (Exception ex) {
-            Log.e(TAG, ex.toString());
-        }
-    }
+//    private void getLocation() {
+//        try {
+//            if (ActivityCompat.checkSelfPermission(
+//                    this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                    this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
+//            } else {
+//                Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                if (locationGPS != null) {
+//                    double lat = locationGPS.getLatitude();
+//                    double longi = locationGPS.getLongitude();
+//                    latitude = String.valueOf(lat);
+//                    longitude = String.valueOf(longi);
+//                  //    showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
+//                    Toast.makeText(this, "Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_LONG).show();
+//                } else {
+//                    Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        } catch (Exception ex) {
+//            Log.e(TAG, ex.toString());
+//        }
+//    }
 }

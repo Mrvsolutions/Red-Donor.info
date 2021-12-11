@@ -41,6 +41,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestLocationPermissions;
+import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestPermissions;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.toString();
@@ -56,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         GetToken();
         IsFromFilter = getIntent().getBooleanExtra("IsFromFilter",false);
+        if(checkAndRequestLocationPermissions(this))
         if (IsFromFilter)
         {
             FilterItemArrayList = (List<DonorDataMain.Donordata>) getIntent().getExtras().getSerializable("filterlist");

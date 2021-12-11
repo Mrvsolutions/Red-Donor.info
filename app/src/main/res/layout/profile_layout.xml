@@ -14,7 +14,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/size_20dp">
             <RelativeLayout
                 android:id="@+id/rlmainimageview"
                 android:layout_width="180dp"
@@ -183,6 +184,7 @@
                 android:layout_marginTop="@dimen/size_20dp"
                 android:layout_marginRight="@dimen/size_10dp"
                 android:layout_marginLeft="@dimen/size_10dp"
+                android:visibility="gone"
                 android:paddingLeft="@dimen/size_5dp"
                 android:fontFamily="@font/proxima_nova_bold"
                 android:background="@color/colorWhite"

@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import mr.vsolutions.red_donorinfo.ForgotPasswordActivity;
+import mr.vsolutions.red_donorinfo.LoginActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.Profile_Activity;
 import mr.vsolutions.red_donorinfo.R;
@@ -54,6 +55,14 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         rlInviteFriend.setOnClickListener(this);
         rlMoreapp.setOnClickListener(this);
         txtLogout.setOnClickListener(this);
+        if (Comman.CommanUserDetail != null)
+        {
+            txtLogout.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            txtLogout.setVisibility(View.GONE);
+        }
         return  root;
     }
     @Override
@@ -147,8 +156,15 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 Ratting_Dialog(getActivity());
                 break;
             case  R.id.rlEditProfile:
-                Intent i = new Intent(getActivity(), Profile_Activity.class);
-                startActivity(i);
+                if (Comman.CommanUserDetail != null){
+                    Intent i = new Intent(getActivity(), Profile_Activity.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(i);
+                }
                 break;
             case R.id.rlInviteFriend:
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
