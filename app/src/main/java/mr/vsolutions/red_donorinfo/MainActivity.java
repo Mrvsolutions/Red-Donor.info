@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,10 +66,6 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistner);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).commit();
-        Glide.with(this)
-                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
-                .apply(new RequestOptions().centerCrop())
-                .into(imgtoolprofilephoto);
         SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
         String usrdata  = sharedpreferences.getString(Comman.strCommanuserdetai, "");
         if (!usrdata.isEmpty())
@@ -76,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
             Gson gson = new Gson();
             UserDetail obj = gson.fromJson(usrdata, UserDetail.class);
             Comman.CommanUserDetail = obj;
+            Glide.with(this)
+                    .load(Comman.CommanUserDetail.getDonorProfilePic())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .apply(new RequestOptions().centerCrop())
+                    .error(R.drawable.ic_person_placeholder)
+                    .into(imgtoolprofilephoto);
             UserDeviceRegisterCall(Comman.CommanToken,Comman.CommanUserDetail.getDonorId());
         }
 
@@ -89,8 +93,15 @@ public class MainActivity extends AppCompatActivity {
         imgtoolprofilephoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Profile_Activity.class);
-                startActivity(i);
+                if (!usrdata.isEmpty()) {
+                    Intent i = new Intent(getApplicationContext(), Profile_Activity.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
             }
         });
     }
@@ -107,9 +118,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_chate:
                         SelectedFragment = new MessageFragment();
                         break;
-                    case R.id.nav_notifications:
-                        SelectedFragment = new NotificationFragment();
-                        break;
+//                    case R.id.nav_notifications:
+//                        SelectedFragment = new NotificationFragment();
+//                        break;
                     case R.id.nav_setting:
                         SelectedFragment = new SettingsFragment();
                         break;
@@ -141,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 // Log and toast
                 // String msg = token);
                 Log.d(TAG, "Token: - "+token);
-                Toast.makeText(MainActivity.this, "Token: - "+token, Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(MainActivity.this, "Token: - "+token, Toast.LENGTH_SHORT).show();
             }
         });
     }

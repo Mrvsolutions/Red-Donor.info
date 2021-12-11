@@ -37,7 +37,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
     TextView title;
 
     private RecyclerView ChatelistRecycler;
-    String donor_id,Recieved_ID;
+    String donor_id,Recieved_ID,RecieverProfilepic;
     DonorDataMain.Donordata RecieverData;
     private static final String TAG = Chat_Screen_Activity.class.getSimpleName();
     @Override
@@ -60,6 +60,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
         rltoolbar.setVisibility(View.VISIBLE);
         donor_id = Comman.CommanUserDetail.getDonorId();
         Recieved_ID = getIntent().getStringExtra("RecieverId");
+        RecieverProfilepic = getIntent().getStringExtra("RecieverProfilepic");
 
         imgback.setOnClickListener(this);
         imgsend.setOnClickListener(this);
@@ -145,7 +146,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
     }
     private void SetAdapterData(List<Msgdata> lstchat) {
         try {
-            RecyclerView.Adapter indicatorAdapter = new RecyclerViewChateAdapter(lstchat, Recieved_ID,this);
+            RecyclerView.Adapter indicatorAdapter = new RecyclerViewChateAdapter(lstchat, Recieved_ID,RecieverProfilepic,this);
             ChatelistRecycler.setLayoutManager(new GridLayoutManager(this,1, RecyclerView.VERTICAL,false));
             ChatelistRecycler.setAdapter(indicatorAdapter);
             ChatelistRecycler.scrollToPosition(lstchat.size()-1);

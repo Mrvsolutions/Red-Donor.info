@@ -25,12 +25,21 @@ public class Msgdonor {
     @SerializedName("donor_blood_group")
     @Expose
     private String donorBloodGroup;
+    @SerializedName("msg_text")
+    @Expose
+    private String Msg_text;
+    @SerializedName("msg_date")
+    @Expose
+    private String Msg_date;
+
+    @SerializedName("msg_time")
+    @Expose
+    private String Msg_time;
 
     public Msgdonor() {
     }
 
-    public Msgdonor(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup) {
-        super();
+    public Msgdonor(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String msg_text, String msg_date, String msg_time) {
         this.donorId = donorId;
         this.donorName = donorName;
         this.donorCity = donorCity;
@@ -38,6 +47,9 @@ public class Msgdonor {
         this.donorProfilePic = donorProfilePic;
         this.donorAge = donorAge;
         this.donorBloodGroup = donorBloodGroup;
+        this.Msg_text = msg_text;
+        this.Msg_date = msg_date;
+        this.Msg_time = msg_time;
     }
 
     public String getDonorId() {
@@ -94,5 +106,29 @@ public class Msgdonor {
 
     public void setDonorBloodGroup(String donorBloodGroup) {
         this.donorBloodGroup = donorBloodGroup;
+    }
+
+    public String getMsg_text() {
+        return Msg_text;
+    }
+
+    public void setMsg_text(String msg_text) {
+        Msg_text = msg_text;
+    }
+
+    public String getMsg_date() {
+        return Msg_date;
+    }
+
+    public void setMsg_date(String msg_date) {
+        Msg_date = msg_date;
+    }
+
+    public String getMsg_time() {
+        return Msg_time;
+    }
+
+    public void setMsg_time(String msg_time) {
+        Msg_time = msg_time;
     }
 }

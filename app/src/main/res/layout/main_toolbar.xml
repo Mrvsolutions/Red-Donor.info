@@ -43,6 +43,7 @@
             <ImageView
                 android:id="@+id/imgtoolprofilephoto"
                 android:layout_width="match_parent"
+                android:background="@drawable/ic_person_placeholder"
                 android:layout_height="match_parent"/>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>

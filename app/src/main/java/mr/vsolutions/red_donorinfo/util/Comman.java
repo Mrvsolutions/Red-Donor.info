@@ -1,5 +1,16 @@
 package mr.vsolutions.red_donorinfo.util;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
+import android.util.Log;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import mr.vsolutions.red_donorinfo.model.UserDetail;
 
 public class Comman {
@@ -10,4 +21,32 @@ public class Comman {
     public static String strCommanuserdetai = "LoginCompleted";
     public static UserDetail CommanUserDetail = null;
     public static String CommanToken = "";
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
+    public static boolean checkAndRequestPermissions(Activity context) {
+        try {
+            int WExtstorePermission = ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int cameraPermission = ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.CAMERA);
+            List<String> listPermissionsNeeded = new ArrayList<>();
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.CAMERA);
+            }
+            if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded
+                        .add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
+            if (!listPermissionsNeeded.isEmpty()) {
+                ActivityCompat.requestPermissions(context, listPermissionsNeeded
+                                .toArray(new String[listPermissionsNeeded.size()]),
+                        REQUEST_ID_MULTIPLE_PERMISSIONS);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e("Comman", "checkAndRequestPermissions"+ex.toString());
+        }
+        return true;
+    }
 }

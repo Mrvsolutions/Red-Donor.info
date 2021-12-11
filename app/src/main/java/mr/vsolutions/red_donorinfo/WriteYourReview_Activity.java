@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
     RatingBar ratbar;
     EditText edtyourexperiance,edtheadline;
     Button btn_Submit;
-    String reviewHeadline, reviewExperiance;
+    String reviewHeadline, reviewExperiance,Donor_Id;
     ProgressDialog mProgressDialog;
     private static final String TAG = WriteYourReview_Activity.class.getSimpleName();
     @Override
@@ -74,14 +75,15 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setProgress(10);
         mProgressDialog.setMax(100);
-        if (Comman.CommanUserDetail != null)
-        {
-            txtname.setText(Comman.CommanUserDetail.getDonorName());
-            txtage.setText("Age: "+Comman.CommanUserDetail.getDonorAge());
-            txtaddress.setText("Address: "+Comman.CommanUserDetail.getDonorAddress());
-        }
+        Donor_Id = getIntent().getStringExtra("Donor_Id");
+        txtname.setText(getIntent().getStringExtra("Donor_Name"));
+        txtage.setText("Age: "+getIntent().getStringExtra("Donor_Age"));
+        txtaddress.setText("Address: "+getIntent().getStringExtra("Donor_address"));
+
         Glide.with(this)
-                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
+                .load(R.drawable.ic_person_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
                 .into(imgprofilephoto);
         imgback.setOnClickListener(this);
@@ -119,7 +121,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                    Call<DefaultResponse> call = apiService.SendDonorReviewCall(Comman.CommanUserDetail.getDonorId(),Comman.CommanUserDetail.getDonorName(),rating,reviewHeadline,reviewExperiance);
+                    Call<DefaultResponse> call = apiService.SendDonorReviewCall(Donor_Id,Comman.CommanUserDetail.getDonorName(),rating,reviewHeadline,reviewExperiance);
                     call.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

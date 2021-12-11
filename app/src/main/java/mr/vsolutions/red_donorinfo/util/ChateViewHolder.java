@@ -13,13 +13,13 @@ import mr.vsolutions.red_donorinfo.R;
 
 public class ChateViewHolder extends RecyclerView.ViewHolder{
 
-    public ImageView imgprofilephoto;
+    public ImageView imgreciverprofilephoto;
     public TextView txtday,txtleftmessage,txttimeleft,txtrightmessage,txttimeright;
     public RelativeLayout rllefview,rlrightview;
 
     public ChateViewHolder(@NonNull View itemView) {
         super(itemView);
-        imgprofilephoto = itemView.findViewById(R.id.imgprofilephoto);
+        imgreciverprofilephoto = itemView.findViewById(R.id.imgprofilephoto);
         txtday = itemView.findViewById(R.id.txtday);
         rllefview = itemView.findViewById(R.id.rllefview);
         rlrightview = itemView.findViewById(R.id.rlrightview);

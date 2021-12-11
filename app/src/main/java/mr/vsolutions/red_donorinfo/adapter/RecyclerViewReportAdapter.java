@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.taufiqrahman.reviewratings.BarLabels;
 
@@ -71,9 +72,13 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
 //            reportViewHolder.txtaddress.setText(item.getDonorAddress());
             reportViewHolder.txtratecount.setText(item.getrRating());
             reportViewHolder.txtdetail.setText(item.getReviewContent());
+            reportViewHolder.txtratecount.setText(item.getrRating());
             Glide.with(pictureContx)
                     .load("https://i.picsum.photos/id/870/200/300.jpg?blur=2&grayscale&hmac=ujRymp644uYVjdKJM7kyLDSsrqNSMVRPnGU99cKl6Vs")
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
                     .apply(new RequestOptions().centerCrop())
+                    .error(R.drawable.ic_person_placeholder)
                     .into(reportViewHolder.imgprofilephoto);
         }
         else if (holder instanceof ReportHeaderViewHolder)

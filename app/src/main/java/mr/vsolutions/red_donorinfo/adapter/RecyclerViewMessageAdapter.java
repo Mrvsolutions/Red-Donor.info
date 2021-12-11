@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.io.Serializable;
@@ -44,13 +45,16 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
     public void onBindViewHolder(@NonNull MessageViewHolder holder, final int position) {
         final Msgdonor msgdonor = _msgDonorList.get(position);
 
-        String donorphoto = "https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI";
+        String donorphoto = "";
         if (!msgdonor.getDonorProfilePic().isEmpty())
         {
             donorphoto = msgdonor.getDonorProfilePic();
         }
         Glide.with(activity)
                 .load(donorphoto)
+                .error(R.drawable.ic_person_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
                 .into(holder.imgprofilephoto);
 
@@ -60,11 +64,14 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
                 Intent i = new Intent(activity.getApplicationContext(), Chat_Screen_Activity.class);
                 i.putExtra("RecieverId",msgdonor.getDonorId());
                 i.putExtra("RecieverName",msgdonor.getDonorName());
+                i.putExtra("RecieverProfilepic",msgdonor.getDonorProfilePic());
                 activity.startActivity(i);
             }
         });
         holder.imgmedia.setVisibility(View.GONE);
         holder.txtname.setText(msgdonor.getDonorName());
+        holder.txtdesription.setText(msgdonor.getMsg_text());
+        holder.txttime.setText(msgdonor.getMsg_time());
 //        if (position == 1 || position == 4 || position == 8)
 //        {
 //            holder.imgmedia.setVisibility(View.VISIBLE);

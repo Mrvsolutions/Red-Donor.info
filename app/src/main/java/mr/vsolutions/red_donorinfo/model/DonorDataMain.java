@@ -92,8 +92,15 @@ public class DonorDataMain {
         @SerializedName("frgt_pswd_rqst")
         @Expose
         private String frgtPswdRqst;
+        @SerializedName("distance")
+        @Expose
+        private String distance;
+        @SerializedName("avg_rating")
+        @Expose
+        private String avgRating;
 
-        public Donordata(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst, String token) {
+        public Donordata(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst,  String distance, String avgRating) {
+            super();
             this.donorId = donorId;
             this.donorName = donorName;
             this.donorCity = donorCity;
@@ -109,12 +116,9 @@ public class DonorDataMain {
             this.signupDatetime = signupDatetime;
             this.signupVerificationcode = signupVerificationcode;
             this.frgtPswdRqst = frgtPswdRqst;
-            this.token = token;
+            this.distance = distance;
+            this.avgRating = avgRating;
         }
-
-        @SerializedName("token")
-        @Expose
-        private String token;
 
         public String getDonorId() {
             return donorId;
@@ -236,12 +240,21 @@ public class DonorDataMain {
             this.frgtPswdRqst = frgtPswdRqst;
         }
 
-        public String getToken() {
-            return token;
+        public String getDistance() {
+            return distance;
         }
 
-        public void setToken(String token) {
-            this.token = token;
+        public void setDistance(String distance) {
+            this.distance = distance;
         }
+
+        public String getAvgRating() {
+            return avgRating;
+        }
+
+        public void setAvgRating(String avgRating) {
+            this.avgRating = avgRating;
+        }
+
     }
 }

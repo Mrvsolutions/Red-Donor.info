@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -59,11 +60,19 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
 //
 //        holder.positionController.setBackgroundColor(pic.getSelected() ? Color.parseColor("#00000000") : Color.parseColor("#8c000000"));
         holder.txtname.setText(donordata.getDonorName());
-        holder.txtage.setText(donordata.getDonorAge());
+        holder.txtage.setText("Age: "+donordata.getDonorAge());
         holder.txtaddress.setText(donordata.getDonorAddress());
+        if (!donordata.getAvgRating().isEmpty())
+        {
+            holder.txtavgrating.setText(donordata.getAvgRating());
+        }
+        else
+        {
+            holder.txtavgrating.setText("0");
+        }
         Glide.with(pictureContx)
-                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
-//              .placeholder(R.drawable.ic_profile).dontAnimate()
+                .load(donordata.getDonorProfilePic())
+                .error(R.drawable.ic_person_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
@@ -85,12 +94,16 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
                     Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
                     pictureContx.startActivity(i);
                 }
-                else
+                else if (!donordata.getDonorId().equals(Comman.CommanUserDetail.getDonorId()))
                 {
                     Intent i = new Intent(pictureContx.getApplicationContext(), Chat_Screen_Activity.class);
                     i.putExtra("RecieverId",donordata.getDonorId());
                     i.putExtra("RecieverName",donordata.getDonorName());
                     pictureContx.startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(pictureContx,"This is your profile. please select other one",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -98,6 +111,11 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(pictureContx.getApplicationContext(), WriteYourReview_Activity.class);
+                i.putExtra("Donor_Id",donordata.getDonorId());
+                i.putExtra("Donor_Name",donordata.getDonorName());
+                i.putExtra("Donor_address",donordata.getDonorAddress());
+                i.putExtra("Donor_userimage",donordata.getDonorProfilePic());
+                i.putExtra("Donor_Age",donordata.getDonorAge());
                 pictureContx.startActivity(i);
             }
         });

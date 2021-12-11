@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
@@ -43,7 +44,9 @@ public class RecyclerViewnotificationAdapter extends RecyclerView.Adapter<Notifi
     public void onBindViewHolder(@NonNull NotificationViewHolder holder, final int position) {
 
         Glide.with(pictureContx)
-                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
+                .load(R.drawable.ic_person_placeholder)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
                 .into(holder.imgprofilephoto);
 
