@@ -1,10 +1,20 @@
 package mr.vsolutions.red_donorinfo;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -15,35 +25,58 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
+import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
+import mr.vsolutions.red_donorinfo.model.UploadImageResponse;
 import mr.vsolutions.red_donorinfo.model.UserDetail;
 import mr.vsolutions.red_donorinfo.util.Comman;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestPermissions;
 
 public class Profile_Activity extends AppCompatActivity implements View.OnClickListener {
 
-    public ImageView imgtoolprofilephoto,imgback,imgprofilephoto;
+    public ImageView imgtoolprofilephoto, imgback, imgprofilephoto;
     public LinearLayout llcustomesearchview;
-    RelativeLayout rltoolbarhome,rltoolbar;
-    TextView title,txtuser_name,txtEdit;
-    EditText edtCity,edtEmail,edtmobileno,edtAge,edtBloodGroup,edtAddress;
+    RelativeLayout rltoolbarhome, rltoolbar,rlmainimageview;
+    TextView title, txtuser_name, txtEdit;
+    EditText edtCity, edtEmail, edtmobileno, edtAge, edtBloodGroup, edtAddress;
     String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress;
     ProgressDialog mProgressDialog;
     private static final String TAG = Profile_Activity.class.getSimpleName();
     CardView cardviewCamera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,8 +86,9 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
+        mProgressDialog.setCancelable(false);
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mProgressDialog.setProgress(10);
+        mProgressDialog.setProgress(0);
         mProgressDialog.setMax(100);
 
         imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
@@ -72,18 +106,14 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         edtAddress = findViewById(R.id.edtAddress);
         txtuser_name = findViewById(R.id.txtuser_name);
         cardviewCamera = findViewById(R.id.cardviewCamera);
+        rlmainimageview = findViewById(R.id.rlmainimageview);
         txtEdit = findViewById(R.id.txtEdit);
         txtEdit.setVisibility(View.VISIBLE);
         title.setText(getString(R.string.str_Profile));
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
-        Glide.with(this)
-                .load("https://i.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI")
-                .apply(new RequestOptions().centerCrop())
-                .into(imgprofilephoto);
-        if (Comman.CommanUserDetail != null)
-        {
+        if (Comman.CommanUserDetail != null) {
             txtEdit.setVisibility(View.VISIBLE);
             txtuser_name.setText(Comman.CommanUserDetail.getDonorName());
             edtAge.setText(Comman.CommanUserDetail.getDonorAge());
@@ -92,6 +122,14 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtCity.setText(Comman.CommanUserDetail.getDonorCity());
             edtmobileno.setText(Comman.CommanUserDetail.getDonorMobileno());
             edtEmail.setText(Comman.CommanUserDetail.getDonorEmail());
+            if (!Comman.CommanUserDetail.getDonorProfilePic().isEmpty()) {
+             Glide.with(this)
+                .load(Comman.CommanUserDetail.getDonorProfilePic())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .apply(new RequestOptions().centerCrop())
+                .into(imgprofilephoto);
+            }
         }
         txtEdit.setOnClickListener(this);
         imgback.setOnClickListener(this);
@@ -100,23 +138,24 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void SetEnableDisable() {
-        if (txtEdit.getText().equals(getString(R.string.str_Edit)))
-        {
+        if (txtEdit.getText().equals(getString(R.string.str_Edit))) {
             edtAge.setEnabled(false);
             edtEmail.setEnabled(false);
             edtAddress.setEnabled(false);
             edtCity.setEnabled(false);
             edtmobileno.setEnabled(false);
             edtBloodGroup.setEnabled(false);
-        }
-        else
-        {
+            rlmainimageview.setEnabled(false);
+            cardviewCamera.setEnabled(false);
+        } else {
             edtAge.setEnabled(true);
             edtEmail.setEnabled(true);
             edtAddress.setEnabled(true);
             edtCity.setEnabled(true);
             edtmobileno.setEnabled(true);
             edtBloodGroup.setEnabled(true);
+            rlmainimageview.setEnabled(true);
+            cardviewCamera.setEnabled(true);
         }
     }
 
@@ -127,7 +166,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-       super.onBackPressed();
+        super.onBackPressed();
         finish();
     }
 
@@ -137,9 +176,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             case R.id.txtEdit:
                 if (txtEdit.getText().equals(getString(R.string.str_Edit))) {
                     txtEdit.setText(getString(R.string.str_Save));
-                }
-                else
-                {
+                } else {
                     EditUser();
                     txtEdit.setText(getString(R.string.str_Edit));
                 }
@@ -149,10 +186,14 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.cardviewCamera:
-                finish();
+                if(checkAndRequestPermissions(this))
+                {
+                    chooseImage(this);
+                }
                 break;
         }
     }
+
     private void EditUser() {
         username = txtuser_name.getText().toString().trim();
         usermobile = edtmobileno.getText().toString().trim();
@@ -167,7 +208,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             }
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(),username, userCity,useremail,usermobile, userAge, userBloodGroup, userAddress);
+            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(), username, userCity, useremail, usermobile, userAge, userBloodGroup, userAddress);
             call.enqueue(new Callback<LoginUser>() {
                 @Override
                 public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
@@ -179,7 +220,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                     } else {
                         Toast.makeText(Profile_Activity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                    if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                    if ((mProgressDialog != null)) {
                         mProgressDialog.dismiss();
                     }
                 }
@@ -189,16 +230,198 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                     // Log error here since request failed
                     Toast.makeText(Profile_Activity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.toString());
-                    if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                    if ((mProgressDialog != null)) {
                         mProgressDialog.dismiss();
                     }
                 }
             });
         } catch (Exception ex) {
-            if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+            if ((mProgressDialog != null)) {
                 mProgressDialog.dismiss();
             }
             Log.e(TAG, ex.toString());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_CANCELED) {
+            switch (requestCode) {
+                case 0:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        imgprofilephoto.setImageBitmap(selectedImage);
+                        Uri tempUri = getImageUri(getApplicationContext(), selectedImage);
+                        String strimageurl = getRealPathFromURI(tempUri,this);
+                        File finalFile = new File(getRealPathFromURI(tempUri,this));
+                        try {
+                            InputStream is = getContentResolver().openInputStream(tempUri);
+                            UploadImageToServer(strimageurl);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                case 1:
+                    if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage = data.getData();
+
+                        imgprofilephoto.setImageURI(selectedImage);
+                        String strimageurl = getRealPathFromURI(selectedImage,this);
+                        File finalFile = new File(strimageurl);
+                        try {
+                            InputStream is = getContentResolver().openInputStream(selectedImage);
+                            UploadImageToServer(strimageurl);
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
+    public String getRealPathFromURI(Uri contentURI, Activity context) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        @SuppressWarnings("deprecation")
+        Cursor cursor = context.managedQuery(contentURI, projection, null,
+                null, null);
+        if (cursor == null)
+            return null;
+        int column_index = cursor
+                .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        if (cursor.moveToFirst()) {
+            String s = cursor.getString(column_index);
+            // cursor.close();
+            return s;
+        }
+        // cursor.close();
+        return null;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case Comman.REQUEST_ID_MULTIPLE_PERMISSIONS:
+                if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT)
+                            .show();
+                } else if (ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getApplicationContext(),
+                            "FlagUp Requires Access to Your Storage.",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    chooseImage(this);
+                }
+                break;
+        }
+    }
+
+    private void chooseImage(Activity context) {
+        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit"}; // create a menuOption Array
+        // create a dialog for showing the optionsMenu
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // set the items in builder
+        builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (optionsMenu[i].equals("Take Photo")) {
+                    // Open the camera and get the photo
+                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(takePicture, 0);
+                } else if (optionsMenu[i].equals("Choose from Gallery")) {
+                    // choose from  external storage
+//                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+//                    pickPhoto.setType("image/*");
+                    Intent pickPhoto=new Intent(Intent.ACTION_PICK);
+                    // Sets the type as image/*. This ensures only components of type image are selected
+                    pickPhoto.setType("image/*");
+                    startActivityForResult(pickPhoto, 1);
+                } else if (optionsMenu[i].equals("Exit")) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+    public byte[] getBytes(InputStream is) throws IOException {
+        ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
+
+        int buffSize = 1024;
+        byte[] buff = new byte[buffSize];
+
+        int len = 0;
+        while ((len = is.read(buff)) != -1) {
+            byteBuff.write(buff, 0, len);
+        }
+
+        return byteBuff.toByteArray();
+    }
+
+    private void UploadImageToServer(String selectedImageURL){//String selectedImageURL,String SelectedImageFilename) {
+        try {
+            try {
+                if (!mProgressDialog.isShowing()) {
+                    mProgressDialog.show();
+                }
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+                //Create a file object using file path
+                File file = new File(selectedImageURL);
+                // Parsing any Media type file
+                RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-file"), file);
+
+                MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("donor_profile_pic", file.getName(), requestBody);
+              //  RequestBody requestDonorID = RequestBody.create(MediaType.parse("text/plain"), Comman.CommanUserDetail.getDonorId());
+                Call<UploadImageResponse> call = apiService.UploadUserImage(Comman.CommanUserDetail.getDonorId(),fileToUpload);
+                call.enqueue(new Callback<UploadImageResponse>() {
+                    @Override
+                    public void onResponse(Call<UploadImageResponse> call, Response<UploadImageResponse> response) {
+                        UploadImageResponse Response = response.body();
+                        if (Response.getSuccess() == 1) {
+                            Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
+                            String Pimage = Response.getPimage();
+                             Glide.with(getApplicationContext())
+                                        .load(Pimage)
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .apply(new RequestOptions().centerCrop())
+                                        .into(imgprofilephoto);
+                        } else {
+                            Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UploadImageResponse> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, t.toString());
+                        if (mProgressDialog != null) {
+                            mProgressDialog.dismiss();
+                        }
+                    }
+                });
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "GetMsgDataList - " + ex.toString());
         }
     }
 }

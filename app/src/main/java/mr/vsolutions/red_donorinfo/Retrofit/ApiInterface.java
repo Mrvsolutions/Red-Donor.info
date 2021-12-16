@@ -6,10 +6,16 @@ import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.DonorReviewSummary;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
 import mr.vsolutions.red_donorinfo.model.MsgdataMain;
+import mr.vsolutions.red_donorinfo.model.UploadImageResponse;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiInterface {
     @FormUrlEncoded
@@ -123,5 +129,12 @@ public interface ApiInterface {
     @POST("signoutDonor.php")
     Call<DefaultResponse> SignoutAsync(
             @Field("donor_id") String Donor_id
+    );
+
+    @Multipart
+    @POST("uploadDonorProfileImg.php")
+    Call<UploadImageResponse> UploadUserImage(
+            @Part("donor_id") String Donor_id,
+            @Part MultipartBody.Part image
     );
 }

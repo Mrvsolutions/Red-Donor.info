@@ -1,15 +1,14 @@
 package mr.vsolutions.red_donorinfo.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-public class DefaultResponse {
+public class UploadImageResponse {
     private int success;
     private String message;
+    private String pimgUrl;
 
-    public DefaultResponse(int success, String message) {
+    public UploadImageResponse(int success, String message,String pimgUrl) {
         this.success = success;
         this.message = message;
+        this.pimgUrl = pimgUrl;
     }
 
     public int getSuccess() {
@@ -18,5 +17,8 @@ public class DefaultResponse {
 
     public String getMessage() {
         return message;
+    }
+    public String getPimage() {
+        return pimgUrl;
     }
 }
