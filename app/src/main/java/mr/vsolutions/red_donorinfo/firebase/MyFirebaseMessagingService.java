@@ -45,7 +45,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         remoteViews.setTextViewText(R.id.title, title);
         remoteViews.setTextViewText(R.id.message, message);
         remoteViews.setImageViewResource(R.id.icon,
-                R.mipmap.ic_launcher_round);
+                R.mipmap.ic_launcher);
         return remoteViews;
     }
     public void showNotification(String title,
@@ -69,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 = new NotificationCompat
                 .Builder(getApplicationContext(),
                 channel_id)
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
                 .setVibrate(new long[]{1000, 1000, 1000,
                         1000, 1000})
@@ -89,7 +89,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         else {
             builder = builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.mipmap.ic_launcher_round);
+                    .setSmallIcon(R.mipmap.ic_launcher);
         }
         // Create an object of NotificationManager class to
         // notify the

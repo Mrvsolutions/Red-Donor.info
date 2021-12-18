@@ -313,6 +313,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case Comman.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+              //  GetCurrentLocation(location);
+                GetNearestDonorList();
+                break;
+        }
+    }
+
+    @Override
     public void onLocationChanged(@NonNull Location location) {
         GetCurrentLocation(location);
 
