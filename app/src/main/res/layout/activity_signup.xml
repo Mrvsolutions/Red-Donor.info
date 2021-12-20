@@ -85,10 +85,46 @@
                 android:inputType="textEmailAddress"
                 android:theme="@style/MyEditText"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gender"
+            android:layout_marginTop="@dimen/size_35dp"
+            android:textSize="@dimen/text_size_20sp"
+            android:textColor="@color/Colorsearchtext"
+            android:fontFamily="@font/proximanovacond_regular"
+            android:padding="@dimen/size_5dp"/>
+        <RadioGroup
+            android:id="@+id/radioGender"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/size_20dp"
+            android:layout_below="@+id/textView4">
+            <RadioButton
+                android:id="@+id/male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:paddingLeft="@dimen/size_5dp"
+                android:fontFamily="@font/proximanovacond_regular"
+                android:textSize="@dimen/text_size_14sp"/>
+            <RadioButton
+                android:id="@+id/female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:paddingLeft="@dimen/size_5dp"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/proximanovacond_regular"
+                android:textSize="@dimen/text_size_14sp"/>
+        </RadioGroup>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_35dp"
+            android:layout_marginTop="@dimen/size_10dp"
             app:hintTextAppearance="@style/MyHintStyle">
 
             <EditText

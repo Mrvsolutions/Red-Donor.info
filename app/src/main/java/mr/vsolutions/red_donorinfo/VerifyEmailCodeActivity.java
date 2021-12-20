@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
     Button btn_verify;
     EditText edtotp;
     String useremail,userOtp;
+    TextView txtuseremail;
     private static final String TAG = VerifyEmailCodeActivity.class.getSimpleName();
     ProgressDialog mProgressDialog;
     @Override
@@ -41,6 +43,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
         edtotp = findViewById(R.id.edtotp);
         btn_verify = findViewById(R.id.btn_verify);
         imgback = findViewById(R.id.imgback);
+        txtuseremail= findViewById(R.id.txtuseremail);
         useremail = getIntent().getStringExtra("useremail");
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
@@ -48,7 +51,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setProgress(10);
         mProgressDialog.setMax(100);
-
+        txtuseremail.setText(useremail+getString(R.string.str_VerifyEmailText));
         btn_verify.setOnClickListener(this);
         imgback.setOnClickListener(this);
     }
@@ -86,7 +89,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
                                 SharedPreferences.Editor editor = sharedpreferences.edit();
                                 editor.putString(Comman.VerificationOtpComplete,getString(R.string.str_OtpValidated));
                                 editor.apply();
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else {

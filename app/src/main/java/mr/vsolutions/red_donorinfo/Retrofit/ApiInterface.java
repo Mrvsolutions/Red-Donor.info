@@ -24,6 +24,7 @@ public interface ApiInterface {
             @Field("donor_name") String Donor_Name,
             @Field("donor_city") String Donor_City,
             @Field("donor_email") String Donor_Email,
+            @Field("donor_gender") String Donor_Gender,
             @Field("donor_pswd") String Donor_Pswd,
             @Field("donor_mobileno") String Donor_Mobile,
             @Field("donor_latitude") String Donor_latt,
@@ -64,6 +65,7 @@ public interface ApiInterface {
             @Field("donor_name") String Donor_Name,
             @Field("donor_city") String Donor_City,
             @Field("donor_email") String Donor_Email,
+            @Field("donor_gender") String Donor_Gender,
             @Field("donor_mobileno") String Donor_Mobile,
             @Field("donor_age") String Donor_age,
             @Field("donor_blood_group") String Donor_blood_group,
@@ -113,6 +115,7 @@ public interface ApiInterface {
             @Field("donor_blood_group") String Donor_blood_group,
             @Field("donor_min_age") String Donor_min_age,
             @Field("donor_max_age") String Donor_max_age,
+            @Field("donor_gender") String Donor_Gender,
             @Field("donor_distance") String Donor_distance,
             @Field("user_clat") String User_clat,
             @Field("user_clong") String User_clong

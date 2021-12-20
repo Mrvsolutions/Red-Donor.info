@@ -1,14 +1,11 @@
 package mr.vsolutions.red_donorinfo;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -21,18 +18,18 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.util.Comman;
-import mr.vsolutions.red_donorinfo.util.GPSTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,8 +42,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     CheckBox cb_agree;
     LocationManager locationManager;
     double latitude = Comman.Lantitude, longitude = Comman.Longitude;
-    String username, usermobile, useremail, UserPass, UserConfpass, UserCity ;
+    String username, usermobile, useremail, UserPass, UserConfpass, UserCity , UserGender = "";
     ProgressDialog mProgressDialog;
+    RadioGroup radioGender;
     private static final String TAG = SignupActivity.class.getSimpleName();
 
     @Override
@@ -65,6 +63,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtpassword =  findViewById(R.id.edtpassword);
         edtconfpassword = findViewById(R.id.edtconfpassword);
         edtcity=  findViewById(R.id.edtcity);
+        radioGender = findViewById(R.id.radioGender);
+        radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                int selectedId = radioGender.getCheckedRadioButtonId();
+                //find the radiobutton by retunend id
+                RadioButton radioGenderButton = findViewById(checkedId);
+                UserGender = radioGenderButton.getText().toString();
+            }
+        });
 //        GPSTracker gpsTracker = new GPSTracker(this);
 //        if (gpsTracker.getIsGPSTrackingEnabled())
 //        {
@@ -123,6 +131,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         UserPass = edtpassword.getText().toString().trim();
         UserConfpass = edtconfpassword.getText().toString().trim();
         UserCity = edtcity.getText().toString().trim();
+
         if (ValidateUser()) {
             try {
                 if (!mProgressDialog.isShowing()) {
@@ -130,7 +139,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude));
+                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserGender ,UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude));
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -198,6 +207,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(useremail).matches()) {
                 edtEmail.setError(getString(R.string.str_validemail));
+                edtEmail.requestFocus();
+                return false;
+            }
+            if (UserGender.isEmpty()) {
+                Toast.makeText(this,"Please select gender",Toast.LENGTH_LONG).show();
                 edtEmail.requestFocus();
                 return false;
             }

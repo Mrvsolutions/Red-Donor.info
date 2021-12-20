@@ -118,6 +118,44 @@
                         android:src="@drawable/ic_outline_keyboard_arrow_down_24"
                         android:layout_centerVertical="true"/>
                 </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Gender"
+                    android:textSize="@dimen/text_size_14sp"
+                    android:textColor="@color/Colorsearchtext"
+                    android:fontFamily="@font/proximanovacond_regular"
+                    android:layout_marginTop="@dimen/size_20dp"
+                    android:layout_marginLeft="@dimen/size_20dp"
+                    android:padding="@dimen/size_5dp"/>
+                <RadioGroup
+                    android:id="@+id/radioGender"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/size_20dp"
+                    android:layout_marginRight="@dimen/size_20dp"
+                    android:layout_below="@+id/textView4">
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Male"
+                        android:paddingLeft="@dimen/size_5dp"
+                        android:fontFamily="@font/proximanovacond_regular"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:id="@+id/male" />
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Female"
+                        android:paddingLeft="@dimen/size_5dp"
+                        android:layout_marginLeft="10dp"
+                        android:fontFamily="@font/proximanovacond_regular"
+                        android:textSize="@dimen/text_size_14sp"
+                        android:id="@+id/female"/>
+                </RadioGroup>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

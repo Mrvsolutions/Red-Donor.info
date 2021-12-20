@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Red-Donor.info</string>
+    <string name="app_name">ReDDonor</string>
     <string name="title_activity_login">LoginActivity</string>>
     <string name="google_maps_key">AIzaSyAeTEB1vcCKs99N0xzN0Za7ygGJxra-fzI</string>
     <string name="str_dialogTitle">How Would You \nRate Our App Experience?</string>
@@ -81,4 +81,5 @@
     <string name="str_msgSendSuccess">Please Enter message</string>
     <string name="str_ApplyFilter">Apply Filter</string>
     <string name="str_FilterValidation">Please select filter like : BloodGroup, Minimum Age, Maximum Age, Distance.</string>
+    <string name="str_VerifyEmailText"> is not your email?</string>
 </resources>

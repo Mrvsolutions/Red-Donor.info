@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     public ImageView imgtoolprofilephoto, imgback;
     public LinearLayout llcustomesearchview;
     RelativeLayout rltoolbarhome, rltoolbar;
+    RadioGroup radioGender;
     TextView title;
     String strLat =  String.valueOf(Comman.Lantitude), strLong = String.valueOf(Comman.Longitude);
     Spinner spinnerbloodGroup, spinnerminage, spinnermaxage, spinnerdistance;
@@ -40,7 +43,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     String[] MinAge = new String[33];
     String[] MaxAge = new String[33];
     String[] distance = {"1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"};
-    String strbloodgroup, strminage, strmaxage, strdistance;
+    String strbloodgroup, strminage, strmaxage, strdistance, strgender;
     Button btn_Apply;
 
     @Override
@@ -59,6 +62,16 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         spinnermaxage = findViewById(R.id.spinnermaxage);
         spinnerdistance = findViewById(R.id.spinnerdistance);
         btn_Apply = findViewById(R.id.btn_Apply);
+        radioGender = findViewById(R.id.radioGender);
+        radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                int selectedId = radioGender.getCheckedRadioButtonId();
+                //find the radiobutton by retunend id
+                RadioButton radioGenderButton = findViewById(checkedId);
+                strgender = radioGenderButton.getText().toString();
+            }
+        });
         title.setText(getString(R.string.str_filter));
         for (int i = 0; i < 33; i++) {
             int val = 18 + i;
@@ -111,6 +124,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         strminage = "";
         strmaxage = "";
         strdistance = "";
+        strgender = "";
     }
 
     @Override
@@ -141,7 +155,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         try {
             try {
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<DonorDataMain> call = apiService.GetFilterDataAsync(strbloodgroup, strminage, strmaxage, strdistance, strLat, strLong);
+                Call<DonorDataMain> call = apiService.GetFilterDataAsync(strbloodgroup, strminage, strmaxage, strgender,strdistance, strLat, strLong);
                 call.enqueue(new Callback<DonorDataMain>() {
                     @Override
                     public void onResponse(Call<DonorDataMain> call, Response<DonorDataMain> response) {

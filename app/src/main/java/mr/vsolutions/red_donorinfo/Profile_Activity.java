@@ -16,12 +16,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +40,7 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,22 +74,24 @@ import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestPermissions
 
 public class Profile_Activity extends AppCompatActivity implements View.OnClickListener {
 
+    String[] bloodgroup = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     public ImageView imgtoolprofilephoto, imgback, imgprofilephoto;
     public LinearLayout llcustomesearchview;
-    RelativeLayout rltoolbarhome, rltoolbar,rlmainimageview;
+    RelativeLayout rltoolbarhome, rltoolbar, rlmainimageview;
     TextView title, txtuser_name, txtEdit;
     EditText edtCity, edtEmail, edtmobileno, edtAge, edtBloodGroup, edtAddress;
-    String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress;
+    String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress, UserGender;
     ProgressDialog mProgressDialog;
     private static final String TAG = Profile_Activity.class.getSimpleName();
     CardView cardviewCamera;
+    RadioGroup radioGender;
+    RadioButton male,female;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_layout);
         getSupportActionBar().hide();
-
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
@@ -113,6 +122,18 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
+        radioGender = findViewById(R.id.radioGender);
+        male= findViewById(R.id.male);
+        female= findViewById(R.id.female);
+        radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                int selectedId = radioGender.getCheckedRadioButtonId();
+                //find the radiobutton by retunend id
+                RadioButton radioGenderButton = findViewById(checkedId);
+                UserGender = radioGenderButton.getText().toString();
+            }
+        });
         if (Comman.CommanUserDetail != null) {
             txtEdit.setVisibility(View.VISIBLE);
             txtuser_name.setText(Comman.CommanUserDetail.getDonorName());
@@ -123,17 +144,18 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtmobileno.setText(Comman.CommanUserDetail.getDonorMobileno());
             edtEmail.setText(Comman.CommanUserDetail.getDonorEmail());
             if (!Comman.CommanUserDetail.getDonorProfilePic().isEmpty()) {
-             Glide.with(this)
-                .load(Comman.CommanUserDetail.getDonorProfilePic())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .apply(new RequestOptions().centerCrop())
-                .into(imgprofilephoto);
+                Glide.with(this)
+                        .load(Comman.CommanUserDetail.getDonorProfilePic())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .apply(new RequestOptions().centerCrop())
+                        .into(imgprofilephoto);
             }
         }
         txtEdit.setOnClickListener(this);
         imgback.setOnClickListener(this);
         cardviewCamera.setOnClickListener(this);
+       // edtBloodGroup.setOnClickListener(this);
         SetEnableDisable();
     }
 
@@ -147,6 +169,9 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtBloodGroup.setEnabled(false);
             rlmainimageview.setEnabled(false);
             cardviewCamera.setEnabled(false);
+            radioGender.setClickable(false);
+            male.setEnabled(false);
+            female.setEnabled(false);
         } else {
             edtAge.setEnabled(true);
             edtEmail.setEnabled(true);
@@ -156,6 +181,9 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtBloodGroup.setEnabled(true);
             rlmainimageview.setEnabled(true);
             cardviewCamera.setEnabled(true);
+            radioGender.setClickable(true);
+            male.setEnabled(true);
+            female.setEnabled(true);
         }
     }
 
@@ -186,10 +214,31 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
             case R.id.cardviewCamera:
-                if(checkAndRequestPermissions(this))
-                {
+                if (checkAndRequestPermissions(this)) {
                     chooseImage(this);
                 }
+                break;
+            case R.id.edtBloodGroup:
+                LayoutInflater layoutInflater =
+                        (LayoutInflater)getBaseContext()
+                                .getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = layoutInflater.inflate(R.layout.layout_popup, null);
+                final PopupWindow popupWindow = new PopupWindow(
+                        popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+               // Button btnDismiss = (Button)popupView.findViewById(R.id.dismiss);
+                Spinner popupSpinner = (Spinner)popupView.findViewById(R.id.popupspinner);
+                ArrayAdapter<String> adapter =
+                        new ArrayAdapter<String>(this,
+                                android.R.layout.simple_spinner_item, bloodgroup);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                popupSpinner.setAdapter(adapter);
+
+//                btnDismiss.setOnClickListener(new Button.OnClickListener(){
+//                    @Override
+//                    public void onClick(View v) {
+//                        popupWindow.dismiss();
+//                    }});
+//                popupWindow.showAsDropDowntxtinputeditbg, 50, -30);
                 break;
         }
     }
@@ -208,7 +257,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             }
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(), username, userCity, useremail, usermobile, userAge, userBloodGroup, userAddress);
+            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(), username, userCity, useremail, UserGender, usermobile, userAge, userBloodGroup, userAddress);
             call.enqueue(new Callback<LoginUser>() {
                 @Override
                 public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
@@ -253,8 +302,8 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         imgprofilephoto.setImageBitmap(selectedImage);
                         Uri tempUri = getImageUri(getApplicationContext(), selectedImage);
-                        String strimageurl = getRealPathFromURI(tempUri,this);
-                        File finalFile = new File(getRealPathFromURI(tempUri,this));
+                        String strimageurl = getRealPathFromURI(tempUri, this);
+                        File finalFile = new File(getRealPathFromURI(tempUri, this));
                         try {
                             InputStream is = getContentResolver().openInputStream(tempUri);
                             UploadImageToServer(strimageurl);
@@ -270,7 +319,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                         Uri selectedImage = data.getData();
 
                         imgprofilephoto.setImageURI(selectedImage);
-                        String strimageurl = getRealPathFromURI(selectedImage,this);
+                        String strimageurl = getRealPathFromURI(selectedImage, this);
                         File finalFile = new File(strimageurl);
                         try {
                             InputStream is = getContentResolver().openInputStream(selectedImage);
@@ -285,6 +334,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             }
         }
     }
+
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -293,7 +343,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
     }
 
     public String getRealPathFromURI(Uri contentURI, Activity context) {
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = {MediaStore.Images.Media.DATA};
         @SuppressWarnings("deprecation")
         Cursor cursor = context.managedQuery(contentURI, projection, null,
                 null, null);
@@ -309,6 +359,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         // cursor.close();
         return null;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -346,7 +397,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                     // choose from  external storage
 //                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 //                    pickPhoto.setType("image/*");
-                    Intent pickPhoto=new Intent(Intent.ACTION_PICK);
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK);
                     // Sets the type as image/*. This ensures only components of type image are selected
                     pickPhoto.setType("image/*");
                     startActivityForResult(pickPhoto, 1);
@@ -357,6 +408,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         });
         builder.show();
     }
+
     public byte[] getBytes(InputStream is) throws IOException {
         ByteArrayOutputStream byteBuff = new ByteArrayOutputStream();
 
@@ -371,7 +423,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         return byteBuff.toByteArray();
     }
 
-    private void UploadImageToServer(String selectedImageURL){//String selectedImageURL,String SelectedImageFilename) {
+    private void UploadImageToServer(String selectedImageURL) {//String selectedImageURL,String SelectedImageFilename) {
         try {
             try {
                 if (!mProgressDialog.isShowing()) {
@@ -384,8 +436,8 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                 RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-file"), file);
 
                 MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("donor_profile_pic", file.getName(), requestBody);
-              //  RequestBody requestDonorID = RequestBody.create(MediaType.parse("text/plain"), Comman.CommanUserDetail.getDonorId());
-                Call<UploadImageResponse> call = apiService.UploadUserImage(Comman.CommanUserDetail.getDonorId(),fileToUpload);
+                //  RequestBody requestDonorID = RequestBody.create(MediaType.parse("text/plain"), Comman.CommanUserDetail.getDonorId());
+                Call<UploadImageResponse> call = apiService.UploadUserImage(Comman.CommanUserDetail.getDonorId(), fileToUpload);
                 call.enqueue(new Callback<UploadImageResponse>() {
                     @Override
                     public void onResponse(Call<UploadImageResponse> call, Response<UploadImageResponse> response) {
@@ -393,12 +445,12 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                         if (Response.getSuccess() == 1) {
                             Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
                             String Pimage = Response.getPimage();
-                             Glide.with(getApplicationContext())
-                                        .load(Pimage)
-                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true)
-                                        .apply(new RequestOptions().centerCrop())
-                                        .into(imgprofilephoto);
+                            Glide.with(getApplicationContext())
+                                    .load(Pimage)
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true)
+                                    .apply(new RequestOptions().centerCrop())
+                                    .into(imgprofilephoto);
                         } else {
                             Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
                         }
