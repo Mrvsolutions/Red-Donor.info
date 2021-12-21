@@ -82,4 +82,11 @@
     <string name="str_ApplyFilter">Apply Filter</string>
     <string name="str_FilterValidation">Please select filter like : BloodGroup, Minimum Age, Maximum Age, Distance.</string>
     <string name="str_VerifyEmailText"> is not your email?</string>
+    <string name="str_selectBloodGroup">Select Your Blood Group</string>
+    <string name="str_selectBloodGroupError">Please select your blood group</string>
+    <string name="str_selectgendererror">Please select gender</string>
+    <string name="str_selectdateofbirth">Please select Date of birth</string>
+    <string name="prompt_Dateofbirth">Date of birth</string>
+    <string name="str_enteraddress">Please enter address</string>
+    <string name="str_enteraddressValid">Please enter valid address</string>
 </resources>

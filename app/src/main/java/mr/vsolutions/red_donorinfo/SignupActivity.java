@@ -1,5 +1,6 @@
 package mr.vsolutions.red_donorinfo;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.SpannableString;
@@ -14,17 +16,25 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
@@ -34,19 +44,23 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private static final int REQUEST_LOCATION = 1;
     ImageView imgback;
     Button btn_Signup;
-    EditText edtName, edtmobileno, edtEmail, edtpassword, edtconfpassword,edtcity;
+    EditText edtName, edtmobileno, edtEmail, edtpassword, edtconfpassword,edtcity, edtuserdateofbirth, edtuseraddress;
     CheckBox cb_agree;
     LocationManager locationManager;
     double latitude = Comman.Lantitude, longitude = Comman.Longitude;
-    String username, usermobile, useremail, UserPass, UserConfpass, UserCity , UserGender = "";
+    String username, usermobile, useremail, UserPass, UserConfpass, UserCity , UserGender = "",UserBirthDate,UserAddress;
     ProgressDialog mProgressDialog;
     RadioGroup radioGender;
     private static final String TAG = SignupActivity.class.getSimpleName();
-
+    String[] bloodgroup = {"Select Your Blood Group","A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
+    String[] MaxAge = new String[33];
+    Spinner spinneruserbloodGroup, spinneruserage;
+    String strbloodgroup, strage;
+    private int mYear,mMonth,mDay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +77,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtpassword =  findViewById(R.id.edtpassword);
         edtconfpassword = findViewById(R.id.edtconfpassword);
         edtcity=  findViewById(R.id.edtcity);
+        spinneruserbloodGroup = findViewById(R.id.spinneruserbloodGroup);
+        spinneruserage = findViewById(R.id.spinneruserage);
         radioGender = findViewById(R.id.radioGender);
+        edtuserdateofbirth = findViewById(R.id.edtuserdateofbirth);
+        edtuseraddress = findViewById(R.id.edtuseraddress);
+        strbloodgroup = getString(R.string.str_selectBloodGroup);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            edtuserdateofbirth.setShowSoftInputOnFocus(false);
+        }
+        for (int i = 0; i < 33; i++) {
+            int val = 18 + i;
+            MaxAge[i] = String.valueOf(val);
+        }
         radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -73,6 +99,35 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 UserGender = radioGenderButton.getText().toString();
             }
         });
+        ArrayAdapter adapterbldg = new ArrayAdapter(
+                this,
+                R.layout.spinner_row_layout, R.id.txtvalue,
+                bloodgroup);
+        spinneruserbloodGroup.setAdapter(adapterbldg);
+        spinneruserbloodGroup.setOnItemSelectedListener(this);
+        ArrayAdapter adapterage = new ArrayAdapter(
+                this,
+                R.layout.spinner_row_layout, R.id.txtvalue,
+                MaxAge);
+        spinneruserage.setAdapter(adapterage);
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                // myCalendar.add(Calendar.DATE, 0);
+                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                edtuserdateofbirth.setText(sdf.format(myCalendar.getTime()));
+            }
+
+
+        };
 //        GPSTracker gpsTracker = new GPSTracker(this);
 //        if (gpsTracker.getIsGPSTrackingEnabled())
 //        {
@@ -113,6 +168,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         });
 
         btn_Signup.setOnClickListener(this);
+        edtuserdateofbirth.setOnClickListener(this);
     }
 
     @Override
@@ -121,7 +177,46 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_Signup:
                 CreateUser();
                 break;
+            case R.id.edtuserdateofbirth:
+                OpenDatepicker();
+                break;
+
         }
+    }
+
+    private void OpenDatepicker() {
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        Calendar ca = Calendar.getInstance();
+        ca.add(Calendar.YEAR, -18);
+        // Launch Date Picker Dialog
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        // Display Selected date in textbox
+
+                        if (year < mYear)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        if (monthOfYear < mMonth && year == mYear)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        if (dayOfMonth < mDay && year == mYear && monthOfYear == mMonth)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        edtuserdateofbirth.setText(dayOfMonth + "-"
+                                + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMaxDate(c.getTimeInMillis());
+        dpd.show();
+
     }
 
     private void CreateUser() {
@@ -131,7 +226,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         UserPass = edtpassword.getText().toString().trim();
         UserConfpass = edtconfpassword.getText().toString().trim();
         UserCity = edtcity.getText().toString().trim();
-
+        UserBirthDate= edtuserdateofbirth.getText().toString().trim();
+        UserAddress = edtuseraddress.getText().toString().trim();
         if (ValidateUser()) {
             try {
                 if (!mProgressDialog.isShowing()) {
@@ -139,7 +235,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, UserGender ,UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude));
+                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, strage, UserGender, strbloodgroup, UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude),UserAddress,UserBirthDate);
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
@@ -211,13 +307,33 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 return false;
             }
             if (UserGender.isEmpty()) {
-                Toast.makeText(this,"Please select gender",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,getString(R.string.str_selectgendererror),Toast.LENGTH_LONG).show();
                 edtEmail.requestFocus();
+                return false;
+            }
+            if (strbloodgroup.equals(getString(R.string.str_selectBloodGroup))) {
+                Toast.makeText(this,getString(R.string.str_selectBloodGroupError),Toast.LENGTH_LONG).show();
+                edtEmail.requestFocus();
+                return false;
+            }
+            if (UserBirthDate.isEmpty()) {
+                Toast.makeText(this,getString(R.string.str_selectdateofbirth),Toast.LENGTH_LONG).show();
+                edtuserdateofbirth.requestFocus();
                 return false;
             }
             if (UserCity.isEmpty()) {
                 edtcity.setError(getString(R.string.str_entrCity));
                 edtcity.requestFocus();
+                return false;
+            }
+            if (UserAddress.isEmpty()) {
+                edtuseraddress.setError(getString(R.string.str_enteraddress));
+                edtuseraddress.requestFocus();
+                return false;
+            }
+            if (!UserAddress.isEmpty() && UserAddress.length() > 10) {
+                edtuseraddress.setError(getString(R.string.str_enteraddressValid));
+                edtuseraddress.requestFocus();
                 return false;
             }
             if (UserPass.isEmpty()) {
@@ -266,6 +382,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         } catch (Exception ex) {
             Log.e(TAG, ex.toString());
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            Spinner spinblg = (Spinner) parent;
+            if (spinblg.getId() == R.id.spinneruserbloodGroup) {
+                strbloodgroup = bloodgroup[position];
+            } else if (spinblg.getId() == R.id.spinneruserage) {
+                strage = MaxAge[position];
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 //    private void getLocation() {

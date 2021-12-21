@@ -24,11 +24,15 @@ public interface ApiInterface {
             @Field("donor_name") String Donor_Name,
             @Field("donor_city") String Donor_City,
             @Field("donor_email") String Donor_Email,
+            @Field("donor_age") String Donor_Age,
             @Field("donor_gender") String Donor_Gender,
+            @Field("donor_blood_group") String Donor_Blood_Group,
             @Field("donor_pswd") String Donor_Pswd,
             @Field("donor_mobileno") String Donor_Mobile,
             @Field("donor_latitude") String Donor_latt,
-            @Field("donor_longitude") String Donor_longt
+            @Field("donor_longitude") String Donor_longt,
+            @Field("donor_address") String donor_Address,
+            @Field("donor_dob") String Donor_Dob
     );
 
     @FormUrlEncoded
