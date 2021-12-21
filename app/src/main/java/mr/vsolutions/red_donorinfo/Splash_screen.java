@@ -1,11 +1,17 @@
 package mr.vsolutions.red_donorinfo;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import mr.vsolutions.red_donorinfo.util.Comman;
 
 public class Splash_screen extends AppCompatActivity {
 
@@ -52,6 +58,21 @@ public class Splash_screen extends AppCompatActivity {
 //        });
        startGame();
       //  showInterstitial();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Comman.checkAndRequestLocationPermissions(this)) {
+             //   buildGoogleApiClient();
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+               // mMap.setMyLocationEnabled(true);
+            }
+        } else {
+          //  buildGoogleApiClient();
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+           // mMap.setMyLocationEnabled(true);
+        }
 
     }
     private void startGame() {

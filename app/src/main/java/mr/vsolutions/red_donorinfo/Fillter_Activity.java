@@ -136,7 +136,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
             } else if (spinblg.getId() == R.id.spinnerminage) {
                 strminage = MinAge[position];
             } else if (spinblg.getId() == R.id.spinnermaxage) {
-                strmaxage = MinAge[position];
+                strmaxage = MaxAge[position];
             } else if (spinblg.getId() == R.id.spinnerdistance) {
                 strdistance = distance[position];
             }
