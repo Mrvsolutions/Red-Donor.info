@@ -73,7 +73,9 @@ public interface ApiInterface {
             @Field("donor_mobileno") String Donor_Mobile,
             @Field("donor_age") String Donor_age,
             @Field("donor_blood_group") String Donor_blood_group,
-            @Field("donor_address") String Donor_address
+            @Field("donor_address") String Donor_address,
+            @Field("donor_dob") String Donor_Dob,
+            @Field("pimgUrl") String PimgUrl
     );
 
     @FormUrlEncoded

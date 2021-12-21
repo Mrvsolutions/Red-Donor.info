@@ -3,6 +3,7 @@ package mr.vsolutions.red_donorinfo;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,15 +12,15 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,8 +32,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -40,24 +39,20 @@ import androidx.core.content.ContextCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.textfield.TextInputLayout;
+import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Locale;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
-import mr.vsolutions.red_donorinfo.model.DefaultResponse;
-import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.LoginUser;
 import mr.vsolutions.red_donorinfo.model.UploadImageResponse;
 import mr.vsolutions.red_donorinfo.model.UserDetail;
@@ -68,7 +63,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestPermissions;
 
@@ -79,14 +73,14 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
     public LinearLayout llcustomesearchview;
     RelativeLayout rltoolbarhome, rltoolbar, rlmainimageview;
     TextView title, txtuser_name, txtEdit;
-    EditText edtCity, edtEmail, edtmobileno, edtAge, edtBloodGroup, edtAddress;
-    String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress, UserGender;
+    EditText edtCity, edtEmail, edtmobileno, edtAge, edtBloodGroup, edtAddress,edtuserdateofbirth;
+    String username, usermobile, useremail, userAge, userBloodGroup, userCity, userAddress, UserGender, UserBirthDate,UserPimage;
     ProgressDialog mProgressDialog;
     private static final String TAG = Profile_Activity.class.getSimpleName();
     CardView cardviewCamera;
     RadioGroup radioGender;
     RadioButton male,female;
-
+    private int mYear,mMonth,mDay;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +119,10 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         radioGender = findViewById(R.id.radioGender);
         male= findViewById(R.id.male);
         female= findViewById(R.id.female);
+        edtuserdateofbirth = findViewById(R.id.edtuserdateofbirth);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            edtuserdateofbirth.setShowSoftInputOnFocus(false);
+        }
         radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -134,6 +132,22 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                 UserGender = radioGenderButton.getText().toString();
             }
         });
+        final Calendar myCalendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
+        {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                myCalendar.set(Calendar.YEAR, year);
+                myCalendar.set(Calendar.MONTH, monthOfYear);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                // myCalendar.add(Calendar.DATE, 0);
+                String myFormat = "yyyy-MM-dd"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                edtuserdateofbirth.setText(sdf.format(myCalendar.getTime()));
+            }
+        };
         if (Comman.CommanUserDetail != null) {
             txtEdit.setVisibility(View.VISIBLE);
             txtuser_name.setText(Comman.CommanUserDetail.getDonorName());
@@ -155,7 +169,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         txtEdit.setOnClickListener(this);
         imgback.setOnClickListener(this);
         cardviewCamera.setOnClickListener(this);
-       // edtBloodGroup.setOnClickListener(this);
+        edtuserdateofbirth.setOnClickListener(this);
         SetEnableDisable();
     }
 
@@ -240,9 +254,45 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
 //                    }});
 //                popupWindow.showAsDropDowntxtinputeditbg, 50, -30);
                 break;
+            case R.id.edtuserdateofbirth:
+                OpenDatepicker();
+                break;
         }
     }
+    private void OpenDatepicker() {
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        Calendar ca = Calendar.getInstance();
+        ca.add(Calendar.YEAR, -18);
+        // Launch Date Picker Dialog
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
 
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        // Display Selected date in textbox
+
+                        if (year < mYear)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        if (monthOfYear < mMonth && year == mYear)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        if (dayOfMonth < mDay && year == mYear && monthOfYear == mMonth)
+                            view.updateDate(mYear,mMonth,mDay);
+
+                        edtuserdateofbirth.setText(dayOfMonth + "-"
+                                + (monthOfYear + 1) + "-" + year);
+
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMaxDate(c.getTimeInMillis());
+        dpd.show();
+
+    }
     private void EditUser() {
         username = txtuser_name.getText().toString().trim();
         usermobile = edtmobileno.getText().toString().trim();
@@ -257,7 +307,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             }
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(), username, userCity, useremail, UserGender, usermobile, userAge, userBloodGroup, userAddress);
+            Call<LoginUser> call = apiService.EditUserDataCall(Comman.CommanUserDetail.getDonorId(), username, userCity, useremail, UserGender, usermobile, userAge, userBloodGroup, userAddress,UserBirthDate,UserPimage);
             call.enqueue(new Callback<LoginUser>() {
                 @Override
                 public void onResponse(Call<LoginUser> call, Response<LoginUser> response) {
@@ -265,6 +315,14 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                     if (defaultResponse.getSuccess() == 1) {
                         List<UserDetail> lstuserdetail = defaultResponse.getUserdata();
                         Comman.CommanUserDetail = lstuserdetail.get(0);
+                        SharedPreferences sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString(Comman.LoginCompleted,getString(R.string.str_LoginCompleted));
+                        Gson gson = new Gson();
+                        String json = gson.toJson(lstuserdetail.get(0));
+                        editor.putString(Comman.strCommanuserdetai,json);
+                        editor.commit();
+                        editor.apply();
                         Toast.makeText(Profile_Activity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(Profile_Activity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -444,9 +502,9 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
                         UploadImageResponse Response = response.body();
                         if (Response.getSuccess() == 1) {
                             Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
-                            String Pimage = Response.getPimage();
+                            UserPimage = Response.getPimage();
                             Glide.with(getApplicationContext())
-                                    .load(Pimage)
+                                    .load(UserPimage)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
                                     .apply(new RequestOptions().centerCrop())
