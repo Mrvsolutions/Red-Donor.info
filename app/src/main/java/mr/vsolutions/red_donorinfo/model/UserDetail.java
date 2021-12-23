@@ -53,9 +53,17 @@ public class UserDetail {
     @SerializedName("token")
     @Expose
     private String token;
+    @SerializedName("donor_gender")
+    @Expose
+    private String donorGender;
+    @SerializedName("distance")
+    @Expose
+    private String distance;
+    @SerializedName("donor_dob")
+    @Expose
+    private String donorDob;
 
-    public UserDetail(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst, String token) {
-        super();
+    public UserDetail(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst, String token, String donorGender, String distance, String donorDob) {
         this.donorId = donorId;
         this.donorName = donorName;
         this.donorCity = donorCity;
@@ -72,6 +80,9 @@ public class UserDetail {
         this.signupVerificationcode = signupVerificationcode;
         this.frgtPswdRqst = frgtPswdRqst;
         this.token = token;
+        this.donorGender = donorGender;
+        this.distance = distance;
+        this.donorDob = donorDob;
     }
 
     public String getDonorId() {
@@ -202,4 +213,27 @@ public class UserDetail {
         this.token = token;
     }
 
+    public String getDonorGender() {
+        return donorGender;
+    }
+
+    public void setDonorGender(String donorGender) {
+        this.donorGender = donorGender;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getDonorDob() {
+        return donorDob;
+    }
+
+    public void setDonorDob(String donorDob) {
+        this.donorDob = donorDob;
+    }
 }

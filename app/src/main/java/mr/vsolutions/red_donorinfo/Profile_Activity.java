@@ -157,7 +157,22 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtCity.setText(Comman.CommanUserDetail.getDonorCity());
             edtmobileno.setText(Comman.CommanUserDetail.getDonorMobileno());
             edtEmail.setText(Comman.CommanUserDetail.getDonorEmail());
+            edtuserdateofbirth.setText(Comman.CommanUserDetail.getDonorDob());
+            if (!Comman.CommanUserDetail.getDonorGender().isEmpty())
+            {
+                if (Comman.CommanUserDetail.getDonorGender().equals("Male"))
+                {
+                    male.setChecked(true);
+                    female.setChecked(false);
+                }
+                else
+                {
+                    male.setChecked(false);
+                    female.setChecked(true);
+                }
+            }
             if (!Comman.CommanUserDetail.getDonorProfilePic().isEmpty()) {
+                UserPimage = Comman.CommanUserDetail.getDonorProfilePic();
                 Glide.with(this)
                         .load(Comman.CommanUserDetail.getDonorProfilePic())
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -186,6 +201,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             radioGender.setClickable(false);
             male.setEnabled(false);
             female.setEnabled(false);
+            edtuserdateofbirth.setEnabled(false);
         } else {
             edtAge.setEnabled(true);
             edtEmail.setEnabled(true);
@@ -198,6 +214,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             radioGender.setClickable(true);
             male.setEnabled(true);
             female.setEnabled(true);
+            edtuserdateofbirth.setEnabled(true);
         }
     }
 
@@ -301,6 +318,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
         userBloodGroup = edtBloodGroup.getText().toString().trim();
         userCity = edtCity.getText().toString().trim();
         userAddress = edtAddress.getText().toString().trim();
+        UserBirthDate = edtuserdateofbirth.getText().toString().trim();
         try {
             if (!mProgressDialog.isShowing()) {
                 mProgressDialog.show();
