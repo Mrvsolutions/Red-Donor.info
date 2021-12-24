@@ -146,4 +146,12 @@ public interface ApiInterface {
             @Part("donor_id") String Donor_id,
             @Part MultipartBody.Part image
     );
+    @FormUrlEncoded
+    @POST("donorComplaintAdd.php")
+    Call<DefaultResponse> SendDonorComplainAsync(
+            @Field("cmpt_by_donor_id") String Cmpt_by_donor_id,
+            @Field("cmpt_of_donor_id") String Cmpt_of_donor_id,
+            @Field("cmpt_title") String Cmpt_title,
+            @Field("cmpt_desc") String Cmpt_desc
+    );
 }

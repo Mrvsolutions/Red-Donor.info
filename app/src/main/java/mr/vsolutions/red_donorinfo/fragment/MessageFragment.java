@@ -108,7 +108,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                     public void onResponse(Call<AllMessage> call, Response<AllMessage> response) {
                         AllMessage LoginResponse = response.body();
                         if (LoginResponse.getSuccess() == 1) {
-                            Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Msgdonor> lstuserdetail = LoginResponse.getMsgdonorlist();
                             SetAdapterData(lstuserdetail);
                         } else {

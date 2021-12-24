@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mr.vsolutions.red_donorinfo.Chat_Screen_Activity;
+import mr.vsolutions.red_donorinfo.Complain_Activity;
 import mr.vsolutions.red_donorinfo.LoginActivity;
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
@@ -87,6 +88,14 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
 //                imageListerner.onImageIndicatorClicked(position);
 //            }
 //        });
+        holder.txtavgrating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
+                    i.putExtra("Donor_Id",donordata.getDonorId());
+                    pictureContx.startActivity(i);
+            }
+        });
         holder.btnchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,7 +137,7 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
                 }
                 else
                 {
-                    Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
+                    Intent i = new Intent(pictureContx.getApplicationContext(), Complain_Activity.class);
                     i.putExtra("Donor_Id",donordata.getDonorId());
                     pictureContx.startActivity(i);
                 }

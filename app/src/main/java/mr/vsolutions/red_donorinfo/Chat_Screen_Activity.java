@@ -85,7 +85,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                     public void onResponse(Call<MsgdataMain> call, Response<MsgdataMain> response) {
                         MsgdataMain MsglistResponse = response.body();
                         if (MsglistResponse.getSuccess() == 1) {
-                            Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Msgdata> lstchat = MsglistResponse.getMsgdata();
                             edtmsgtext.setText("");
                             SetAdapterData(lstchat);

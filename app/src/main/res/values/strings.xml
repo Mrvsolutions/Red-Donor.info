@@ -89,4 +89,10 @@
     <string name="prompt_Dateofbirth">Date of birth</string>
     <string name="str_enteraddress">Please enter address</string>
     <string name="str_enteraddressValid">Please enter valid address</string>
+    <string name="str_title">Title</string>
+    <string name="str_Description">Description</string>
+    <string name="str_Send">Send</string>
+    <string name="str_Cancel">Cancel</string>
+    <string name="str_errortitle">Please enter title</string>
+    <string name="str_errorDescription">Please enter Description</string>
 </resources>
