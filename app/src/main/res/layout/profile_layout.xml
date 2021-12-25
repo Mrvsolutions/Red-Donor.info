@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/size_20dp"
+                android:visibility="gone"
                 android:fontFamily="@font/proximanovacond_regular"
                 android:padding="3dp"
                 android:textColor="@color/colorbottomtext"
@@ -170,6 +171,7 @@
                 android:layout_marginTop="@dimen/size_15dp"
                 android:layout_marginLeft="@dimen/size_10dp"
                 android:layout_marginRight="@dimen/size_10dp"
+                android:visibility="gone"
                 app:hintTextAppearance="@style/MyHintStyle">
 
                 <EditText
@@ -218,6 +220,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:layout_marginTop="@dimen/size_15dp"
                 android:layout_marginLeft="@dimen/size_10dp"
                 android:layout_marginRight="@dimen/size_10dp"

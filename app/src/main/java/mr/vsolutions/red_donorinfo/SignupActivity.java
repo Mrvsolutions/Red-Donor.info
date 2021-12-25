@@ -11,8 +11,10 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.Editable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.TextWatcher;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -55,10 +57,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     String username, usermobile, useremail, UserPass, UserConfpass, UserCity , UserGender = "",UserBirthDate,UserAddress;
     ProgressDialog mProgressDialog;
     RadioGroup radioGender;
+    TextView txtselectedage;
     private static final String TAG = SignupActivity.class.getSimpleName();
     String[] bloodgroup = {"Select Your Blood Group","A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
-    String[] MaxAge = new String[33];
-    Spinner spinneruserbloodGroup, spinneruserage;
+   // String[] MaxAge = new String[33];
+    Spinner spinneruserbloodGroup;
     String strbloodgroup, strage;
     private int mYear,mMonth,mDay;
     @Override
@@ -77,8 +80,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtpassword =  findViewById(R.id.edtpassword);
         edtconfpassword = findViewById(R.id.edtconfpassword);
         edtcity=  findViewById(R.id.edtcity);
+        txtselectedage =  findViewById(R.id.txtselectedage);
         spinneruserbloodGroup = findViewById(R.id.spinneruserbloodGroup);
-        spinneruserage = findViewById(R.id.spinneruserage);
+      //  spinneruserage = findViewById(R.id.spinneruserage);
         radioGender = findViewById(R.id.radioGender);
         edtuserdateofbirth = findViewById(R.id.edtuserdateofbirth);
         edtuseraddress = findViewById(R.id.edtuseraddress);
@@ -86,10 +90,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             edtuserdateofbirth.setShowSoftInputOnFocus(false);
         }
-        for (int i = 0; i < 33; i++) {
-            int val = 18 + i;
-            MaxAge[i] = String.valueOf(val);
-        }
+//        for (int i = 0; i < 33; i++) {
+//            int val = 18 + i;
+//            MaxAge[i] = String.valueOf(val);
+//        }
         radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -105,11 +109,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 bloodgroup);
         spinneruserbloodGroup.setAdapter(adapterbldg);
         spinneruserbloodGroup.setOnItemSelectedListener(this);
-        ArrayAdapter adapterage = new ArrayAdapter(
-                this,
-                R.layout.spinner_row_layout, R.id.txtvalue,
-                MaxAge);
-        spinneruserage.setAdapter(adapterage);
+//        ArrayAdapter adapterage = new ArrayAdapter(
+//                this,
+//                R.layout.spinner_row_layout, R.id.txtvalue,
+//                MaxAge);
+//        spinneruserage.setAdapter(adapterage);
+//        spinneruserage.setOnItemSelectedListener(this);
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
         {
@@ -124,6 +129,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 String myFormat = "yyyy-MM-dd"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
                 edtuserdateofbirth.setText(sdf.format(myCalendar.getTime()));
+
             }
 
 
@@ -171,6 +177,23 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtuserdateofbirth.setOnClickListener(this);
     }
 
+    private String getAge(int year, int month, int day){
+        Calendar dob = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+
+        dob.set(year, month, day);
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+        String ageS = ageInt.toString();
+
+        return ageS;
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -186,9 +209,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     private void OpenDatepicker() {
         final Calendar c = Calendar.getInstance();
+        if (edtuserdateofbirth.getText().toString().isEmpty()) {
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
+        }
         Calendar ca = Calendar.getInstance();
         ca.add(Calendar.YEAR, -18);
         // Launch Date Picker Dialog
@@ -211,7 +236,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                         edtuserdateofbirth.setText(dayOfMonth + "-"
                                 + (monthOfYear + 1) + "-" + year);
-
+                        mMonth = monthOfYear + 1;
+                        mDay = dayOfMonth;
+                        mYear = year;
                     }
                 }, mYear, mMonth, mDay);
         dpd.getDatePicker().setMaxDate(c.getTimeInMillis());
@@ -245,6 +272,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                             SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(Comman.signupComplete,getString(R.string.str_signupComplete));
+                            editor.putString(Comman.VerificationOtpComplete,getString(R.string.str_OtpNotValidated));
                             editor.apply();
                             Intent intent = new Intent(getApplicationContext(),VerifyEmailCodeActivity.class);
                             intent.putExtra("useremail", useremail);
@@ -331,11 +359,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 edtuseraddress.requestFocus();
                 return false;
             }
-            if (!UserAddress.isEmpty() && UserAddress.length() > 10) {
-                edtuseraddress.setError(getString(R.string.str_enteraddressValid));
-                edtuseraddress.requestFocus();
-                return false;
-            }
             if (UserPass.isEmpty()) {
                 edtpassword.setError(getString(R.string.str_enterPass));
                 edtpassword.requestFocus();
@@ -355,6 +378,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             {
                 Toast.makeText(this, getString(R.string.str_agreetems), Toast.LENGTH_LONG).show();
                 return false;
+            }
+            if (!UserBirthDate.isEmpty())
+            {
+                strage = getAge(mYear,mMonth,mDay);
+                int age = Integer.parseInt(strage);
+                if (age < 18 || age > 65)
+                {
+                    Toast.makeText(getApplicationContext(),"allowed aged between 18 and 65.",Toast.LENGTH_LONG).show();
+                    return false;
+                }
             }
 
         } catch (Exception ex) {
@@ -390,9 +423,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             Spinner spinblg = (Spinner) parent;
             if (spinblg.getId() == R.id.spinneruserbloodGroup) {
                 strbloodgroup = bloodgroup[position];
-            } else if (spinblg.getId() == R.id.spinneruserage) {
-                strage = MaxAge[position];
             }
+//            else if (spinblg.getId() == R.id.spinneruserage) {
+//                strage = MaxAge[position];
+//            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

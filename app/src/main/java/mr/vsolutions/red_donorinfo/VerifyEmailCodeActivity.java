@@ -30,7 +30,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
     Button btn_verify;
     EditText edtotp;
     String useremail,userOtp;
-    TextView txtuseremail;
+    TextView txtuseremail,txtresendCode;
     private static final String TAG = VerifyEmailCodeActivity.class.getSimpleName();
     ProgressDialog mProgressDialog;
     @Override
@@ -44,6 +44,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
         btn_verify = findViewById(R.id.btn_verify);
         imgback = findViewById(R.id.imgback);
         txtuseremail= findViewById(R.id.txtuseremail);
+        txtresendCode= findViewById(R.id.txtresendCode);
         useremail = getIntent().getStringExtra("useremail");
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
@@ -54,6 +55,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
         txtuseremail.setText(useremail+getString(R.string.str_VerifyEmailText));
         btn_verify.setOnClickListener(this);
         imgback.setOnClickListener(this);
+        txtresendCode.setOnClickListener(this);
     }
 
     @Override
@@ -64,6 +66,9 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
                 break;
             case R.id.imgback:
                 finish();
+                break;
+            case R.id.txtresendCode:
+                ResendVerificationcodeCall();
                 break;
         }
     }
@@ -134,5 +139,52 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
             Log.e(TAG, "ValidateOTP :- "+ex.toString());
         }
         return true;
+    }
+    private void ResendVerificationcodeCall() {
+        try {
+            if (ValidateOTP()) {
+                try {
+                    if (!mProgressDialog.isShowing()) {
+                        mProgressDialog.show();
+                    }
+                    ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+                    Call<DefaultResponse> call = apiService.ResendVerifictionCodeCall(useremail);
+                    call.enqueue(new Callback<DefaultResponse>() {
+                        @Override
+                        public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
+                            DefaultResponse defaultResponse = response.body();
+                            if (defaultResponse.getSuccess() == 1) {
+                                Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                            if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                                mProgressDialog.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<DefaultResponse> call, Throwable t) {
+                            // Log error here since request failed
+                            Toast.makeText(VerifyEmailCodeActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, t.toString());
+                            if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                                mProgressDialog.dismiss();
+                            }
+                        }
+                    });
+                } catch (Exception ex) {
+                    if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
+                    Log.e(TAG, ex.toString());
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG,"ResendVerificationcodeCall - "+ ex.toString());
+        }
     }
 }

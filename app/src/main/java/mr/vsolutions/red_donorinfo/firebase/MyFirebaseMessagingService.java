@@ -71,8 +71,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 channel_id)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(true)
-                .setVibrate(new long[]{1000, 1000, 1000,
-                        1000, 1000})
                 .setOnlyAlertOnce(true)
                 .setContentIntent(pendingIntent);
 

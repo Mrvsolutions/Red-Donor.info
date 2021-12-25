@@ -67,11 +67,12 @@
     <string name="str_verifyEmail">Verify your email</string>
     <string name="str_verifyEmaildescr">We sent OTP code to your email</string>
     <string name="str_enterYourCode">Enter your code</string>
-    <string name="str_changeithere">Change it here</string>
+    <string name="str_resendCode">Resend Code</string>
     <string name="str_verify">Verify</string>
     <string name="str_enterotp">Please enter OTP</string>
     <string name="str_signupComplete">signupComplete</string>
     <string name="str_OtpValidated">OTPValidated</string>
+    <string name="str_OtpNotValidated">OTPNotValidated</string>
     <string name="str_LoginCompleted">LoginCompleted</string>
     <string name="str_Edit">Edit</string>
     <string name="str_Save">Save</string>
@@ -81,7 +82,7 @@
     <string name="str_msgSendSuccess">Please Enter message</string>
     <string name="str_ApplyFilter">Apply Filter</string>
     <string name="str_FilterValidation">Please select filter like : BloodGroup, Minimum Age, Maximum Age, Distance.</string>
-    <string name="str_VerifyEmailText"> is not your email?</string>
+    <string name="str_VerifyEmailText"> is your email.</string>
     <string name="str_selectBloodGroup">Select Your Blood Group</string>
     <string name="str_selectBloodGroupError">Please select your blood group</string>
     <string name="str_selectgendererror">Please select gender</string>

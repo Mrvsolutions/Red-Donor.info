@@ -56,6 +56,11 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
+    @POST("ResendVerifyCode.php")
+    Call<DefaultResponse> ResendVerifictionCodeCall(
+            @Field("donor_email") String Donor_email
+    );
+    @FormUrlEncoded
     @POST("donorList.php")
     Call<DonorDataMain> GetDonorList(
             @Field("user_clat") String User_clat,

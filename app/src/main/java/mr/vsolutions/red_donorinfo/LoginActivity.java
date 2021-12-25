@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     String useremail,  UserPass ;
     private static final String TAG = LoginActivity.class.getSimpleName();
     ProgressDialog mProgressDialog;
+    String VerificationOtpComplete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +70,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         SpannableString str2= new SpannableString(" Sign Up");
         str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
         builder.append(str2);
-
+        SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+        VerificationOtpComplete  = sharedpreferences.getString(Comman.VerificationOtpComplete, "");
         txtnewuser.setText( builder, TextView.BufferType.SPANNABLE);
 
         txtnewuser.setOnClickListener(this);
@@ -127,9 +129,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 editor.putString(Comman.strCommanuserdetai,json);
                                 editor.commit();
                                 editor.apply();
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                startActivity(intent);
-                                finish();
+                                if (lstuserdetail.get(0).getSignupVerificationcode().equals("0") || (!VerificationOtpComplete.isEmpty() && VerificationOtpComplete.equals(getString(R.string.str_OtpValidated)))) {
+                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else
+                                {
+                                    Intent intent = new Intent(getApplicationContext(),VerifyEmailCodeActivity.class);
+                                    intent.putExtra("useremail", useremail);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else {
                                 Toast.makeText(LoginActivity.this, LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

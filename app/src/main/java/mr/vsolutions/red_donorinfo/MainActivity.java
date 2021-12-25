@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                     DefaultResponse defaultResponse = response.body();
                     if (defaultResponse.getSuccess() == 1) {
-                        Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }

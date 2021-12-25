@@ -59,19 +59,22 @@
             android:id="@+id/txtuseremail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="mrv@solutions.com is not your email?"
+            android:text="mrv@solutions.com is your email"
             android:textSize="@dimen/text_size_18sp"
             android:textColor="@color/colorbottomtext"
             android:gravity="center"
             android:layout_marginTop="@dimen/size_20dp">
         </TextView>
         <TextView
+            android:id="@+id/txtresendCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/str_changeithere"
+            android:text="@string/str_resendCode"
             android:textSize="@dimen/text_size_18sp"
-            android:textColor="@color/colortext"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/size_5dp"
             android:gravity="center"
+            android:fontFamily="@font/proxima_nova_bold"
             android:layout_marginTop="@dimen/size_20dp">
         </TextView>
         <Button
