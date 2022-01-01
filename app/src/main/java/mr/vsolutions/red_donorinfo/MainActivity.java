@@ -30,11 +30,9 @@ import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.fragment.MessageFragment;
 import mr.vsolutions.red_donorinfo.fragment.HomeFragment;
-import mr.vsolutions.red_donorinfo.fragment.NotificationFragment;
 import mr.vsolutions.red_donorinfo.fragment.SettingsFragment;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
-import mr.vsolutions.red_donorinfo.model.LoginUser;
 import mr.vsolutions.red_donorinfo.model.UserDetail;
 import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
@@ -42,7 +40,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestLocationPermissions;
-import static mr.vsolutions.red_donorinfo.util.Comman.checkAndRequestPermissions;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -166,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if(f instanceof HomeFragment)
         {
-           if (((HomeFragment) f).markerRecycler.getVisibility() == View.VISIBLE)
+           if (((HomeFragment) f).markerRecyclerhorizontal.getVisibility() == View.VISIBLE)
            {
-               ((HomeFragment) f).markerRecycler.setVisibility(View.GONE);
+               ((HomeFragment) f).markerRecyclerhorizontal.setVisibility(View.GONE);
                ((HomeFragment) f).imgremove.setVisibility(View.GONE);
                ((HomeFragment) f).rlremoveview.setVisibility(View.GONE);
            }

@@ -16,7 +16,7 @@ public class MarkerViewHolder extends RecyclerView.ViewHolder{
 
     public ImageView imgprofilephoto;
     public Button btnchat,btnRate,btnReport;
-    public TextView txtname,txtage,txtaddress,txtdetail,txtavgrating;
+    public TextView txtname,txtage,txtaddress,txtdetail,txtavgrating,txtCity;
 //    private CardView card;
 //    View positionController;
 
@@ -29,6 +29,7 @@ public class MarkerViewHolder extends RecyclerView.ViewHolder{
         txtname= itemView.findViewById(R.id.txtname);
         txtage= itemView.findViewById(R.id.txtage);
         txtaddress= itemView.findViewById(R.id.txtaddress);
+        txtCity= itemView.findViewById(R.id.txtCity);
         txtdetail= itemView.findViewById(R.id.txtdetail);
         txtavgrating = itemView.findViewById(R.id.txtavgrating);
 //        positionController = itemView.findViewById(R.id.activeImage);

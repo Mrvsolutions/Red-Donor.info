@@ -105,6 +105,14 @@
             android:text="25-Tirth Society , Anand"
             android:fontFamily="@font/proximanovacond_regular"
             android:paddingLeft="2dp"/>
+        <TextView
+            android:id="@+id/txtCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_14sp"
+            android:textColor="@color/colordescriptiontext"
+            android:fontFamily="@font/proximanovacond_regular"
+            android:paddingLeft="2dp"/>
 
         <TextView
             android:id="@+id/txtdetail"
@@ -116,7 +124,6 @@
             android:maxLines="2"
             android:ellipsize="end"
             android:lineSpacingMultiplier="1.2"
-            android:text="Praesent augue felis, ullamcorper a est in, elementum mattis eros. Aliquam erat volutpat"
             android:fontFamily="@font/proximanovacond_regular"
             android:padding="3dp"/>
     </LinearLayout>

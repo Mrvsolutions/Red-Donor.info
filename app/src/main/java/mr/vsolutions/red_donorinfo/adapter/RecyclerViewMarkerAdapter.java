@@ -62,7 +62,8 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
 //        holder.positionController.setBackgroundColor(pic.getSelected() ? Color.parseColor("#00000000") : Color.parseColor("#8c000000"));
         holder.txtname.setText(donordata.getDonorName());
         holder.txtage.setText("Age: "+donordata.getDonorAge());
-        holder.txtaddress.setText(donordata.getDonorAddress());
+        holder.txtaddress.setText("Address: "+donordata.getDonorAddress());
+        holder.txtCity.setText("City: "+donordata.getDonorCity());
         if (!donordata.getAvgRating().isEmpty())
         {
             holder.txtavgrating.setText(donordata.getAvgRating());
