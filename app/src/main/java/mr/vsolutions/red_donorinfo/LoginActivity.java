@@ -129,7 +129,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 editor.putString(Comman.strCommanuserdetai,json);
                                 editor.commit();
                                 editor.apply();
-                                if (lstuserdetail.get(0).getSignupVerificationcode().equals("0") || (!VerificationOtpComplete.isEmpty() && VerificationOtpComplete.equals(getString(R.string.str_OtpValidated)))) {
+                                if (lstuserdetail.get(0).getFrgtPswdRqst().contains("YES"))
+                                {
+                                    Intent intent = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                               else if (lstuserdetail.get(0).getSignupVerificationcode().equals("0") || (!VerificationOtpComplete.isEmpty() && VerificationOtpComplete.equals(getString(R.string.str_OtpValidated)))) {
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
                                     finish();

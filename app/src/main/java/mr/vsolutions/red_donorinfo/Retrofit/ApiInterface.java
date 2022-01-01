@@ -159,4 +159,12 @@ public interface ApiInterface {
             @Field("cmpt_title") String Cmpt_title,
             @Field("cmpt_desc") String Cmpt_desc
     );
+
+    @FormUrlEncoded
+    @POST("changePswd.php")
+    Call<DefaultResponse> SenChangePasswordAsync(
+            @Field("donor_id") String Donor_id,
+            @Field("old_password") String Old_password,
+            @Field("new_password") String New_password
+    );
 }

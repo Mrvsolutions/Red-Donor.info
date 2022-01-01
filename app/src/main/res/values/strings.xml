@@ -96,4 +96,9 @@
     <string name="str_Cancel">Cancel</string>
     <string name="str_errortitle">Please enter title</string>
     <string name="str_errorDescription">Please enter Description</string>
+    <string name="str_changepassword">Change Password</string>
+    <string name="str_oldpassword">Old Password</string>
+    <string name="str_newpassword">New Password</string>
+    <string name="str_enterOldPass">Please enter old password</string>
+    <string name="str_enterNewPass">Please enter new password</string>
 </resources>

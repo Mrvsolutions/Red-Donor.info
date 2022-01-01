@@ -440,7 +440,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public boolean onClusterClick(Cluster<MapClusterItem> cluster) {
        if (cluster != null)
        {
-
+           List<DonorDataMain.Donordata> selectormarkerlist = new ArrayList<>();
+           for (MapClusterItem clusterItem:cluster.getItems()) {
+               selectormarkerlist.add(clusterItem.getDonordata());
+           }
+           RecyclerView.Adapter indicatorAdapter = new RecyclerViewMarkerAdapter(selectormarkerlist, getContext());
+           markerRecyclerhorizontal.setAdapter(indicatorAdapter);
+           markerRecyclerhorizontal.hasFixedSize();
+           markerRecyclerhorizontal.setVisibility(View.VISIBLE);
+           imgremove.setVisibility(View.VISIBLE);
+           viewborder.setVisibility(View.VISIBLE);
+           rlremoveview.setVisibility(View.VISIBLE);
        }
         return false;
     }
