@@ -516,8 +516,8 @@ class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T> {
         ArrayList<T> list = new ArrayList<>(cluster.getItems());
         setTextNumberMarker(cluster);
         try {
-           // Bitmap bitmap = clusterGenerator.makeIcon();
-            Bitmap bitmap = getClusteredLabel(cluster.getSize(),activity);
+            Bitmap bitmap = clusterGenerator.makeIcon();
+          //  Bitmap bitmap = getClusteredLabel(cluster.getSize(),activity);
             BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
             marker.setIcon(icon);
         } catch (Exception e) {
