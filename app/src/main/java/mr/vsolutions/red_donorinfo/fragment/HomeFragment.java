@@ -1,9 +1,18 @@
 package mr.vsolutions.red_donorinfo.fragment;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,6 +45,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -44,9 +55,11 @@ import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
@@ -106,6 +119,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mapFragment.getMapAsync(this);
         markerRecyclerhorizontal.hasFixedSize();
         markerRecyclerhorizontal.setLayoutManager(new GridLayoutManager(getContext(), 1, RecyclerView.HORIZONTAL, false));
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(markerRecyclerhorizontal);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,8 +207,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.setOnMarkerClickListener(clusterManager);
         mMap.setOnInfoWindowClickListener(clusterManager);
         SetMarkerLocations();
-      //  mMap.setOnMarkerClickListener(this);
-//        mMap.setOnMapClickListener(this);
+        mMap.setOnMapClickListener(this);
         if (mapView != null &&
                 mapView.findViewById(Integer.parseInt("1")) != null) {
             // Get the button view
@@ -465,8 +479,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 RecyclerView.Adapter indicatorAdapter = new RecyclerViewMarkerAdapter(selectormarkerlist, getContext());
                 markerRecyclerhorizontal.setAdapter(indicatorAdapter);
                 markerRecyclerhorizontal.hasFixedSize();
-//                SnapHelper snapHelper = new PagerSnapHelper();
-//                snapHelper.attachToRecyclerView(markerRecyclerhorizontal);
                 markerRecyclerhorizontal.setVisibility(View.VISIBLE);
                 imgremove.setVisibility(View.VISIBLE);
                 viewborder.setVisibility(View.VISIBLE);
@@ -479,15 +491,72 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     }
 }
 class CustomRenderer<T extends ClusterItem> extends DefaultClusterRenderer<T> {
-    public CustomRenderer(Context context, GoogleMap map, ClusterManager<T> clusterManager) {
-        super(context, map, clusterManager);
+    private IconGenerator clusterGenerator;
+    private TextView txtSizeCluster;
+    private Activity activity;
 
+    public CustomRenderer(Activity activity, GoogleMap map, ClusterManager<T> clusterManager) {
+        super(activity, map, clusterManager);
+        this.activity = activity;
+        setUpClusterIcon();
+
+    }
+    private void setUpClusterIcon() {
+        clusterGenerator = new IconGenerator(activity);
+        View clusterView = activity.getLayoutInflater().inflate(R.layout.custom_marker_cluster, null);
+        txtSizeCluster = (TextView) clusterView.findViewById(R.id.txtcluteritemcount);
+     //   mImgMarkerClusterThumbnail = (ImageView) clusterView.findViewById(R.id.img_load);
+        clusterGenerator.setContentView(clusterView);
+        clusterGenerator.setBackground(null);
     }
 
     @Override
+    protected void onClusterRendered(Cluster<T> cluster, Marker marker) {
+        super.onClusterRendered(cluster, marker);
+        ArrayList<T> list = new ArrayList<>(cluster.getItems());
+        setTextNumberMarker(cluster);
+        try {
+           // Bitmap bitmap = clusterGenerator.makeIcon();
+            Bitmap bitmap = getClusteredLabel(cluster.getSize(),activity);
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(bitmap);
+            marker.setIcon(icon);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Bitmap getClusteredLabel(Integer count, Context ctx) {
+
+        float density = activity.getResources().getDisplayMetrics().density;
+
+        Resources r = ctx.getResources();
+        Bitmap res = BitmapFactory.decodeResource(r, R.mipmap.ic_location);
+        res = res.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas c = new Canvas(res);
+
+        Paint textPaint = new Paint();
+        textPaint.setAntiAlias(true);
+        textPaint.setTextAlign(Paint.Align.CENTER);
+        textPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(15 * density);
+
+        c.drawText(String.valueOf(count.toString()), res.getWidth() / 2, 90 , textPaint);
+
+        return res;
+    }
+    private void setTextNumberMarker(Cluster<T> cluster) {
+        int size = cluster.getSize();
+        if (size > 99) {
+            txtSizeCluster.setText("99+");
+        } else {
+            txtSizeCluster.setText(String.valueOf(cluster.getSize()));
+        }
+    }
+    @Override
     protected void onBeforeClusterItemRendered(T item, MarkerOptions markerOptions) {
         // TODO: consider adding anchor(.5, .5) (Individual markers will overlap more often)
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_location));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_locationgroup));
     }
 
     @Override
