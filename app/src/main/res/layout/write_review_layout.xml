@@ -78,7 +78,7 @@
                 <RatingBar
                     android:id="@+id/ratbar"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/size_40dp"
+                    android:layout_height="@dimen/size_50dp"
                     android:numStars="5"
                     android:layout_gravity="center"
                     android:layout_toRightOf="@+id/profilecardview"
@@ -86,7 +86,7 @@
                     android:stepSize="1"
                     android:rating="5"
                     android:layout_marginTop="@dimen/size_5dp"
-                    android:progressTint="@color/color_rating">
+                    android:progressTint="@color/colorPrimary">
                 </RatingBar>
             </RelativeLayout>
             <LinearLayout

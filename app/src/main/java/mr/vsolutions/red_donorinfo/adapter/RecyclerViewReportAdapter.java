@@ -95,11 +95,11 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
                     Color.parseColor("#d36259")};
 
             int raters[] = new int[]{
-                    Integer.parseInt(_donorsummary.getTotRating1()),
-                    Integer.parseInt(_donorsummary.getTotRating2()),
-                    Integer.parseInt(_donorsummary.getTotRating3()),
-                    Integer.parseInt(_donorsummary.getTotRating4()),
                     Integer.parseInt(_donorsummary.getTotRating5()),
+                    Integer.parseInt(_donorsummary.getTotRating4()),
+                    Integer.parseInt(_donorsummary.getTotRating3()),
+                    Integer.parseInt(_donorsummary.getTotRating2()),
+                    Integer.parseInt(_donorsummary.getTotRating1()),
             };
             headerViewHolder.rating_reviews.createRatingBars(100, BarLabels.STYPE1, colors, raters);
         }
