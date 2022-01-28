@@ -54,6 +54,7 @@
     <RadioGroup
         android:checkedButton="@+id/offer"
         android:id="@+id/toggle"
+        android:visibility="gone"
         android:layout_width="130dp"
         android:layout_height="@dimen/size_35dp"
         android:layout_centerVertical="true"

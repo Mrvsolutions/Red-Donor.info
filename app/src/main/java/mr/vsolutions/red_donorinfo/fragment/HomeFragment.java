@@ -10,8 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Build;
@@ -59,7 +57,6 @@ import com.google.maps.android.ui.IconGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
@@ -79,7 +76,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     public GoogleMap mMap;
     Location mLastLocation;
     Marker mCurrLocationMarker;
-    Marker mClusterMarker;
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
     public RecyclerView markerRecyclerhorizontal, listRecycler;
@@ -89,6 +85,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     LinearLayout llsortview;
     public ImageView imgremove;
     List<DonorDataMain.Donordata> placesItemArrayList;
+    List<DonorDataMain.Donordata> nearestItemArrayList;
     double Lantitude,Longitude;
     private static final String TAG = HomeFragment.class.getSimpleName();
     ClusterManager<MapClusterItem> clusterManager;
@@ -206,6 +203,9 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         mMap.setOnCameraIdleListener(clusterManager);
         mMap.setOnMarkerClickListener(clusterManager);
         mMap.setOnInfoWindowClickListener(clusterManager);
+//        mMap.setOnCameraIdleListener(this);
+//        mMap.setOnCameraMoveStartedListener(this);
+//        mMap.setOnCameraMoveCanceledListener(this);
         SetMarkerLocations();
         mMap.setOnMapClickListener(this);
         if (mapView != null &&
@@ -261,7 +261,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                 .addApi(LocationServices.API).build();
         mGoogleApiClient.connect();
     }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         Integer clickCount = (Integer) marker.getTag();
@@ -284,7 +283,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         super.onResume();
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).llcustomesearchview.setVisibility(View.VISIBLE);
-            ((MainActivity) getActivity()).imgfilter.setVisibility(View.VISIBLE);
+            ((MainActivity) getActivity()).imgfilter.setVisibility(View.GONE);
         }
     }
 
@@ -296,7 +295,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         rlremoveview.setVisibility(View.GONE);
     }
 
-    private void GetNearestDonorList() {
+    private void GetallDonorList() {
         try {
             String UserLant = String.valueOf(Lantitude);
             String userLong = String.valueOf(Longitude);
@@ -313,7 +312,44 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                             List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
                             placesItemArrayList = lstuserdetail;
                             SetMarkerLocations();
-                            SetAdapterData(lstuserdetail);
+                           // SetAdapterData(lstuserdetail);
+                        } else {
+                            Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<DonorDataMain> call, Throwable t) {
+                        // Log error here since request failed
+                        Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, t.toString());
+                    }
+                });
+            } catch (Exception ex) {
+                Log.e(TAG, ex.toString());
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "GetallDonorList - " + ex.toString());
+        }
+    }
+    private void GetNearestDonorList() {
+        try {
+            String UserLant = String.valueOf(Lantitude);
+            String userLong = String.valueOf(Longitude);
+            try {
+                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+                Call<DonorDataMain> call = apiService.GetNearestDonorList(UserLant, userLong);
+                call.enqueue(new Callback<DonorDataMain>() {
+                    @Override
+                    public void onResponse(Call<DonorDataMain> call, Response<DonorDataMain> response) {
+                        DonorDataMain LoginResponse = response.body();
+                        if (LoginResponse.getSuccess() == 1) {
+                            // Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
+                            nearestItemArrayList = lstuserdetail;
+                          //  SetMarkerLocations();
+                             SetAdapterData(lstuserdetail);
                         } else {
                             Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -333,7 +369,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             Log.e(TAG, "GetNearestDonorList - " + ex.toString());
         }
     }
-
     private void SetAdapterData(List<DonorDataMain.Donordata> lstuserdetail) {
         try {
             RecyclerView.Adapter indicatorAdapter = new RecyclerViewMarkerAdapter(lstuserdetail, getContext());
@@ -381,7 +416,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         switch (requestCode) {
             case Comman.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
               //  GetCurrentLocation(location);
-                GetNearestDonorList();
+                GetallDonorList();
+              //  GetNearestDonorList();
                 break;
         }
     }
@@ -424,7 +460,8 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
             SetAdapterData(placesItemArrayList);
         }
         else {
-            GetNearestDonorList();
+            GetallDonorList();
+          //  GetNearestDonorList();
         }
     }
 

@@ -104,6 +104,31 @@
     android:layout_gravity="center"
     android:weightSum="1"
     android:background="@color/Colorsearchbackground">
+    <LinearLayout
+        android:id="@+id/llsearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_30dp"
+        android:orientation="horizontal"
+        android:background="@drawable/search_background_withoutborder"
+        android:layout_marginLeft="@dimen/size_15dp"
+        android:layout_marginRight="@dimen/size_15dp"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="@dimen/size_25dp"
+            android:layout_height="@dimen/size_25dp"
+            android:layout_marginLeft="@dimen/size_10dp"
+            android:src="@drawable/ic_baseline_search_24"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/str_Search"
+            android:layout_marginLeft="@dimen/size_5dp"
+            android:textColor="@color/Colorsearchtext"
+            android:textSize="@dimen/text_size_16sp"
+            android:fontFamily="@font/proximanovacond_regular"/>
+    </LinearLayout>
 <EditText
     android:layout_width="0dp"
     android:layout_height="@dimen/size_30dp"
@@ -114,6 +139,7 @@
     android:drawableLeft="@drawable/ic_baseline_search_24"
     android:paddingLeft="@dimen/size_10dp"
     android:hint="@string/str_Search"
+    android:visibility="gone"
     android:textColor="@color/Colorsearchtext"
     android:textSize="@dimen/text_size_16sp"
     android:fontFamily="@font/proximanovacond_regular"
@@ -123,6 +149,7 @@
         android:id="@+id/imgfilter"
         android:layout_width="@dimen/size_30dp"
         android:layout_height="@dimen/size_30dp"
+        android:visibility="gone"
         android:src="@drawable/ic_filter"/>
 </LinearLayout>
 </LinearLayout>

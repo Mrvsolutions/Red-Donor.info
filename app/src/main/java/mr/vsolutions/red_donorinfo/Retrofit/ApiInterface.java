@@ -66,7 +66,12 @@ public interface ApiInterface {
             @Field("user_clat") String User_clat,
             @Field("user_clong") String User_clong
     );
-
+    @FormUrlEncoded
+    @POST("donorListWdist.php")
+    Call<DonorDataMain> GetNearestDonorList(
+            @Field("user_clat") String User_clat,
+            @Field("user_clong") String User_clong
+    );
     @FormUrlEncoded
     @POST("editDonorProfile.php")
     Call<LoginUser> EditUserDataCall(

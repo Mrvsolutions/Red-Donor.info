@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.toString();
     public ImageView imgtoolprofilephoto,imgfilter;
-    public LinearLayout llcustomesearchview;
+    public LinearLayout llcustomesearchview,llsearch;
     public  boolean IsFromFilter;
     public List<DonorDataMain.Donordata> FilterItemArrayList;
     @Override
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
         llcustomesearchview = findViewById(R.id.llcustomesearchview);
         imgfilter = findViewById(R.id.imgfilter);
+        llsearch = findViewById(R.id.llsearch);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
         bottomNavigationView.setOnNavigationItemSelectedListener(navlistner);
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).commit();
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             UserDeviceRegisterCall(Comman.CommanToken,Comman.CommanUserDetail.getDonorId());
         }
 
-        imgfilter.setOnClickListener(new View.OnClickListener() {
+        llsearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(),Fillter_Activity.class);
