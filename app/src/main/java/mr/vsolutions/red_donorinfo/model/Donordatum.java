@@ -11,9 +11,12 @@ public class Donordatum {
     @SerializedName("donor_id")
     @Expose
     private String donorId;
-    @SerializedName("r_name")
+    @SerializedName("reviewer_id")
     @Expose
-    private String rName;
+    private String reviewerId;
+    @SerializedName("reviewer_name")
+    @Expose
+    private String reviewerNname;
     @SerializedName("r_rating")
     @Expose
     private String rRating;
@@ -32,21 +35,26 @@ public class Donordatum {
     @SerializedName("status_remark")
     @Expose
     private String statusRemark;
+    @SerializedName("reviewer_profile_pic")
+    @Expose
+    private String reviewerProfilePic;
 
     public Donordatum() {
     }
 
-    public Donordatum(String reviewId, String donorId, String rName, String rRating, String reviewTitle, String reviewContent, String reviewDatetime, String reviewStatus, String statusRemark) {
+    public Donordatum(String reviewId, String donorId, String reviewerId , String reviewerNname, String rRating, String reviewTitle, String reviewContent, String reviewDatetime, String reviewStatus, String statusRemark, String reviewerProfilePic) {
         super();
         this.reviewId = reviewId;
         this.donorId = donorId;
-        this.rName = rName;
+        this.reviewerId = reviewerId;
+        this.reviewerNname = reviewerNname;
         this.rRating = rRating;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.reviewDatetime = reviewDatetime;
         this.reviewStatus = reviewStatus;
         this.statusRemark = statusRemark;
+        this.reviewerProfilePic = reviewerProfilePic;
     }
 
     public String getReviewId() {
@@ -65,12 +73,20 @@ public class Donordatum {
         this.donorId = donorId;
     }
 
-    public String getrName() {
-        return rName;
+    public String getReviewerId() {
+        return reviewerId;
     }
 
-    public void setrName(String rName) {
-        this.rName = rName;
+    public void setReviewerId(String reviewerId) {
+        this.reviewerId = reviewerId;
+    }
+
+    public String getReviewerNname() {
+        return reviewerNname;
+    }
+
+    public void setReviewerNname(String reviewerNname) {
+        this.reviewerNname = reviewerNname;
     }
 
     public String getrRating() {
@@ -121,4 +137,11 @@ public class Donordatum {
         this.statusRemark = statusRemark;
     }
 
+    public String getReviewerProfilePic() {
+        return reviewerProfilePic;
+    }
+
+    public void setReviewerProfilePic(String reviewerProfilePic) {
+        this.reviewerProfilePic = reviewerProfilePic;
+    }
 }

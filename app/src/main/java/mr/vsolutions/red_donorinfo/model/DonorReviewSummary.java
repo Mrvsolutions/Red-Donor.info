@@ -12,7 +12,7 @@ public class DonorReviewSummary {
     private List<Donordatum> donordata = null;
     @SerializedName("donorsummary")
     @Expose
-    private Donorsummary donorsummary;
+    private List<Donorsummary> donorsummary;
     @SerializedName("success")
     @Expose
     private Integer success;
@@ -23,7 +23,7 @@ public class DonorReviewSummary {
     public DonorReviewSummary() {
     }
 
-    public DonorReviewSummary(List<Donordatum> donordata, Donorsummary donorsummary, Integer success, String message) {
+    public DonorReviewSummary(List<Donordatum> donordata, List<Donorsummary> donorsummary, Integer success, String message) {
         super();
         this.donordata = donordata;
         this.donorsummary = donorsummary;
@@ -39,11 +39,11 @@ public class DonorReviewSummary {
         this.donordata = donordata;
     }
 
-    public Donorsummary getDonorsummary() {
+    public List<Donorsummary> getDonorsummary() {
         return donorsummary;
     }
 
-    public void setDonorsummary(Donorsummary donorsummary) {
+    public void setDonorsummary(List<Donorsummary> donorsummary) {
         this.donorsummary = donorsummary;
     }
 

@@ -1,7 +1,7 @@
 package mr.vsolutions.red_donorinfo.adapter;
 
 import android.app.Activity;
-import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-import mr.vsolutions.red_donorinfo.Chat_Screen_Activity;
-import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.model.Msgdata;
 import mr.vsolutions.red_donorinfo.util.ChateViewHolder;
@@ -24,18 +22,34 @@ import mr.vsolutions.red_donorinfo.util.Comman;
 
 public class RecyclerViewChateAdapter extends RecyclerView.Adapter<ChateViewHolder> {
 
-    List<Msgdata> msgdataList;
+    List<Msgdata> _msgdataList;
     Activity context;
     String _Recieved_ID;
     String _RecieverProfilepic;
-    public RecyclerViewChateAdapter(List<Msgdata> msgdataList, String Recieved_ID,String RecieverProfilepic,Activity context) {
-        this.msgdataList = msgdataList;
+    public RecyclerViewChateAdapter(List<Msgdata> msgdataList, String Recieved_ID, String RecieverProfilepic, Activity context) {
+        this._msgdataList = msgdataList;
         this.context = context;
         this._Recieved_ID = Recieved_ID;
         this._RecieverProfilepic = RecieverProfilepic;
     }
 
-
+    public void Update (List<Msgdata> msgdataList)
+    {
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try
+                {
+                    _msgdataList = msgdataList;
+                    notifyDataSetChanged();
+                }
+                catch (Exception ex)
+                {
+                    Log.e("ChateAdapter",ex.getMessage());
+                }
+            }
+        });
+    }
     @NonNull
     @Override
     public ChateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,7 +61,7 @@ public class RecyclerViewChateAdapter extends RecyclerView.Adapter<ChateViewHold
     @Override
     public void onBindViewHolder(@NonNull ChateViewHolder holder, final int position) {
 
-        Msgdata msgdata = msgdataList.get(position);
+        Msgdata msgdata = _msgdataList.get(position);
 
         Glide.with(context)
                 .load(_RecieverProfilepic)
@@ -80,6 +94,6 @@ public class RecyclerViewChateAdapter extends RecyclerView.Adapter<ChateViewHold
 
     @Override
     public int getItemCount() {
-        return msgdataList.size();
+        return _msgdataList.size();
     }
 }

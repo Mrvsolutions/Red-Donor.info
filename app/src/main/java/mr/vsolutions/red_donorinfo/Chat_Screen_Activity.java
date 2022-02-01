@@ -1,6 +1,7 @@
 package mr.vsolutions.red_donorinfo;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -35,10 +36,13 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
     EditText edtmsgtext;
     RelativeLayout rltoolbarhome,rltoolbar;
     TextView title;
-
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 10*1000;
     private RecyclerView ChatelistRecycler;
     String donor_id,Recieved_ID,RecieverProfilepic;
     DonorDataMain.Donordata RecieverData;
+    RecyclerViewChateAdapter indicatorAdapter;
     private static final String TAG = Chat_Screen_Activity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +68,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
 
         imgback.setOnClickListener(this);
         imgsend.setOnClickListener(this);
-        GetMsgDataList();
+        GetMsgDataList(false,false);
     }
 
 
@@ -74,7 +78,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
         finish();
     }
 
-    private void GetMsgDataList() {
+    private void GetMsgDataList(boolean isFromTimer,boolean IsfromSend) {
         try {
             try {
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -87,8 +91,17 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                         if (MsglistResponse.getSuccess() == 1) {
                          //   Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Msgdata> lstchat = MsglistResponse.getMsgdata();
-                            edtmsgtext.setText("");
-                            SetAdapterData(lstchat);
+                            if (isFromTimer || IsfromSend)
+                            {
+                                if (IsfromSend)
+                                {
+                                    edtmsgtext.setText("");
+                                }
+                                indicatorAdapter.Update(lstchat);
+                            }
+                            else {
+                                SetAdapterData(lstchat);
+                            }
                         } else {
                             Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -122,7 +135,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                         DefaultResponse msgResponse = response.body();
                         if (msgResponse.getSuccess() == 1) {
                             Toast.makeText(getApplicationContext(), msgResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            GetMsgDataList();
+                            GetMsgDataList(true,true);
                         } else {
                             Toast.makeText(getApplicationContext(), msgResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -146,7 +159,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
     }
     private void SetAdapterData(List<Msgdata> lstchat) {
         try {
-            RecyclerView.Adapter indicatorAdapter = new RecyclerViewChateAdapter(lstchat, Recieved_ID,RecieverProfilepic,this);
+            indicatorAdapter = new RecyclerViewChateAdapter(lstchat, Recieved_ID,RecieverProfilepic,this);
             ChatelistRecycler.setLayoutManager(new GridLayoutManager(this,1, RecyclerView.VERTICAL,false));
             ChatelistRecycler.setAdapter(indicatorAdapter);
             ChatelistRecycler.scrollToPosition(lstchat.size()-1);
@@ -174,5 +187,29 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        handler.postDelayed( runnable = new Runnable() {
+            public void run() {
+                //do something
+                GetMsgDataList(true,false);
+                handler.postDelayed(runnable, delay);
+            }
+        }, delay);
     }
 }

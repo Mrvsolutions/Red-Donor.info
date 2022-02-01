@@ -3,6 +3,7 @@ package mr.vsolutions.red_donorinfo.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 import androidx.recyclerview.widget.SnapHelper;
 
 import java.util.ArrayList;
@@ -46,6 +48,10 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
     private RecyclerView listMessageRecycler;
     TextView txtsignup,txtsignin;
     private static final String TAG = MessageFragment.class.getSimpleName();
+    Handler handler = new Handler();
+    Runnable runnable;
+    int delay = 10*1000;
+    RecyclerViewMessageAdapter indicatorAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,7 +64,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         SpannableString str1= new SpannableString("New User?");
         str1.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorbottomtext)), 0, str1.length(), 0);
         builderSignup.append(str1);
-
+        ((SimpleItemAnimator) listMessageRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         SpannableString str2= new SpannableString(" Sign Up");
         str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
         builderSignup.append(str2);
@@ -79,7 +85,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
             listMessageRecycler.setVisibility(View.VISIBLE);
             txtsignin.setVisibility(View.GONE);
             txtsignup.setVisibility(View.GONE);
-            GetAllConversationList();
+            GetAllConversationList(false);
         }
         else
         {
@@ -96,8 +102,15 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         if(getActivity() instanceof MainActivity){
             ((MainActivity) getActivity()).imgfilter.setVisibility(View.GONE);
         }
+        handler.postDelayed( runnable = new Runnable() {
+            public void run() {
+                //do something
+                GetAllConversationList(true);
+                handler.postDelayed(runnable, delay);
+            }
+        }, delay);
     }
-    private void GetAllConversationList() {
+    private void GetAllConversationList( boolean isFromtimer) {
         try {
             try {
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
@@ -110,7 +123,13 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                         if (LoginResponse.getSuccess() == 1) {
                          //   Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Msgdonor> lstuserdetail = LoginResponse.getMsgdonorlist();
-                            SetAdapterData(lstuserdetail);
+                            if (isFromtimer && indicatorAdapter != null) {
+                                indicatorAdapter.Update(lstuserdetail);
+                            }
+                            else
+                            {
+                                SetAdapterData(lstuserdetail);
+                            }
                         } else {
                             Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -135,7 +154,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
 
     private void SetAdapterData(List<Msgdonor> lstuserdetail) {
         try {
-            RecyclerView.Adapter indicatorAdapter = new RecyclerViewMessageAdapter(lstuserdetail,getActivity());
+            indicatorAdapter = new RecyclerViewMessageAdapter(lstuserdetail,getActivity());
             listMessageRecycler.setLayoutManager(new GridLayoutManager(getContext(),1, RecyclerView.VERTICAL,false));
             listMessageRecycler.setAdapter(indicatorAdapter);
         }
@@ -143,6 +162,18 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         {
             Log.e(TAG,"SetAdapterData - "+ ex.toString());
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.removeCallbacks(runnable);
     }
 
     @Override

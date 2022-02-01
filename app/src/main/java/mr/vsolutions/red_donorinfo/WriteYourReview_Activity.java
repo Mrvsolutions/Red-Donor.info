@@ -121,7 +121,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-                    Call<DefaultResponse> call = apiService.SendDonorReviewCall(Donor_Id,Comman.CommanUserDetail.getDonorName(),rating,reviewHeadline,reviewExperiance);
+                    Call<DefaultResponse> call = apiService.SendDonorReviewCall(Donor_Id,Comman.CommanUserDetail.getDonorId(),rating,reviewHeadline,reviewExperiance);
                     call.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

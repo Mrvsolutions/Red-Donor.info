@@ -92,7 +92,7 @@ public interface ApiInterface {
     @POST("donorReviewAdd.php")
     Call<DefaultResponse> SendDonorReviewCall(
             @Field("donor_id") String Donor_id,
-            @Field("r_name") String R_name,
+            @Field("reviewer_id") String Reviewer_id,
             @Field("r_rating") String R_rating,
             @Field("review_title ") String Review_title,
             @Field("review_content") String Review_content

@@ -67,14 +67,14 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
         {
             Donordatum item =  _donorreviewdata.get(position-1);
             ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
-            reportViewHolder.txtname.setText(item.getrName());
+            reportViewHolder.txtname.setText(item.getReviewerNname());
 //            reportViewHolder.txtage.setText("Age: "+item.getDonorAge());
 //            reportViewHolder.txtaddress.setText(item.getDonorAddress());
             reportViewHolder.txtratecount.setText(item.getrRating());
             reportViewHolder.txtdetail.setText(item.getReviewContent());
             reportViewHolder.txtratecount.setText(item.getrRating());
             Glide.with(pictureContx)
-                    .load("https://i.picsum.photos/id/870/200/300.jpg?blur=2&grayscale&hmac=ujRymp644uYVjdKJM7kyLDSsrqNSMVRPnGU99cKl6Vs")
+                    .load(item.getReviewerProfilePic())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .apply(new RequestOptions().centerCrop())

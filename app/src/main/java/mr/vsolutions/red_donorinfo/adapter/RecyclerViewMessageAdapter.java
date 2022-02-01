@@ -2,6 +2,7 @@ package mr.vsolutions.red_donorinfo.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,23 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
         this.activity = activity;
     }
 
+    public void Update (List<Msgdonor> msgDonorList)
+    {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try
+                {
+                    _msgDonorList = msgDonorList;
+                    notifyDataSetChanged();
+                }
+                catch (Exception ex)
+                {
+                    Log.e("MessageAdapter",ex.getMessage());
+                }
+            }
+        });
+    }
 
     @NonNull
     @Override
@@ -53,11 +71,10 @@ public class RecyclerViewMessageAdapter extends RecyclerView.Adapter<MessageView
         Glide.with(activity)
                 .load(donorphoto)
                 .error(R.drawable.ic_person_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .skipMemoryCache(true)
                 .apply(new RequestOptions().centerCrop())
                 .into(holder.imgprofilephoto);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

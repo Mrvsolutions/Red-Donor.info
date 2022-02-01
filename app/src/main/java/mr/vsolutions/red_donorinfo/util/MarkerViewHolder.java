@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import mr.vsolutions.red_donorinfo.R;
@@ -16,7 +15,7 @@ public class MarkerViewHolder extends RecyclerView.ViewHolder{
 
     public ImageView imgprofilephoto;
     public Button btnchat,btnRate,btnReport;
-    public TextView txtname,txtage,txtaddress,txtdetail,txtavgrating,txtCity,txtratingdetail;
+    public TextView txtname,txtage, txtbloodgroup,txtdetail,txtavgrating,txtCity,txtratingdetail;
 //    private CardView card;
 //    View positionController;
 
@@ -28,7 +27,7 @@ public class MarkerViewHolder extends RecyclerView.ViewHolder{
         btnReport = itemView.findViewById(R.id.btnReport);
         txtname= itemView.findViewById(R.id.txtname);
         txtage= itemView.findViewById(R.id.txtage);
-        txtaddress= itemView.findViewById(R.id.txtaddress);
+        txtbloodgroup = itemView.findViewById(R.id.txtaddress);
         txtCity= itemView.findViewById(R.id.txtCity);
         txtdetail= itemView.findViewById(R.id.txtdetail);
         txtavgrating = itemView.findViewById(R.id.txtavgrating);

@@ -96,7 +96,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
                                 editor.apply();
                                 Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                                 startActivity(intent);
-                                finish();
+                                finishAffinity();
                             } else {
                                 Toast.makeText(VerifyEmailCodeActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

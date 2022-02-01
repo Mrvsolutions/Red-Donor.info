@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                else if (lstuserdetail.get(0).getSignupVerificationcode().equals("0") || (!VerificationOtpComplete.isEmpty() && VerificationOtpComplete.equals(getString(R.string.str_OtpValidated)))) {
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
-                                    finish();
+                                    finishAffinity();
                                 }
                                 else
                                 {

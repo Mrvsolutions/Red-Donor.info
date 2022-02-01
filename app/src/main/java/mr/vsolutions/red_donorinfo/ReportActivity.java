@@ -81,7 +81,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                         if (Response.getSuccess() == 1) {
                             Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Donordatum> lstuserdetail = Response.getDonordata();
-                            Donorsummary donorsummary = Response.getDonorsummary();
+                            Donorsummary donorsummary = Response.getDonorsummary().get(0);
                           //  placesItemArrayList = lstuserdetail;
                            // SetMarkerLocations();
                             SetAdapterData(lstuserdetail,donorsummary);

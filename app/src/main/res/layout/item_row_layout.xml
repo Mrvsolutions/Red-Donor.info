@@ -180,6 +180,6 @@
             android:layout_weight="1"
             android:textAllCaps="true"
             android:background="@drawable/round_corner_button">
-        </Button>s
+        </Button>
     </LinearLayout>
 </RelativeLayout>

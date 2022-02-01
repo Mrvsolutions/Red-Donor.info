@@ -3,7 +3,6 @@ package mr.vsolutions.red_donorinfo.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +15,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import mr.vsolutions.red_donorinfo.Chat_Screen_Activity;
 import mr.vsolutions.red_donorinfo.Complain_Activity;
 import mr.vsolutions.red_donorinfo.LoginActivity;
-import mr.vsolutions.red_donorinfo.MainActivity;
 import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.ReportActivity;
 import mr.vsolutions.red_donorinfo.WriteYourReview_Activity;
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
-import mr.vsolutions.red_donorinfo.model.PlacesItem;
 import mr.vsolutions.red_donorinfo.util.Comman;
 import mr.vsolutions.red_donorinfo.util.MarkerViewHolder;
 
@@ -62,7 +57,7 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
 //        holder.positionController.setBackgroundColor(pic.getSelected() ? Color.parseColor("#00000000") : Color.parseColor("#8c000000"));
         holder.txtname.setText(donordata.getDonorName());
         holder.txtage.setText("Age: "+donordata.getDonorAge());
-        holder.txtaddress.setText("Address: "+donordata.getDonorAddress());
+        holder.txtbloodgroup.setText("Blood Group: "+donordata.getDonorBloodGroup());
         holder.txtCity.setText("City: "+donordata.getDonorCity());
         if (!donordata.getAvgRating().isEmpty())
         {
@@ -72,6 +67,7 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         {
             holder.txtavgrating.setText("0");
         }
+        holder.txtratingdetail.setText((donordata.getTotRating() + " rating and "+donordata.getTotReview() +" reviews"));
         Glide.with(pictureContx)
                 .load(donordata.getDonorProfilePic())
                 .error(R.drawable.ic_person_placeholder)

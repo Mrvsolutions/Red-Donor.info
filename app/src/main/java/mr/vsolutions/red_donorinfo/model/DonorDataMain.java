@@ -98,8 +98,14 @@ public class DonorDataMain {
         @SerializedName("avg_rating")
         @Expose
         private String avgRating;
+        @SerializedName("tot_rating")
+        @Expose
+        private String totRating;
+        @SerializedName("tot_review")
+        @Expose
+        private String totReview;
 
-        public Donordata(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst,  String distance, String avgRating) {
+        public Donordata(String donorId, String donorName, String donorCity, String donorMobileno, String donorProfilePic, String donorAge, String donorBloodGroup, String donorLatitude, String donorLongitude, String donorAddress, String donorEmail, String donorPswd, String signupDatetime, String signupVerificationcode, String frgtPswdRqst,  String distance, String avgRating, String totRating, String totReview) {
             super();
             this.donorId = donorId;
             this.donorName = donorName;
@@ -118,6 +124,8 @@ public class DonorDataMain {
             this.frgtPswdRqst = frgtPswdRqst;
             this.distance = distance;
             this.avgRating = avgRating;
+            this.totRating = totRating;
+            this.totReview = totReview;
         }
 
         public String getDonorId() {
@@ -256,5 +264,20 @@ public class DonorDataMain {
             this.avgRating = avgRating;
         }
 
+        public String getTotRating() {
+            return totRating;
+        }
+
+        public void setTotRating(String totRating) {
+            this.totRating = totRating;
+        }
+
+        public String getTotReview() {
+            return totReview;
+        }
+
+        public void setTotReview(String totReview) {
+            this.totReview = totReview;
+        }
     }
 }
