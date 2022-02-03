@@ -53,60 +53,63 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        GetToken();
-        IsFromFilter = getIntent().getBooleanExtra("IsFromFilter",false);
-        if(checkAndRequestLocationPermissions(this))
-        if (IsFromFilter)
-        {
-            FilterItemArrayList = (List<DonorDataMain.Donordata>) getIntent().getExtras().getSerializable("filterlist");
-        }
-        imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
-        llcustomesearchview = findViewById(R.id.llcustomesearchview);
-        imgfilter = findViewById(R.id.imgfilter);
-        llsearch = findViewById(R.id.llsearch);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
-        bottomNavigationView.setOnNavigationItemSelectedListener(navlistner);
-        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment,new HomeFragment()).commit();
-        SharedPreferences  sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
-        String usrdata  = sharedpreferences.getString(Comman.strCommanuserdetai, "");
-        if (!usrdata.isEmpty())
-        {
-            Gson gson = new Gson();
-            UserDetail obj = gson.fromJson(usrdata, UserDetail.class);
-            Comman.CommanUserDetail = obj;
-            Glide.with(this)
-                    .load(Comman.CommanUserDetail.getDonorProfilePic())
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .apply(new RequestOptions().centerCrop())
-                    .error(R.drawable.ic_person_placeholder)
-                    .into(imgtoolprofilephoto);
-            UserDeviceRegisterCall(Comman.CommanToken,Comman.CommanUserDetail.getDonorId());
-        }
+        try {
 
-        llsearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(),Fillter_Activity.class);
-                startActivity(i);
+            getSupportActionBar().hide();
+            FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+            GetToken();
+            IsFromFilter = getIntent().getBooleanExtra("IsFromFilter", false);
+            if (checkAndRequestLocationPermissions(this))
+                if (IsFromFilter) {
+                    FilterItemArrayList = Comman.FilterItemArrayList;//(List<DonorDataMain.Donordata>) getIntent().getExtras().getSerializable("filterlist");
+                }
+            imgtoolprofilephoto = findViewById(R.id.imgtoolprofilephoto);
+            llcustomesearchview = findViewById(R.id.llcustomesearchview);
+            imgfilter = findViewById(R.id.imgfilter);
+            llsearch = findViewById(R.id.llsearch);
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationview);
+            bottomNavigationView.setOnNavigationItemSelectedListener(navlistner);
+            getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, new HomeFragment()).commit();
+            SharedPreferences sharedpreferences = getSharedPreferences(Comman.SHARED_PREFS, Context.MODE_PRIVATE);
+            String usrdata = sharedpreferences.getString(Comman.strCommanuserdetai, "");
+            if (!usrdata.isEmpty()) {
+                Gson gson = new Gson();
+                UserDetail obj = gson.fromJson(usrdata, UserDetail.class);
+                Comman.CommanUserDetail = obj;
+                Glide.with(this)
+                        .load(Comman.CommanUserDetail.getDonorProfilePic())
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .apply(new RequestOptions().centerCrop())
+                        .error(R.drawable.ic_person_placeholder)
+                        .into(imgtoolprofilephoto);
+                UserDeviceRegisterCall(Comman.CommanToken, Comman.CommanUserDetail.getDonorId());
             }
-        });
-        imgtoolprofilephoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!usrdata.isEmpty()) {
-                    Intent i = new Intent(getApplicationContext(), Profile_Activity.class);
+
+            llsearch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(getApplicationContext(), Fillter_Activity.class);
                     startActivity(i);
                 }
-                else
-                {
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
+            });
+            imgtoolprofilephoto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!usrdata.isEmpty()) {
+                        Intent i = new Intent(getApplicationContext(), Profile_Activity.class);
+                        startActivity(i);
+                    } else {
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+                    }
                 }
-            }
-        });
+            });
+        }
+        catch (Exception ex)
+        {
+            Log.e("MainActivity oncreate-",ex.getMessage());
+        }
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navlistner = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -138,6 +141,13 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Comman.FilterItemArrayList = null;
+    }
+
 
     void GetToken() {
         FirebaseMessaging.getInstance().getToken()

@@ -41,7 +41,7 @@
     <string name="str_Bloodgroup">Blood Group</string>
     <string name="str_Minage">Min Age</string>
     <string name="str_Maxage">Max Age</string>
-    <string name="str_DistancefromCurrentlocation">Distance(From current location)</string>
+    <string name="str_DistancefromCurrentlocation">Distance(From current location to KM)</string>
     <string name="str_filter">Filter</string>
     <string name="str_Age">Age</string>
     <string name="str_bloodgroup">Blood Group</string>

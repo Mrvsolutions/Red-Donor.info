@@ -42,7 +42,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     String[] bloodgroup = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String[] MinAge = new String[33];
     String[] MaxAge = new String[33];
-    String[] distance = {"1000", "2000", "3000", "4000", "5000", "6000", "7000", "8000"};
+    String[] distance = new String[21];
     String strbloodgroup, strminage, strmaxage, strdistance, strgender;
     Button btn_Apply;
 
@@ -78,6 +78,17 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
             MinAge[i] = String.valueOf(val);
             MaxAge[i] = String.valueOf(val);
         }
+
+        for (int j = 0; j < 21; j++) {
+            int val = j * 5;
+            if(val == 0)
+            {
+                distance[j] = String.valueOf(1);
+            }
+            else {
+                distance[j] = String.valueOf(val);
+            }
+        }
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
@@ -100,12 +111,14 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
                 R.layout.spinner_row_layout, R.id.txtvalue,
                 MaxAge);
         spinnermaxage.setAdapter(adaptermaxage);
+        spinnermaxage.setSelection(MaxAge.length-1);
         spinnermaxage.setOnItemSelectedListener(this);
         ArrayAdapter adapterdistance = new ArrayAdapter(
                 this,
                 R.layout.spinner_row_layout, R.id.txtvalue,
                 distance);
         spinnerdistance.setAdapter(adapterdistance);
+        spinnerdistance.setSelection(distance.length    -1);
         spinnerdistance.setOnItemSelectedListener(this);
 
     }
@@ -159,22 +172,28 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
                 call.enqueue(new Callback<DonorDataMain>() {
                     @Override
                     public void onResponse(Call<DonorDataMain> call, Response<DonorDataMain> response) {
-                        DonorDataMain LoginResponse = response.body();
-                        if (LoginResponse.getSuccess() == 1) {
-                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
-                            if (lstuserdetail.size() > 0) {
-                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                                i.putExtra("IsFromFilter", true);
-                                i.putExtra("filterlist", (Serializable) lstuserdetail);
-                                startActivity(i);
-                                finishAffinity();
+                        try {
+                            DonorDataMain LoginResponse = response.body();
+                            if (LoginResponse.getSuccess() == 1) {
+                                List<DonorDataMain.Donordata> lstuserdetail = LoginResponse.getDonordata();
+                                if (lstuserdetail.size() > 0) {
+                                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                    i.putExtra("IsFromFilter", true);
+                                   // i.putExtra("filterlist",  lstuserdetail.toString());
+                                    Comman.FilterItemArrayList = lstuserdetail;
+                                    startActivity(i);
+                                    finish();
+                                    Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(getApplicationContext(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.e(TAG, "response"+ex.toString());
                         }
                     }
-
                     @Override
                     public void onFailure(Call<DonorDataMain> call, Throwable t) {
                         // Log error here since request failed

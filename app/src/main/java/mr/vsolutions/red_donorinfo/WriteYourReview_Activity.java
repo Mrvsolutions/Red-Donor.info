@@ -111,8 +111,8 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
     }
     private void SendUserReviewCall() {
         try {
-            reviewHeadline = edtyourexperiance.getText().toString().trim();
-            reviewExperiance = edtheadline.getText().toString().trim();
+            reviewHeadline = edtheadline.getText().toString().trim();
+            reviewExperiance = edtyourexperiance.getText().toString().trim();
             String rating = String.valueOf(ratbar.getRating());
             if (Validatereview()) {
                 try {

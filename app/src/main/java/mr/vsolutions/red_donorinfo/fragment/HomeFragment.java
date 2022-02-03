@@ -100,33 +100,35 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, null, false);
-        markerRecyclerhorizontal = view.findViewById(R.id.markerRecycler);
-        listRecycler = view.findViewById(R.id.listRecycler);
-        radioMap = view.findViewById(R.id.radioMap);
-        radioList = view.findViewById(R.id.radioList);
-        imgremove = view.findViewById(R.id.imgremove);
-        rltoptabView = view.findViewById(R.id.rltoptabView);
-        rlmainlistview = view.findViewById(R.id.rlmainlistview);
-        rlremoveview = view.findViewById(R.id.rlremoveview);
-        llsortview = view.findViewById(R.id.llsortview);
-        viewborder = view.findViewById(R.id.viewborder);
-        mapFragment = (SupportMapFragment) this.getChildFragmentManager()
-                .findFragmentById(R.id.map);
-        mapView = mapFragment.getView();
-        mapFragment.getMapAsync(this);
-        markerRecyclerhorizontal.hasFixedSize();
-        markerRecyclerhorizontal.setLayoutManager(new GridLayoutManager(getContext(), 1, RecyclerView.HORIZONTAL, false));
-        SnapHelper snapHelper = new PagerSnapHelper();
-        snapHelper.attachToRecyclerView(markerRecyclerhorizontal);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                markerRecyclerhorizontal.setVisibility(View.GONE);
-                imgremove.setVisibility(View.GONE);
-                viewborder.setVisibility(View.GONE);
-                rlremoveview.setVisibility(View.GONE);
-            }
-        });
+        try {
+
+            markerRecyclerhorizontal = view.findViewById(R.id.markerRecycler);
+            listRecycler = view.findViewById(R.id.listRecycler);
+            radioMap = view.findViewById(R.id.radioMap);
+            radioList = view.findViewById(R.id.radioList);
+            imgremove = view.findViewById(R.id.imgremove);
+            rltoptabView = view.findViewById(R.id.rltoptabView);
+            rlmainlistview = view.findViewById(R.id.rlmainlistview);
+            rlremoveview = view.findViewById(R.id.rlremoveview);
+            llsortview = view.findViewById(R.id.llsortview);
+            viewborder = view.findViewById(R.id.viewborder);
+            mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapView = mapFragment.getView();
+            mapFragment.getMapAsync(this);
+            markerRecyclerhorizontal.hasFixedSize();
+            markerRecyclerhorizontal.setLayoutManager(new GridLayoutManager(getContext(), 1, RecyclerView.HORIZONTAL, false));
+            SnapHelper snapHelper = new PagerSnapHelper();
+            snapHelper.attachToRecyclerView(markerRecyclerhorizontal);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    markerRecyclerhorizontal.setVisibility(View.GONE);
+                    imgremove.setVisibility(View.GONE);
+                    viewborder.setVisibility(View.GONE);
+                    rlremoveview.setVisibility(View.GONE);
+                }
+            });
 //        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 //            @Override
 //            public void onMapClick(LatLng latLng) {
@@ -135,105 +137,115 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 //                rlremoveview.setVisibility(View.GONE);
 //            }
 //        });
-        imgremove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                markerRecyclerhorizontal.setVisibility(View.GONE);
-                imgremove.setVisibility(View.GONE);
-                viewborder.setVisibility(View.GONE);
-                rlremoveview.setVisibility(View.GONE);
+            imgremove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    markerRecyclerhorizontal.setVisibility(View.GONE);
+                    imgremove.setVisibility(View.GONE);
+                    viewborder.setVisibility(View.GONE);
+                    rlremoveview.setVisibility(View.GONE);
+                }
+            });
+            radioList.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    radioMap.setChecked(false);
+                    radioList.setChecked(true);
+                    radioList.setTextColor(Color.WHITE);
+                    radioMap.setTextColor(Color.GRAY);
+                    listRecycler.setVisibility(View.VISIBLE);
+                    markerRecyclerhorizontal.setVisibility(View.GONE);
+                    imgremove.setVisibility(View.GONE);
+                    viewborder.setVisibility(View.GONE);
+                    rlremoveview.setVisibility(View.GONE);
+                    rltoptabView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                    rlmainlistview.setBackgroundColor(getResources().getColor(R.color.ColorOffwhite));
+                    llsortview.setVisibility(View.VISIBLE);
+                }
+            });
+            radioMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    radioList.setChecked(false);
+                    radioMap.setChecked(true);
+                    radioMap.setTextColor(Color.WHITE);
+                    radioList.setTextColor(Color.GRAY);
+                    listRecycler.setVisibility(View.GONE);
+                    markerRecyclerhorizontal.setVisibility(View.GONE);
+                    imgremove.setVisibility(View.GONE);
+                    viewborder.setVisibility(View.GONE);
+                    rlremoveview.setVisibility(View.GONE);
+                    rltoptabView.setBackgroundColor(getResources().getColor(R.color.colortrasnparent));
+                    rlmainlistview.setBackgroundColor(getResources().getColor(R.color.colortrasnparent));
+                    llsortview.setVisibility(View.GONE);
+                }
+            });
+            if (getActivity() instanceof MainActivity && ((MainActivity) getActivity()).IsFromFilter) {
+                placesItemArrayList.clear();
+                placesItemArrayList = ((MainActivity) getActivity()).FilterItemArrayList;
+                SetMarkerLocations();
+                SetAdapterData(placesItemArrayList);
             }
-        });
-        radioList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                radioMap.setChecked(false);
-                radioList.setChecked(true);
-                radioList.setTextColor(Color.WHITE);
-                radioMap.setTextColor(Color.GRAY);
-                listRecycler.setVisibility(View.VISIBLE);
-                markerRecyclerhorizontal.setVisibility(View.GONE);
-                imgremove.setVisibility(View.GONE);
-                viewborder.setVisibility(View.GONE);
-                rlremoveview.setVisibility(View.GONE);
-                rltoptabView.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                rlmainlistview.setBackgroundColor(getResources().getColor(R.color.ColorOffwhite));
-                llsortview.setVisibility(View.VISIBLE);
-            }
-        });
-        radioMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                radioList.setChecked(false);
-                radioMap.setChecked(true);
-                radioMap.setTextColor(Color.WHITE);
-                radioList.setTextColor(Color.GRAY);
-                listRecycler.setVisibility(View.GONE);
-                markerRecyclerhorizontal.setVisibility(View.GONE);
-                imgremove.setVisibility(View.GONE);
-                viewborder.setVisibility(View.GONE);
-                rlremoveview.setVisibility(View.GONE);
-                rltoptabView.setBackgroundColor(getResources().getColor(R.color.colortrasnparent));
-                rlmainlistview.setBackgroundColor(getResources().getColor(R.color.colortrasnparent));
-                llsortview.setVisibility(View.GONE);
-            }
-        });
-        if (getActivity() instanceof MainActivity && ((MainActivity) getActivity()).IsFromFilter) {
-            placesItemArrayList = ((MainActivity) getActivity()).FilterItemArrayList;
-            SetMarkerLocations();
-            SetAdapterData(placesItemArrayList);
         }
-//        else {
-//            GetNearestDonorList();
-//        }
+        catch (Exception ex)
+        {
+            Log.e(TAG, "onCreateView"+ex.toString());
+        }
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.isMyLocationEnabled();
-        clusterManager = new ClusterManager(getActivity(), googleMap);
-        clusterManager.setAnimation(false);
-        clusterManager.setAlgorithm(new NonHierarchicalDistanceBasedAlgorithm<>());
-        clusterManager.setRenderer(new CustomRenderer<MapClusterItem>(getActivity(), googleMap, clusterManager));
-        clusterManager.setOnClusterClickListener(this);
-        clusterManager.setOnClusterItemClickListener(this);
-        mMap.setOnCameraIdleListener(clusterManager);
-        mMap.setOnMarkerClickListener(clusterManager);
-        mMap.setOnInfoWindowClickListener(clusterManager);
+        try {
+
+            mMap = googleMap;
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            mMap.isMyLocationEnabled();
+            clusterManager = new ClusterManager(getActivity(), googleMap);
+            clusterManager.setAnimation(false);
+            clusterManager.setAlgorithm(new NonHierarchicalDistanceBasedAlgorithm<>());
+            clusterManager.setRenderer(new CustomRenderer<MapClusterItem>(getActivity(), googleMap, clusterManager));
+            clusterManager.setOnClusterClickListener(this);
+            clusterManager.setOnClusterItemClickListener(this);
+            mMap.setOnCameraIdleListener(clusterManager);
+            mMap.setOnMarkerClickListener(clusterManager);
+            mMap.setOnInfoWindowClickListener(clusterManager);
 //        mMap.setOnCameraIdleListener(this);
 //        mMap.setOnCameraMoveStartedListener(this);
 //        mMap.setOnCameraMoveCanceledListener(this);
-        SetMarkerLocations();
-        mMap.setOnMapClickListener(this);
-        if (mapView != null &&
-                mapView.findViewById(Integer.parseInt("1")) != null) {
-            // Get the button view
-            View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-            // and next place it, on bottom right (as Google Maps app)
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
-                    locationButton.getLayoutParams();
-            // position on right bottom
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-            layoutParams.setMargins(0, 0, 30, 30);
-        }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Comman.checkAndRequestLocationPermissions(getActivity())) {
+            SetMarkerLocations();
+            mMap.setOnMapClickListener(this);
+            if (mapView != null &&
+                    mapView.findViewById(Integer.parseInt("1")) != null) {
+                // Get the button view
+                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+                // and next place it, on bottom right (as Google Maps app)
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                        locationButton.getLayoutParams();
+                // position on right bottom
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                layoutParams.setMargins(0, 0, 30, 30);
+            }
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Comman.checkAndRequestLocationPermissions(getActivity())) {
+                    buildGoogleApiClient();
+                    if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        return;
+                    }
+                    mMap.setMyLocationEnabled(true);
+                }
+            } else {
                 buildGoogleApiClient();
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 mMap.setMyLocationEnabled(true);
             }
-        } else {
-            buildGoogleApiClient();
-            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            mMap.setMyLocationEnabled(true);
+        }
+        catch (Exception ex)
+        {
+            ex.getMessage();
         }
     }
     private List<MapClusterItem> getItems() {
@@ -266,7 +278,6 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         Integer clickCount = (Integer) marker.getTag();
 
         if (clickCount != null) {
-
             marker.setTag(clickCount);
             DonorDataMain.Donordata donordata = placesItemArrayList.get(clickCount);
             markerRecyclerhorizontal.scrollToPosition(clickCount);
