@@ -36,6 +36,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
@@ -261,8 +262,10 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     mProgressDialog.show();
                 }
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, strage, UserGender, strbloodgroup, UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude),UserAddress,UserBirthDate);
+                String currentDate  = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                String currentTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(new Date());
+                String currentdatetime =  currentDate+" "+currentTime;
+                Call<DefaultResponse> call = apiService.CreateUserCall(username, UserCity, useremail, strage, UserGender, strbloodgroup, UserPass, usermobile, String.valueOf(latitude), String.valueOf(longitude),UserAddress,UserBirthDate,currentdatetime);
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

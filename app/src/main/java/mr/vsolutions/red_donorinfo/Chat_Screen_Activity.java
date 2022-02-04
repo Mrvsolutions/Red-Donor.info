@@ -11,11 +11,20 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Locale;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
@@ -65,7 +74,6 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
         donor_id = Comman.CommanUserDetail.getDonorId();
         Recieved_ID = getIntent().getStringExtra("RecieverId");
         RecieverProfilepic = getIntent().getStringExtra("RecieverProfilepic");
-
         imgback.setOnClickListener(this);
         imgsend.setOnClickListener(this);
         GetMsgDataList(false,false);
@@ -97,7 +105,14 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                                 {
                                     edtmsgtext.setText("");
                                 }
-                                indicatorAdapter.Update(lstchat);
+                                if (indicatorAdapter != null)
+                                {
+                                    indicatorAdapter.Update(lstchat);
+                                }
+                                else
+                                {
+                                    SetAdapterData(lstchat);
+                                }
                             }
                             else {
                                 SetAdapterData(lstchat);
@@ -127,8 +142,10 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
     private void SendMessage() {
         try {
             try {
+                String currentDate  = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                String currentTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(new Date());
                 ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-                Call<DefaultResponse> call = apiService.SendmsgAsync(donor_id,Recieved_ID,edtmsgtext.getText().toString().trim());
+                Call<DefaultResponse> call = apiService.SendmsgAsync(donor_id,Recieved_ID,edtmsgtext.getText().toString().trim(),currentDate,currentTime);
                 call.enqueue(new Callback<DefaultResponse>() {
                     @Override
                     public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {

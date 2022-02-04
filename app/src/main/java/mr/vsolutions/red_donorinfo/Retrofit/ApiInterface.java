@@ -32,7 +32,8 @@ public interface ApiInterface {
             @Field("donor_latitude") String Donor_latt,
             @Field("donor_longitude") String Donor_longt,
             @Field("donor_address") String donor_Address,
-            @Field("donor_dob") String Donor_Dob
+            @Field("donor_dob") String Donor_Dob,
+            @Field("signup_datetime") String Signup_datetime
     );
 
     @FormUrlEncoded
@@ -95,7 +96,8 @@ public interface ApiInterface {
             @Field("reviewer_id") String Reviewer_id,
             @Field("r_rating") String R_rating,
             @Field("review_title") String Review_title,
-            @Field("review_content") String Review_content
+            @Field("review_content") String Review_content,
+            @Field("review_datetime") String Review_datetime
     );
 
     @FormUrlEncoded
@@ -122,7 +124,9 @@ public interface ApiInterface {
     Call<DefaultResponse> SendmsgAsync(
             @Field("sender_id") String Sender_id,
             @Field("receiver_id") String Receiver_id,
-            @Field("msg_text") String Msg_text
+            @Field("msg_text") String Msg_text,
+            @Field("msg_date") String Msg_date,
+            @Field("msg_time") String Msg_time
     );
 
     @FormUrlEncoded
@@ -162,7 +166,8 @@ public interface ApiInterface {
             @Field("cmpt_by_donor_id") String Cmpt_by_donor_id,
             @Field("cmpt_of_donor_id") String Cmpt_of_donor_id,
             @Field("cmpt_title") String Cmpt_title,
-            @Field("cmpt_desc") String Cmpt_desc
+            @Field("cmpt_desc") String Cmpt_desc,
+            @Field("cmpt_datetime") String Cmpt_datetime
     );
 
     @FormUrlEncoded

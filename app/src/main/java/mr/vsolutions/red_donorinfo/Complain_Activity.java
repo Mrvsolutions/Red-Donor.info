@@ -14,6 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
@@ -90,12 +94,14 @@ public class Complain_Activity extends AppCompatActivity implements View.OnClick
         try {
             if (Validatereview()) {
                 try {
+                    String currentDate  = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                    String currentTime = new SimpleDateFormat("h:mm a", Locale.getDefault()).format(new Date());
+                    String currentdatetime = currentDate+" "+currentTime;
                     if (!mProgressDialog.isShowing()) {
                         mProgressDialog.show();
                     }
                     ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-                    Call<DefaultResponse> call = apiService.SendDonorComplainAsync(Comman.CommanUserDetail.getDonorId(),Donor_Id,edttitle.getText().toString().trim(),edtDescription.getText().toString().trim());
+                    Call<DefaultResponse> call = apiService.SendDonorComplainAsync(Comman.CommanUserDetail.getDonorId(),Donor_Id,edttitle.getText().toString().trim(),edtDescription.getText().toString().trim(),currentdatetime);
                     call.enqueue(new Callback<DefaultResponse>() {
                         @Override
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
