@@ -86,6 +86,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
       //  spinneruserage = findViewById(R.id.spinneruserage);
         radioGender = findViewById(R.id.radioGender);
         edtuserdateofbirth = findViewById(R.id.edtuserdateofbirth);
+        edtuserdateofbirth.setKeyListener(null);
         edtuseraddress = findViewById(R.id.edtuseraddress);
         strbloodgroup = getString(R.string.str_selectBloodGroup);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -337,6 +338,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 edtEmail.requestFocus();
                 return false;
             }
+            if (UserBirthDate.isEmpty()) {
+                Toast.makeText(this,getString(R.string.str_selectdateofbirth),Toast.LENGTH_LONG).show();
+                edtuserdateofbirth.requestFocus();
+                return false;
+            }
             if (UserGender.isEmpty()) {
                 Toast.makeText(this,getString(R.string.str_selectgendererror),Toast.LENGTH_LONG).show();
                 edtEmail.requestFocus();
@@ -345,11 +351,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             if (strbloodgroup.equals(getString(R.string.str_selectBloodGroup))) {
                 Toast.makeText(this,getString(R.string.str_selectBloodGroupError),Toast.LENGTH_LONG).show();
                 edtEmail.requestFocus();
-                return false;
-            }
-            if (UserBirthDate.isEmpty()) {
-                Toast.makeText(this,getString(R.string.str_selectdateofbirth),Toast.LENGTH_LONG).show();
-                edtuserdateofbirth.requestFocus();
                 return false;
             }
             if (UserCity.isEmpty()) {
@@ -364,6 +365,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
             if (UserPass.isEmpty()) {
                 edtpassword.setError(getString(R.string.str_enterPass));
+                edtpassword.requestFocus();
+                return false;
+            }
+            if (!UserPass.isEmpty() && !Comman.isValidPassword((UserPass)))
+            {
+                edtpassword.setError(getString(R.string.str_entervalidPass));
                 edtpassword.requestFocus();
                 return false;
             }

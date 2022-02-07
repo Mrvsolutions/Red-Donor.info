@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:maxLength="12"
+                    android:maxLength="10"
                     android:hint="@string/prompt_Mobile"
                     android:inputType="number"
                     android:theme="@style/MyEditText"/>
@@ -95,9 +95,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:editable="false"
+                    android:focusable="false"
                     android:hint="@string/prompt_Dateofbirth"
                     android:textIsSelectable="true"
-                    android:inputType="date"
+                    android:inputType="none"
                     android:theme="@style/MyEditText"/>
             </com.google.android.material.textfield.TextInputLayout>
 <!--            <TextView-->
@@ -203,13 +205,6 @@
                     android:layout_centerInParent="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp" />
-                <ImageView
-                    android:layout_width="@dimen/size_30dp"
-                    android:layout_height="@dimen/size_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/size_15dp"
-                    android:src="@drawable/ic_outline_keyboard_arrow_down_24"
-                    android:layout_centerVertical="true"/>
             </RelativeLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

@@ -68,10 +68,10 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
             Donordatum item =  _donorreviewdata.get(position-1);
             ReportViewHolder reportViewHolder = (ReportViewHolder) holder;
             reportViewHolder.txtname.setText(item.getReviewerNname());
-//            reportViewHolder.txtage.setText("Age: "+item.getDonorAge());
-//            reportViewHolder.txtaddress.setText(item.getDonorAddress());
+            reportViewHolder.txtreviewtitle.setText(item.getReviewTitle());
+            reportViewHolder.txtreviewdetail.setText(item.getReviewContent());
             reportViewHolder.txtratecount.setText(item.getrRating());
-            reportViewHolder.txtdetail.setText(item.getReviewContent());
+            reportViewHolder.txtdetail.setVisibility(View.GONE);
             reportViewHolder.txtratecount.setText(item.getrRating());
             Glide.with(pictureContx)
                     .load(item.getReviewerProfilePic())

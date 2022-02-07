@@ -203,13 +203,13 @@ public class MainActivity extends AppCompatActivity {
                     if (defaultResponse.getSuccess() == 1) {
                        // Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(MainActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
                 @Override
                 public void onFailure(Call<DefaultResponse> call, Throwable t) {
                     // Log error here since request failed
-                    Toast.makeText(MainActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(MainActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, t.toString());
                 }
             });

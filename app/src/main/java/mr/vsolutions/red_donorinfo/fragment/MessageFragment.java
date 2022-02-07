@@ -131,14 +131,14 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
                                 SetAdapterData(lstuserdetail);
                             }
                         } else {
-                            Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<AllMessage> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });

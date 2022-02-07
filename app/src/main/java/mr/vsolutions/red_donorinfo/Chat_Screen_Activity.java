@@ -118,14 +118,14 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                                 SetAdapterData(lstchat);
                             }
                         } else {
-                            Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getApplicationContext(), MsglistResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<MsgdataMain> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });
@@ -161,7 +161,7 @@ public class Chat_Screen_Activity extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onFailure(Call<DefaultResponse> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });

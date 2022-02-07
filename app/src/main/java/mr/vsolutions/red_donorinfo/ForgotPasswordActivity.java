@@ -97,7 +97,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         @Override
                         public void onFailure(Call<DefaultResponse> call, Throwable t) {
                             // Log error here since request failed
-                            Toast.makeText(ForgotPasswordActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(ForgotPasswordActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, t.toString());
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();

@@ -52,7 +52,7 @@ public class VerifyEmailCodeActivity extends AppCompatActivity implements View.O
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setProgress(10);
         mProgressDialog.setMax(100);
-        txtuseremail.setText(useremail+getString(R.string.str_VerifyEmailText));
+        txtuseremail.setText(useremail+" "+getString(R.string.str_VerifyEmailText));
         btn_verify.setOnClickListener(this);
         imgback.setOnClickListener(this);
         txtresendCode.setOnClickListener(this);

@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import mr.vsolutions.red_donorinfo.model.DonorDataMain;
 import mr.vsolutions.red_donorinfo.model.UserDetail;
@@ -27,6 +29,10 @@ public class Comman {
     public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 101;
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102;
     public static List<DonorDataMain.Donordata> FilterItemArrayList;
+    public static boolean isValidPassword(String password) {
+        Matcher matcher = Pattern.compile("((?=.*[a-z])(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%!]).{4,20})").matcher(password);
+        return matcher.matches();
+    }
     public static boolean checkAndRequestPermissions(Activity context) {
         try {
             int WExtstorePermission = ContextCompat.checkSelfPermission(context,

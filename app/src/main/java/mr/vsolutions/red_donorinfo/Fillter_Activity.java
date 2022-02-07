@@ -41,7 +41,7 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
     Spinner spinnerbloodGroup, spinnerminage, spinnermaxage, spinnerdistance;
     String[] bloodgroup = {"A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
     String[] MinAge = new String[33];
-    String[] MaxAge = new String[33];
+    String[] MaxAge = new String[48];
     String[] distance = new String[21];
     String strbloodgroup, strminage, strmaxage, strdistance, strgender;
     Button btn_Apply;
@@ -76,7 +76,10 @@ public class Fillter_Activity extends AppCompatActivity implements AdapterView.O
         for (int i = 0; i < 33; i++) {
             int val = 18 + i;
             MinAge[i] = String.valueOf(val);
-            MaxAge[i] = String.valueOf(val);
+        }
+        for (int k = 0; k < 48; k++) {
+            int val = 18 + k;
+            MaxAge[k] = String.valueOf(val);
         }
 
         for (int j = 0; j < 21; j++) {

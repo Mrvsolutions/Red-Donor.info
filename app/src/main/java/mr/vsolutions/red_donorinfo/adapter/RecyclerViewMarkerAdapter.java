@@ -55,26 +55,48 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         final DonorDataMain.Donordata donordata = pictureList.get(position);
 //
 //        holder.positionController.setBackgroundColor(pic.getSelected() ? Color.parseColor("#00000000") : Color.parseColor("#8c000000"));
-        holder.txtname.setText(donordata.getDonorName());
-        holder.txtage.setText("Age: "+donordata.getDonorAge());
-        holder.txtbloodgroup.setText("Blood Group: "+donordata.getDonorBloodGroup());
-        holder.txtCity.setText("City: "+donordata.getDonorCity());
-        if (!donordata.getAvgRating().isEmpty())
+        if (donordata != null)
         {
-            holder.txtavgrating.setText(donordata.getAvgRating());
+            holder.txtname.setText(donordata.getDonorName());
+            holder.txtage.setText("Age: "+donordata.getDonorAge());
+            holder.txtbloodgroup.setText("Blood Group: "+donordata.getDonorBloodGroup());
+            holder.txtCity.setText("City: "+donordata.getDonorCity());
+            if (!donordata.getAvgRating().isEmpty())
+            {
+                holder.txtavgrating.setText(donordata.getAvgRating());
+            }
+            else
+            {
+                holder.txtavgrating.setText("0");
+            }
+            holder.txtratingdetail.setText((donordata.getTotRating() + " rating and "+donordata.getTotReview() +" reviews"));
+            Glide.with(pictureContx)
+                    .load(donordata.getDonorProfilePic())
+                    .error(R.drawable.ic_person_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .apply(new RequestOptions().centerCrop())
+                    .into(holder.imgprofilephoto);
+
+            if (Comman.CommanUserDetail != null && donordata.getDonorId().equals(Comman.CommanUserDetail.getDonorId()))
+            {
+                holder.btnRate.setEnabled(false);
+                holder.btnchat.setEnabled(false);
+                holder.btnReport.setEnabled(false);
+                holder.btnReport.setAlpha(0.5f);
+                holder.btnRate.setAlpha(0.5f);
+                holder.btnchat.setAlpha(0.5f);
+            }
+            else
+            {
+                holder.btnRate.setEnabled(true);
+                holder.btnchat.setEnabled(true);
+                holder.btnReport.setEnabled(true);
+                holder.btnReport.setAlpha(1f);
+                holder.btnRate.setAlpha(1f);
+                holder.btnchat.setAlpha(1f);
+            }
         }
-        else
-        {
-            holder.txtavgrating.setText("0");
-        }
-        holder.txtratingdetail.setText((donordata.getTotRating() + " rating and "+donordata.getTotReview() +" reviews"));
-        Glide.with(pictureContx)
-                .load(donordata.getDonorProfilePic())
-                .error(R.drawable.ic_person_placeholder)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .apply(new RequestOptions().centerCrop())
-                .into(holder.imgprofilephoto);
 
 //        holder.image.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -96,20 +118,26 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         holder.btnchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(LoginCompleted == null || LoginCompleted.isEmpty()) {
-                    Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
-                    pictureContx.startActivity(i);
+                try {
+                    if(LoginCompleted == null || LoginCompleted.isEmpty()) {
+                        Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                        pictureContx.startActivity(i);
+                    }
+                    else if (!donordata.getDonorId().equals(Comman.CommanUserDetail.getDonorId()))
+                    {
+                        Intent i = new Intent(pictureContx.getApplicationContext(), Chat_Screen_Activity.class);
+                        i.putExtra("RecieverId",donordata.getDonorId());
+                        i.putExtra("RecieverName",donordata.getDonorName());
+                        pictureContx.startActivity(i);
+                    }
+                    else
+                    {
+                        Toast.makeText(pictureContx,"This is your profile. please select other one",Toast.LENGTH_LONG).show();
+                    }
                 }
-                else if (!donordata.getDonorId().equals(Comman.CommanUserDetail.getDonorId()))
+                catch (Exception ex)
                 {
-                    Intent i = new Intent(pictureContx.getApplicationContext(), Chat_Screen_Activity.class);
-                    i.putExtra("RecieverId",donordata.getDonorId());
-                    i.putExtra("RecieverName",donordata.getDonorName());
-                    pictureContx.startActivity(i);
-                }
-                else
-                {
-                    Toast.makeText(pictureContx,"This is your profile. please select other one",Toast.LENGTH_LONG).show();
+
                 }
             }
         });

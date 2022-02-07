@@ -255,7 +255,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                for (int i = 0; i < placesItemArrayList.size(); i++) {
                    if (!placesItemArrayList.get(i).getDonorLatitude().isEmpty() && !placesItemArrayList.get(i).getDonorLongitude().isEmpty()) {
                        LatLng location = new LatLng(Double.parseDouble(placesItemArrayList.get(i).getDonorLatitude()), Double.parseDouble(placesItemArrayList.get(i).getDonorLongitude()));
-                       clusterItemList.add(new MapClusterItem(placesItemArrayList.get(i).getDonorAddress(),location, placesItemArrayList.get(i)));
+                       clusterItemList.add(new MapClusterItem("",location, placesItemArrayList.get(i)));
                    }
                }
            }
@@ -325,14 +325,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                             SetMarkerLocations();
                            // SetAdapterData(lstuserdetail);
                         } else {
-                            Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DonorDataMain> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });
@@ -362,14 +362,14 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
                           //  SetMarkerLocations();
                              SetAdapterData(lstuserdetail);
                         } else {
-                            Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                          //  Toast.makeText(getActivity(), LoginResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DonorDataMain> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getActivity(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });

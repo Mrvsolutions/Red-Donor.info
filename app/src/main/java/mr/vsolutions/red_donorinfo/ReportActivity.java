@@ -79,21 +79,21 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
                     public void onResponse(Call<DonorReviewSummary> call, Response<DonorReviewSummary> response) {
                         DonorReviewSummary Response = response.body();
                         if (Response.getSuccess() == 1) {
-                            Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
                             List<Donordatum> lstuserdetail = Response.getDonordata();
                             Donorsummary donorsummary = Response.getDonorsummary().get(0);
                           //  placesItemArrayList = lstuserdetail;
                            // SetMarkerLocations();
                             SetAdapterData(lstuserdetail,donorsummary);
                         } else {
-                            Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(getApplicationContext(), Response.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<DonorReviewSummary> call, Throwable t) {
                         // Log error here since request failed
-                        Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, t.toString());
                     }
                 });

@@ -43,7 +43,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
     public ImageView imgtoolprofilephoto,imgback,imgprofilephoto;
     public LinearLayout llcustomesearchview;
     RelativeLayout rltoolbarhome,rltoolbar;
-    TextView title,txtname,txtage,txtaddress;
+    TextView title,txtname,txtage,txtaddress,txtreviewmsg;
     RatingBar ratbar;
     EditText edtyourexperiance,edtheadline;
     Button btn_Submit;
@@ -69,6 +69,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
         btn_Submit = findViewById(R.id.btn_Submit);
         edtyourexperiance = findViewById(R.id.edtyourexperiance);
         edtheadline = findViewById(R.id.edtheadline);
+        txtreviewmsg = findViewById(R.id.txtreviewmsg);
         title.setText(getString(R.string.str_WriteaReview));
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
@@ -83,7 +84,7 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
         txtname.setText(getIntent().getStringExtra("Donor_Name"));
         txtage.setText("Age: "+getIntent().getStringExtra("Donor_Age"));
         txtaddress.setText("Address: "+getIntent().getStringExtra("Donor_address"));
-
+        txtreviewmsg.setText(getString(R.string.str_Howwasyoue_exp)+" "+getIntent().getStringExtra("Donor_Name")+"?");
         Glide.with(this)
                 .load(R.drawable.ic_person_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -168,12 +169,12 @@ public class WriteYourReview_Activity extends AppCompatActivity implements View.
     }
     private boolean Validatereview() {
         try {
-            if (reviewExperiance.isEmpty()) {
-                edtyourexperiance.setError(getString(R.string.str_shareyourExperiance));
-                edtyourexperiance.requestFocus();
-                return false;
-            }
-            if (reviewHeadline.isEmpty()) {
+//            if (reviewExperiance.isEmpty()) {
+//                edtyourexperiance.setError(getString(R.string.str_shareyourExperiance));
+//                edtyourexperiance.requestFocus();
+//                return false;
+//            }
+            if (!reviewExperiance.isEmpty() && reviewHeadline.isEmpty()) {
                 edtheadline.setError(getString(R.string.str_shareheadline));
                 edtheadline.requestFocus();
                 return false;

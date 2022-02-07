@@ -48,7 +48,7 @@
     <string name="str_Address">Address</string>
     <string name="str_Profile">Profile</string>
     <string name="str_writeyourreview">Write your review:</string>
-    <string name="str_Howwasyoue_exp">How was your appointment experience with Pinkal Kachhia?</string>
+    <string name="str_Howwasyoue_exp">How was your appointment experience with</string>
     <string name="str_YourExperience">Type your experience</string>
     <string name="str_headline">Headline for your review</string>
     <string name="str_Submit">Submit</string>
@@ -56,13 +56,14 @@
     <string name="str_agreetems">Please agree to terms and conditions.</string>
     <string name="str_passwordnotmatch">Password Does not Match</string>
     <string name="str_enterPass">Please enter password</string>
+    <string name="str_entervalidPass">should contain at least one digit\nshould contain at least one special char\nshould contain at least one upper case\nshould contain at least 8 characters</string>
     <string name="str_enterConfPass">Please enter confirm password</string>
     <string name="str_entrCity">Please enter city</string>
     <string name="str_validemail">please Enter a valid email</string>
     <string name="str_enterEmail">Please enter email address</string>
     <string name="str_enterMobile">Please enter mobile number</string>
     <string name="str_enterValidMobile">Please enter valid 10 digit phone number</string>
-    <string name="str_entername">Please Enter user name</string>
+    <string name="str_entername">Please enter your name</string>
     <string name="str_confirmEmail">Confirm Mail</string>
     <string name="str_verifyEmail">Verify your email</string>
     <string name="str_verifyEmaildescr">We sent OTP code to your email</string>

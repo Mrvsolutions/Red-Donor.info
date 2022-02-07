@@ -107,13 +107,16 @@
                 android:text="@string/str_writeyourreview"/>
 
                 <TextView
+                    android:id="@+id/txtreviewmsg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_18sp"
+                    android:lineSpacingMultiplier="1.3"
                     android:textColor="@color/colortext"
                     android:layout_marginTop="@dimen/size_10dp"
                     android:fontFamily="@font/proximanovacond_regular"
                     android:layout_marginLeft="@dimen/size_15dp"
+                    android:layout_marginRight="@dimen/size_15dp"
                     android:text="@string/str_Howwasyoue_exp"/>
                 <LinearLayout
                     android:layout_width="match_parent"

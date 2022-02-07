@@ -42,13 +42,6 @@
                         android:layout_centerInParent="true"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp" />
-                    <ImageView
-                        android:layout_width="@dimen/size_30dp"
-                        android:layout_height="@dimen/size_30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/size_15dp"
-                        android:src="@drawable/ic_outline_keyboard_arrow_down_24"
-                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
@@ -76,13 +69,6 @@
                         android:layout_centerInParent="true"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"/>
-                    <ImageView
-                        android:layout_width="@dimen/size_30dp"
-                        android:layout_height="@dimen/size_30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/size_15dp"
-                        android:src="@drawable/ic_outline_keyboard_arrow_down_24"
-                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
@@ -110,13 +96,6 @@
                         android:layout_centerInParent="true"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp" />
-                    <ImageView
-                        android:layout_width="@dimen/size_30dp"
-                        android:layout_height="@dimen/size_30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/size_15dp"
-                        android:src="@drawable/ic_outline_keyboard_arrow_down_24"
-                        android:layout_centerVertical="true"/>
                 </RelativeLayout>
                 <TextView
                     android:id="@+id/textView4"
@@ -182,13 +161,6 @@
                     android:layout_centerInParent="true"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp" />
-                <ImageView
-                    android:layout_width="@dimen/size_30dp"
-                    android:layout_height="@dimen/size_30dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/size_15dp"
-                    android:src="@drawable/ic_outline_keyboard_arrow_down_24"
-                    android:layout_centerVertical="true"/>
             </RelativeLayout>
             <Button
                 android:id="@+id/btn_Apply"
