@@ -208,7 +208,7 @@ public class Profile_Activity extends AppCompatActivity implements View.OnClickL
             edtAddress.setEnabled(true);
             edtCity.setEnabled(true);
             edtmobileno.setEnabled(true);
-            edtBloodGroup.setEnabled(true);
+            edtBloodGroup.setEnabled(false);
             rlmainimageview.setEnabled(true);
             cardviewCamera.setEnabled(true);
             radioGender.setClickable(true);

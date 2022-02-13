@@ -86,7 +86,17 @@ public class RecyclerViewReportAdapter extends RecyclerView.Adapter<RecyclerView
 
             ReportHeaderViewHolder headerViewHolder = (ReportHeaderViewHolder) holder;
             headerViewHolder.txttotalrating.setText(_donorsummary.getAvgRating());
-            headerViewHolder.txtratingdetail.setText((_donorsummary.getTotRating() + " rating and "+_donorsummary.getTotReview() +" reviews"));
+
+            String strRating = " Rating", strReview = " Review";
+            if (!_donorsummary.getTotRating().equals("0") && !_donorsummary.getTotRating().equals("1"))
+            {
+                strRating = " Ratings";
+            }
+            if (!_donorsummary.getTotReview().equals("0") && !_donorsummary.getTotReview().equals("1"))
+            {
+                strReview = " Reviews";
+            }
+            headerViewHolder.txtratingdetail.setText((_donorsummary.getTotRating() + strRating+" & "+_donorsummary.getTotReview() +strReview));
             int colors[] = new int[]{
                     Color.parseColor("#0e9d58"),
                     Color.parseColor("#bfd047"),

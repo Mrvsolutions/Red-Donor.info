@@ -126,6 +126,12 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
                 edtnewPassWord.requestFocus();
                 return false;
             }
+            if (!UserNewPass.isEmpty() && !Comman.isValidPassword((UserNewPass)))
+            {
+                edtnewPassWord.setError(getString(R.string.str_entervalidPass));
+                edtnewPassWord.requestFocus();
+                return false;
+            }
             if (UserConfpass.isEmpty()) {
                 edtconfrmPassWord.setError(getString(R.string.str_enterConfPass));
                 edtconfrmPassWord.requestFocus();

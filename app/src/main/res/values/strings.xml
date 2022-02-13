@@ -15,7 +15,7 @@
     <string name="prompt_password">Password</string>
     <string name="prompt_confirm_password">Comfirm Password</string>
     <string name="Forgot_password">Forgot Password?</string>
-    <string name="str_forgotPass_descr">Please write your email to receive a confirmation code to set a new password.</string>
+    <string name="str_forgotPass_descr">Please write your email to receive a temporary password.</string>
     <string name="action_sign_in">Already have an account? Log In</string>
     <string name="str_sign_uptocontinue">Sign up to continue</string>
     <string name="str_sign_intocontinue">Sign in to continue</string>

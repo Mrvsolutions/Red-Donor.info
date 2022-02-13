@@ -30,14 +30,14 @@
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
     <androidx.cardview.widget.CardView
-        android:layout_width="@dimen/size_50dp"
-        android:layout_height="@dimen/size_20dp"
+        android:layout_width="@dimen/size_60dp"
+        android:layout_height="@dimen/size_25dp"
         app:cardCornerRadius="@dimen/size_5dp"
         android:layout_marginTop="@dimen/size_5dp"
         android:layout_gravity="center_horizontal">
     <LinearLayout
-        android:layout_width="@dimen/size_50dp"
-        android:layout_height="@dimen/size_20dp"
+        android:layout_width="@dimen/size_60dp"
+        android:layout_height="@dimen/size_25dp"
         android:orientation="horizontal"
         android:background="@color/color_green"
         android:gravity="center"
@@ -68,6 +68,7 @@
     android:fontFamily="@font/proximanovacond_regular"
     android:layout_marginTop="@dimen/size_5dp"
     android:textSize="@dimen/text_size_10sp"
+    android:padding="@dimen/size_5dp"
     android:textColor="@color/color_ratinglight"
     android:layout_gravity="center"
     android:gravity="center"/>

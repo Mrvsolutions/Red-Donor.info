@@ -69,7 +69,16 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
             {
                 holder.txtavgrating.setText("0");
             }
-            holder.txtratingdetail.setText((donordata.getTotRating() + " rating and "+donordata.getTotReview() +" reviews"));
+            String strRating = " Rating", strReview = " Review";
+            if (!donordata.getTotRating().equals("0") && !donordata.getTotRating().equals("1"))
+            {
+                strRating = " Ratings";
+            }
+            if (!donordata.getTotReview().equals("0") && !donordata.getTotReview().equals("1"))
+            {
+                strReview = " Reviews";
+            }
+            holder.txtratingdetail.setText((donordata.getTotRating() + strRating+" & "+donordata.getTotReview() +strReview));
             Glide.with(pictureContx)
                     .load(donordata.getDonorProfilePic())
                     .error(R.drawable.ic_person_placeholder)
@@ -112,7 +121,37 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
             public void onClick(View v) {
                     Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
                     i.putExtra("Donor_Id",donordata.getDonorId());
+                    String strRating = " Rating", strReview = " Review", strtitle;
+                    if (!donordata.getTotRating().equals("0") && !donordata.getTotRating().equals("1"))
+                    {
+                        strRating = " Ratings";
+                    }
+                    if (!donordata.getTotReview().equals("0") && !donordata.getTotReview().equals("1"))
+                    {
+                        strReview = " Reviews";
+                    }
+                    strtitle = (donordata.getTotRating() + strRating+" & "+donordata.getTotReview() +strReview);
+                    i.putExtra("titleheading",strtitle);
                     pictureContx.startActivity(i);
+            }
+        });
+        holder.txtratingdetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(pictureContx.getApplicationContext(), ReportActivity.class);
+                i.putExtra("Donor_Id",donordata.getDonorId());
+                String strRating = " Rating", strReview = " Review", strtitle;
+                if (!donordata.getTotRating().equals("0") && !donordata.getTotRating().equals("1"))
+                {
+                    strRating = " Ratings";
+                }
+                if (!donordata.getTotReview().equals("0") && !donordata.getTotReview().equals("1"))
+                {
+                    strReview = " Reviews";
+                }
+                strtitle = (donordata.getTotRating() + strRating+" & "+donordata.getTotReview() +strReview);
+                i.putExtra("titleheading",strtitle);
+                pictureContx.startActivity(i);
             }
         });
         holder.btnchat.setOnClickListener(new View.OnClickListener() {
@@ -144,13 +183,19 @@ public class RecyclerViewMarkerAdapter extends RecyclerView.Adapter<MarkerViewHo
         holder.btnRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i=new Intent(pictureContx.getApplicationContext(), WriteYourReview_Activity.class);
-                i.putExtra("Donor_Id",donordata.getDonorId());
-                i.putExtra("Donor_Name",donordata.getDonorName());
-                i.putExtra("Donor_address",donordata.getDonorAddress());
-                i.putExtra("Donor_userimage",donordata.getDonorProfilePic());
-                i.putExtra("Donor_Age",donordata.getDonorAge());
-                pictureContx.startActivity(i);
+                if(LoginCompleted == null || LoginCompleted.isEmpty()) {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), LoginActivity.class);
+                    pictureContx.startActivity(i);
+                }
+                else {
+                    Intent i = new Intent(pictureContx.getApplicationContext(), WriteYourReview_Activity.class);
+                    i.putExtra("Donor_Id", donordata.getDonorId());
+                    i.putExtra("Donor_Name", donordata.getDonorName());
+                    i.putExtra("Donor_address", donordata.getDonorAddress());
+                    i.putExtra("Donor_userimage", donordata.getDonorProfilePic());
+                    i.putExtra("Donor_Age", donordata.getDonorAge());
+                    pictureContx.startActivity(i);
+                }
             }
         });
         holder.btnReport.setOnClickListener(new View.OnClickListener() {

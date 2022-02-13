@@ -48,7 +48,7 @@ public class ReportActivity extends AppCompatActivity implements View.OnClickLis
         title = findViewById(R.id.title);
         reportlistRecycler = findViewById(R.id.reportlistRecycler);
         imgback = findViewById(R.id.imgback);
-        title.setText(getString(R.string.str_reporttitle));
+        title.setText(getIntent().getStringExtra("titleheading"));
         llcustomesearchview.setVisibility(View.GONE);
         rltoolbarhome.setVisibility(View.GONE);
         rltoolbar.setVisibility(View.VISIBLE);
