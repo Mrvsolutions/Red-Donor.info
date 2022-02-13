@@ -56,7 +56,7 @@
     <string name="str_agreetems">Please agree to terms and conditions.</string>
     <string name="str_passwordnotmatch">Password Does not Match</string>
     <string name="str_enterPass">Please enter password</string>
-    <string name="str_entervalidPass">should contain at least one digit\nshould contain at least one special char\nshould contain at least one upper case\nshould contain at least 8 characters</string>
+    <string name="str_entervalidPass">should contain at least one digit\n0x25D9 should contain at least one special char\n0x25D9 should contain at least one upper case\n0x25D9 should contain at least 8 characters</string>
     <string name="str_enterConfPass">Please enter confirm password</string>
     <string name="str_entrCity">Please enter city</string>
     <string name="str_validemail">please Enter a valid email</string>
