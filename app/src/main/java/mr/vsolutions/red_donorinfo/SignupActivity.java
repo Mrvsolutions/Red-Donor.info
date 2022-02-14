@@ -370,7 +370,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             }
             if (!UserPass.isEmpty() && !Comman.isValidPassword((UserPass)))
             {
-                edtpassword.setError(getString(R.string.str_entervalidPass));
+                int unicode = 0x2022;
+                String textIcon =  new String(Character.toChars(unicode));
+                String strpass = textIcon+" "+getString(R.string.str_entervalidPass)+"\n";
+                String strpass1 = textIcon+" "+getString(R.string.str_entervalidPass1)+"\n";
+                String strpass2 =  textIcon+" "+getString(R.string.str_entervalidPass2)+"\n";
+                String strpass3 =  textIcon+" "+getString(R.string.str_entervalidPass3);
+                edtpassword.setError(strpass + strpass1 + strpass2 + strpass3);
                 edtpassword.requestFocus();
                 return false;
             }

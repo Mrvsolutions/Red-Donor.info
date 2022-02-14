@@ -128,7 +128,13 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             }
             if (!UserNewPass.isEmpty() && !Comman.isValidPassword((UserNewPass)))
             {
-                edtnewPassWord.setError(getString(R.string.str_entervalidPass));
+                int unicode = 0x2022;
+                String textIcon =  new String(Character.toChars(unicode));
+                String strpass = textIcon+" "+getString(R.string.str_entervalidPass)+"\n";
+                String strpass1 = textIcon+" "+getString(R.string.str_entervalidPass1)+"\n";
+                String strpass2 =  textIcon+" "+getString(R.string.str_entervalidPass2)+"\n";
+                String strpass3 =  textIcon+" "+getString(R.string.str_entervalidPass3);
+                edtnewPassWord.setError(strpass + strpass1 + strpass2 + strpass3);
                 edtnewPassWord.requestFocus();
                 return false;
             }
