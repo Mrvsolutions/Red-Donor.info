@@ -8,14 +8,21 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.TextPaint;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -58,7 +65,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     String username, usermobile, useremail, UserPass, UserConfpass, UserCity , UserGender = "",UserBirthDate,UserAddress;
     ProgressDialog mProgressDialog;
     RadioGroup radioGender;
-    TextView txtselectedage;
+    TextView txtselectedage,txtterms;
     private static final String TAG = SignupActivity.class.getSimpleName();
     String[] bloodgroup = {"Select Your Blood Group","A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"};
    // String[] MaxAge = new String[33];
@@ -82,6 +89,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtconfpassword = findViewById(R.id.edtconfpassword);
         edtcity=  findViewById(R.id.edtcity);
         txtselectedage =  findViewById(R.id.txtselectedage);
+        txtterms =  findViewById(R.id.txtterms);
         spinneruserbloodGroup = findViewById(R.id.spinneruserbloodGroup);
       //  spinneruserage = findViewById(R.id.spinneruserage);
         radioGender = findViewById(R.id.radioGender);
@@ -96,6 +104,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 //            int val = 18 + i;
 //            MaxAge[i] = String.valueOf(val);
 //        }
+        Spannable spannableString = new SpannableString(getString(R.string.str_terms));
+        spannableString.setSpan(linkClick, 11, txtterms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new UnderlineSpan(),11, txtterms.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        txtterms.setText(spannableString, TextView.BufferType.SPANNABLE);
+        txtterms.setMovementMethod(LinkMovementMethod.getInstance());
         radioGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -136,23 +149,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
         };
-//        GPSTracker gpsTracker = new GPSTracker(this);
-//        if (gpsTracker.getIsGPSTrackingEnabled())
-//        {
-//            latitude = String.valueOf(gpsTracker.getLatitude());
-//            longitude = String.valueOf(gpsTracker.getLongitude());
-//            Toast.makeText(this,"Lat:- "+latitude+" \nLong:- "+longitude,Toast.LENGTH_LONG).show();
-//        }
-//        else
-//        {
-//            gpsTracker.showSettingsAlert();
-//        }
-//        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//            OnGPS();
-//        } else {
-//            getLocation();
-//        }
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setTitle("Loading...");
         mProgressDialog.setMessage("please wait...");
@@ -165,6 +161,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         SpannableString str2 = new SpannableString(" Log In");
         str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
+        str2.setSpan(new UnderlineSpan(),0, str2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         builder.append(str2);
 
         txtnewuser.setText(builder, TextView.BufferType.SPANNABLE);
@@ -178,7 +176,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         btn_Signup.setOnClickListener(this);
         edtuserdateofbirth.setOnClickListener(this);
     }
+    ClickableSpan linkClick = new ClickableSpan() {
+        @Override
+        public void onClick(View view) {
+            Uri uri = Uri.parse(getString(R.string.strTermsURL));
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            view.invalidate();
+        }
 
+        @Override
+        public void updateDrawState(TextPaint ds) {
+            if (txtterms.isPressed()) {
+                ds.setColor(Color.BLUE);
+            } else {
+                ds.setColor(Color.RED);
+            }
+            txtterms.invalidate();
+        }
+    };
+//textView.setHighlightColor(Color.TRANSPARENT);
     private String getAge(int year, int month, int day){
         Calendar dob = Calendar.getInstance();
         Calendar today = Calendar.getInstance();
@@ -412,27 +428,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         return true;
     }
 
-    private void OnGPS() {
-        try {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Enable GPS").setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                }
-            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            final AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        } catch (Exception ex) {
-            Log.e(TAG, ex.toString());
-        }
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         try {
@@ -452,28 +447,4 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
-
-//    private void getLocation() {
-//        try {
-//            if (ActivityCompat.checkSelfPermission(
-//                    this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                    this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-//            } else {
-//                Location locationGPS = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                if (locationGPS != null) {
-//                    double lat = locationGPS.getLatitude();
-//                    double longi = locationGPS.getLongitude();
-//                    latitude = String.valueOf(lat);
-//                    longitude = String.valueOf(longi);
-//                  //    showLocation.setText("Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude);
-//                    Toast.makeText(this, "Your Location: " + "\n" + "Latitude: " + latitude + "\n" + "Longitude: " + longitude, Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(this, "Unable to find location.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        } catch (Exception ex) {
-//            Log.e(TAG, ex.toString());
-//        }
-//    }
 }

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +69,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
         ((SimpleItemAnimator) listMessageRecycler.getItemAnimator()).setSupportsChangeAnimations(false);
         SpannableString str2= new SpannableString(" Sign Up");
         str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
+        str2.setSpan(new UnderlineSpan(),0, str2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builderSignup.append(str2);
         txtsignup.setText( builderSignup, TextView.BufferType.SPANNABLE);
 
@@ -76,6 +79,7 @@ public class MessageFragment extends Fragment implements View.OnClickListener {
 
         SpannableString strlogin2 = new SpannableString(" Log In");
         strlogin2.setSpan(new ForegroundColorSpan(Color.RED), 0, strlogin2.length(), 0);
+        strlogin2.setSpan(new UnderlineSpan(),0, strlogin2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         builderSignin.append(strlogin2);
         txtsignin.setText(builderSignin, TextView.BufferType.SPANNABLE);
 
