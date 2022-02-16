@@ -3,6 +3,7 @@ package mr.vsolutions.red_donorinfo.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,8 +39,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SettingsFragment extends Fragment implements View.OnClickListener {
-    RelativeLayout rlInviteFriend,rlMoreapp,rlEditProfile,rlRateApp;
+    RelativeLayout rlInviteFriend,rlMoreapp,rlEditProfile,rlRateApp,rlTermsandCondition,rlPrivacyPolicy;
     TextView txtLogout;
+    ProgressDialog mProgressDialog;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,11 +52,21 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         rlEditProfile = root.findViewById(R.id.rlEditProfile);
         rlRateApp = root.findViewById(R.id.rlRateApp);
         txtLogout = root.findViewById(R.id.txtLogout);
+        rlTermsandCondition = root.findViewById(R.id.rlTermsandCondition);
+        rlPrivacyPolicy = root.findViewById(R.id.rlPrivacyPolicy);
         rlRateApp.setOnClickListener(this);
         rlEditProfile.setOnClickListener(this);
         rlInviteFriend.setOnClickListener(this);
         rlMoreapp.setOnClickListener(this);
         txtLogout.setOnClickListener(this);
+        rlPrivacyPolicy.setOnClickListener(this);
+        rlTermsandCondition.setOnClickListener(this);
+        mProgressDialog = new ProgressDialog(getActivity());
+        mProgressDialog.setTitle("Loading...");
+        mProgressDialog.setMessage("please wait...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setProgress(10);
+        mProgressDialog.setMax(100);
         if (Comman.CommanUserDetail != null)
         {
             txtLogout.setVisibility(View.VISIBLE);
@@ -112,6 +124,9 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
 
     private void UserSignoutCall(String DonorID) {
         try {
+            if (!mProgressDialog.isShowing()) {
+                mProgressDialog.show();
+            }
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
             Call<DefaultResponse> call = apiService.SignoutAsync(DonorID);
@@ -134,17 +149,26 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                     } else {
                         Toast.makeText(getActivity().getApplicationContext(), defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+                    if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
                 }
                 @Override
                 public void onFailure(Call<DefaultResponse> call, Throwable t) {
                     // Log error here since request failed
                     Toast.makeText(getActivity().getApplicationContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     Log.e("SettingFragment", t.toString());
+                    if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                        mProgressDialog.dismiss();
+                    }
                 }
             });
         }
         catch (Exception ex)
         {
+            if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
+                mProgressDialog.dismiss();
+            }
             Log.e("SettingFragment","UserDeviceRegisterCall - "+ ex.toString());
         }
     }
@@ -154,6 +178,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.rlRateApp:
                 Ratting_Dialog(getActivity());
+                break;
+            case R.id.rlPrivacyPolicy:
+            case R.id.rlTermsandCondition:
+                OpenTermsPolicy();
                 break;
             case  R.id.rlEditProfile:
                 if (Comman.CommanUserDetail != null){
@@ -187,5 +215,10 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    private void OpenTermsPolicy() {
+        Uri uri = Uri.parse(getString(R.string.strTermsURL));
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
     }
 }

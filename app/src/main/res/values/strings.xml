@@ -106,4 +106,8 @@
     <string name="str_newpassword">New Password</string>
     <string name="str_enterOldPass">Please enter old password</string>
     <string name="str_enterNewPass">Please enter new password</string>
+    <string name="str_ifanaccount">If an account with </string>
+    <string name="str_existsyoushould"> exists you should receive a link to reset your password.</string>
+    <string name="str_pleaseCheckYourMail">Please check your email.</string>
+    <string name="str_emailDialogDescription">If you don\'t see your email within 5 minutes, please check your spam folder.</string>
 </resources>

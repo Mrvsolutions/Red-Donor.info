@@ -1,9 +1,18 @@
 package mr.vsolutions.red_donorinfo;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -53,7 +62,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_confirmmail:
-                ForgotMailCall();
+                 useremail = edtEmail.getText().toString().trim();
+                 ForgotMailCall();
                 break;
             case  R.id.txtnewuser:
                 Intent i = new Intent(getApplicationContext(),SignupActivity.class);
@@ -81,17 +91,14 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
                         public void onResponse(Call<DefaultResponse> call, Response<DefaultResponse> response) {
                             DefaultResponse defaultResponse = response.body();
                             if (defaultResponse.getSuccess() == 1) {
-                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
-
-                                Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                                startActivity(intent);
-                                finish();
+                              //  Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             } else {
-                                Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(ForgotPasswordActivity.this, defaultResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                             if ((mProgressDialog != null) && mProgressDialog.isShowing()) {
                                 mProgressDialog.dismiss();
                             }
+                            OpenForgotinfoDialog();
                         }
 
                         @Override
@@ -133,5 +140,52 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             Log.e(TAG, "ValidateEmail :- "+ex.toString());
         }
         return true;
+    }
+    void OpenForgotinfoDialog()
+    {
+        try {
+            SpannableStringBuilder builderspan = new SpannableStringBuilder();
+            SpannableString str1 = new SpannableString(getString(R.string.str_ifanaccount)+" ");
+            str1.setSpan(new ForegroundColorSpan(Color.BLACK), 0, str1.length(), 0);
+            builderspan.append(str1);
+            SpannableString str2 = new SpannableString(useremail);
+            str2.setSpan(new ForegroundColorSpan(Color.RED), 0, str2.length(), 0);
+            str2.setSpan(new UnderlineSpan(),0, str2.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            builderspan.append(str2);
+            SpannableString str3 = new SpannableString(" "+getString(R.string.str_existsyoushould)+"\n\n"+getString(R.string.str_emailDialogDescription));
+            str1.setSpan(new ForegroundColorSpan(Color.BLACK), 0, str1.length(), 0);
+            builderspan.append(str3);
+            AlertDialog.Builder builder= new AlertDialog.Builder(this);
+            //Set a title
+            builder.setTitle(getString(R.string.str_pleaseCheckYourMail));
+            //Set a message
+            builder.setMessage(builderspan);
+            builder.setPositiveButton("Resend Mail",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    dialog.dismiss();
+                    ForgotMailCall();
+                }
+            });
+            builder.setNegativeButton("Ok",new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    dialog.dismiss();
+                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+                    startActivity(intent);
+                    finishAffinity();
+                }
+            });
+            //Create the dialog
+            AlertDialog alertdialog=builder.create();
+            //show the alertdialog
+            alertdialog.show();
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG, "OpenForgotinfoDialog :- "+ex.toString());
+        }
     }
 }
