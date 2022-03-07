@@ -179,8 +179,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     ClickableSpan linkClick = new ClickableSpan() {
         @Override
         public void onClick(View view) {
-            Uri uri = Uri.parse(getString(R.string.strTermsURL));
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            Intent i = new Intent(getApplicationContext(), WebViewActivity.class);
+            startActivity(i);
             view.invalidate();
         }
 

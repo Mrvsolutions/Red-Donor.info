@@ -4,6 +4,7 @@
     <string name="google_maps_key">AIzaSyAeTEB1vcCKs99N0xzN0Za7ygGJxra-fzI</string>
     <string name="str_dialogTitle">How Would You \nRate Our App Experience?</string>
     <string name="strTermsURL">http://reddonor.info/termsnConditions.html</string>
+    <string name="strTermsTitle">Terms &amp; Conditions</string>
     <string name="str_Continue">Continue</string>
     <string name="str_nothanks">No Thanks!</string>
     <string name="str_login">Log In</string>

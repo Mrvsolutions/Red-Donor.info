@@ -32,6 +32,7 @@ import mr.vsolutions.red_donorinfo.R;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
 import mr.vsolutions.red_donorinfo.Retrofit.ApiInterface;
 import mr.vsolutions.red_donorinfo.SignupActivity;
+import mr.vsolutions.red_donorinfo.WebViewActivity;
 import mr.vsolutions.red_donorinfo.model.DefaultResponse;
 import mr.vsolutions.red_donorinfo.util.Comman;
 import retrofit2.Call;
@@ -218,7 +219,7 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void OpenTermsPolicy() {
-        Uri uri = Uri.parse(getString(R.string.strTermsURL));
-        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        Intent i = new Intent( getActivity(), WebViewActivity.class);
+        startActivity(i);
     }
 }
