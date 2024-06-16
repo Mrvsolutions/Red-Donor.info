@@ -7,6 +7,10 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <fragment android:id="@+id/autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"/>
         <ImageView
             android:id="@+id/imgback"
             android:layout_width="@dimen/size_25dp"
@@ -232,6 +236,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:focusable="false"
                     android:hint="@string/str_Address"
                     android:inputType="text"
                     android:theme="@style/MyEditText"/>

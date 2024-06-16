@@ -38,12 +38,26 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import mr.vsolutions.red_donorinfo.Retrofit.ApiClient;
@@ -72,6 +86,9 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     Spinner spinneruserbloodGroup;
     String strbloodgroup, strage;
     private int mYear,mMonth,mDay;
+    private static int AUTOCOMPLETE_REQUEST_CODE = 1;
+    PlacesClient placesClient;
+    AutocompleteSupportFragment autocompleteFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +114,38 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         edtuserdateofbirth.setKeyListener(null);
         edtuseraddress = findViewById(R.id.edtuseraddress);
         strbloodgroup = getString(R.string.str_selectBloodGroup);
+        String apiKey = getString(R.string.str_PlaceAPI_Key);
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        // Create a new Places client instance.
+         placesClient = Places.createClient(this);
+        // Initialize the AutocompleteSupportFragment.
+        autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS));
+
+        // Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                String Straddress = "Place: " + place.getName() + ", ID:- " + place.getId() +" , Address:- "+place.getAddress()+" , Lat:- "+place.getLatLng().latitude+" , Longt:- "+place.getLatLng().longitude;
+                Log.i(TAG, Straddress);
+                Toast.makeText(getApplicationContext(),Straddress,Toast.LENGTH_LONG).show();
+            }
+
+
+            @Override
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+                Toast.makeText(getApplicationContext(),"Error: - "+status,Toast.LENGTH_LONG).show();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             edtuserdateofbirth.setShowSoftInputOnFocus(false);
         }
@@ -175,6 +224,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         btn_Signup.setOnClickListener(this);
         edtuserdateofbirth.setOnClickListener(this);
+        edtuseraddress.setOnClickListener(this);
     }
     ClickableSpan linkClick = new ClickableSpan() {
         @Override
@@ -220,6 +270,12 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.edtuserdateofbirth:
                 OpenDatepicker();
+                break;
+            case R.id.edtuseraddress:
+                List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG,Place.Field.ADDRESS);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
+                        .build(this);
+                startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
                 break;
 
         }
@@ -446,5 +502,30 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        try {
+            if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
+                if (resultCode == RESULT_OK) {
+                    Place place = Autocomplete.getPlaceFromIntent(data);
+                    String Straddress = "Place: " + place.getName() + ", " + place.getId() +" , "+place.getAddress()+" , "+place.getLatLng();
+                    Log.i(TAG, Straddress);
+                    Toast.makeText(this,Straddress,Toast.LENGTH_LONG).show();
+                } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+                    // TODO: Handle the error.
+                    Status status = Autocomplete.getStatusFromIntent(data);
+                    Log.i(TAG, status.getStatusMessage());
+                } else if (resultCode == RESULT_CANCELED) {
+                    // The user canceled the operation.
+                }
+                return;
+            }
+        }catch (Exception ex)
+        {
+            Log.e(TAG, "OnActivityResult:- "+ex.toString());
+        }
     }
 }

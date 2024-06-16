@@ -2,6 +2,7 @@
     <string name="app_name">ReDDonor</string>
     <string name="title_activity_login">LoginActivity</string>>
     <string name="google_maps_key">AIzaSyAeTEB1vcCKs99N0xzN0Za7ygGJxra-fzI</string>
+    <string name="str_PlaceAPI_Key">AIzaSyDme3UZgcEZ_t_fo1wqLtcL6uWhmIWq8Wo</string>
     <string name="str_dialogTitle">How Would You \nRate Our App Experience?</string>
     <string name="strTermsURL">http://reddonor.info/termsnConditions.html</string>
     <string name="strTermsTitle">Terms &amp; Conditions</string>
